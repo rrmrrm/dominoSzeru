@@ -4,12 +4,12 @@ setPlayernum;
 
 showNewDominos;
 
-putKingConfirmed(int pos, int player);
+putKingConfirm(int pos, int player);
 
 
 ///show domino placed,and
 ///show next player's domino over his/her table's center
-placeDominoActually()
+addDominoConfirm()
 
 
 ///winners contains the winners' indexes in the players array
@@ -27,5 +27,6 @@ maradek pakli méretének kiirasa
 //---------------------------------------------------------
 event:
 
-PutKing()
+PutKingAttempt()
 
+AddDominoAttempt()
