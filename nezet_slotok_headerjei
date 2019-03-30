@@ -9,4 +9,6 @@ putKing(int pos, int player);
 ///show next player's domino over his/her table's center
 placeDominoActually()
 
-show_winner()
+
+///winners contains the winners' indexes in the players array
+show_winner( vector<int> winners)
