@@ -1,0 +1,10 @@
+setPlayernum;
+
+showNewDominos;
+
+putKing(int pos, int player);
+
+
+///show domino placed,and
+///show next player's domino over his/her table's center
+placeDominoActually()
