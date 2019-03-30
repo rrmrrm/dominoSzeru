@@ -1,11 +1,10 @@
-
 slot:
 
 setPlayernum;
 
 showNewDominos;
 
-putKing(int pos, int player);
+putKingConfirmed(int pos, int player);
 
 
 ///show domino placed,and
@@ -27,3 +26,6 @@ maradek pakli méretének kiirasa
 
 //---------------------------------------------------------
 event:
+
+dominoClicked()
+
