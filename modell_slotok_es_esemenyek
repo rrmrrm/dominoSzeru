@@ -1,6 +1,5 @@
 slot:
-dominoClicked()
-
+PutKing()
 
 
 
@@ -8,3 +7,4 @@ dominoClicked()
 
 
 event:
+
