@@ -7,5 +7,5 @@ AddDominoAttempt();
 
 
 event:
-
+PutKingConfirm()
 AddDominoConfirm()
