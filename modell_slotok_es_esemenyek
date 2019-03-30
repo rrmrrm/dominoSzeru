@@ -9,3 +9,6 @@ AddDominoAttempt();
 event:
 PutKingConfirm()
 AddDominoConfirm()
+
+
+game_over(  vector<int> winners) 
