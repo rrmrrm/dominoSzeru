@@ -1,6 +1,6 @@
 slot:
-PutKing()
-
+PutKingAttempt()
+AddDominoAttempt();
 
 
 //----------------------------------
@@ -8,3 +8,4 @@ PutKing()
 
 event:
 
+AddDominoConfirm()
