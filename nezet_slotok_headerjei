@@ -12,3 +12,13 @@ placeDominoActually()
 
 ///winners contains the winners' indexes in the players array
 show_winner( vector<int> winners)
+
+///todo
+halozati jaték nézetét megírni
+
+
+
+///todo:
+hatralevo korok kiirása
+maradek pakli méretének kiirasa
+
