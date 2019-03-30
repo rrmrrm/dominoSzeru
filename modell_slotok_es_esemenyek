@@ -1,4 +1,8 @@
 slot:
+
+setPlayernum(int)
+
+
 PutKingAttempt()
 AddDominoAttempt();
 
