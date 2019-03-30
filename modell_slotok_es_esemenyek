@@ -11,4 +11,8 @@ PutKingConfirm()
 AddDominoConfirm()
 
 
-game_over(  vector<int> winners) 
+gameOver(  vector<int> winners) 
+
+
+updateTurnsleft(int)
+updateDeckSize(int)
