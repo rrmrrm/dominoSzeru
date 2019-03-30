@@ -27,5 +27,5 @@ maradek pakli méretének kiirasa
 //---------------------------------------------------------
 event:
 
-dominoClicked()
+PutKing()
 
