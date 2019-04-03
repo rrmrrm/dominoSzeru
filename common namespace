@@ -1,5 +1,0 @@
-namespace common{
-
-enum DIR {UP, DOWN, LEFT, RIGHT};
-
-}
