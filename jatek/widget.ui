@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Widget</class>
  <widget class="QWidget" name="Widget">
@@ -6,32 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>501</width>
+    <width>655</width>
     <height>392</height>
    </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <layout class="QVBoxLayout" name="mainLayout">
-   <item>
+  <layout class="QGridLayout" name="mainLayout">
+   <item row="0" column="0">
     <widget class="QPushButton" name="pushButton_3">
      <property name="text">
       <string>egygépes játék esetén a többiek táblája is meg kell jelenjen a főablakban</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QPushButton" name="pushButton_2">
      <property name="text">
       <string>valahol itt lesz a kozos jatekter:2 sor dominó, és a pakli</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
@@ -41,8 +44,11 @@
        </item>
        <item>
         <layout class="QGridLayout" name="tableContainerLaout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
+         </property>
          <item row="0" column="0">
-          <widget class="QWidget" name="table" native="true"/>
+          <widget class="TableWidget" name="table" native="true"/>
          </item>
         </layout>
        </item>
@@ -60,6 +66,14 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">tablewidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
