@@ -15,6 +15,13 @@
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <item>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="text">
+      <string>egygépes játék esetén a többiek táblája is meg kell jelenjen a főablakban</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="pushButton_2">
      <property name="text">
       <string>valahol itt lesz a kozos jatekter:2 sor dominó, és a pakli</string>
