@@ -2,27 +2,36 @@
 #define TABLEWIDGET_H
 
 #include <QWidget>
+#include <QEvent>
 #include <QMouseEvent>
-
+#include <QPaintEvent>
 
 #include <iostream>
+#include <vector>
+#include <QString>
+
+#include "Domino.h"
 
 using namespace std;
 
+
 class TableWidget : public QWidget {
     Q_OBJECT
-///private fields:
-private:
 
-
-///private functions:
-    void mouseMoveEvent(QMouseEvent *event){
-        cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
-    }
 
 public:
+    ///referencia a nezet-beli domino tombre
+    const vector< vector<QString> >& dominos;
+
     explicit TableWidget(QWidget *parent = nullptr);
     ~TableWidget();
+public slots:
+    void paintEvent(QPaintEvent* e);
+    void mouseMoveEvent(QMouseEvent *event);
+
+signals:
+
+
 
 };
 

@@ -1,7 +1,7 @@
 #ifndef DOMINO_H
 #define DOMINO_H
 
-#include <string>
+#include <QString>
 #include "common.h"
 
 using namespace std;
@@ -9,15 +9,15 @@ using namespace common;
 ///a dominot a bal mezoje korul lehet majd forgatni
 
 class Domino{
-    string color1;
-    string color2;
+    QString color1;
+    QString color2;
     DIR direction;
 
     int owner;
 public:
     void Rotate( DIR);
 
-    pair<string, string> GetColors();
+    pair<QString, QString> GetColors();
     pair<int, int> GetPos();
 };
 
