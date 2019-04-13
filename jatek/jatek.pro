@@ -27,18 +27,29 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         widget.cpp \
-    tablewidget.cpp
+    tablewidget.cpp \
+    player.cpp \
+    deck.cpp \
+    board.cpp
 
 HEADERS += \
         widget.h \
     common.h \
     Domino.h \
-    tablewidget.h
+    tablewidget.h \
+    player.h \
+    king.h \
+    deck.h \
+    board.h
 
 FORMS += \
-        widget.ui
+        widget.ui \
+    widget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+SUBDIRS += \
+    jatek.pro
