@@ -1,7 +1,6 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-
 #include <vector>
 #include <QString>
 #include <QWidget>
@@ -9,7 +8,7 @@
 #include <QMouseEvent>
 
 #include "tablewidget.h"
-
+#include "playerwidget.h"
 
 namespace Ui {
 class Widget;
@@ -21,7 +20,8 @@ class Widget : public QWidget{
     Ui::Widget *ui;
 
 public:
-    vector< vector<QString> > dominos;
+    int playerNum ;
+    vector<PlayerWidget*> players;
 
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
@@ -43,8 +43,6 @@ public slots:
     void show_winner( vector<int> winners);
 
     ///todo halozati jaték nézetét megírni
-
-
 
     ///todo:
     /// hatralevo korok kiirása

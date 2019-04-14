@@ -2,18 +2,30 @@
 #include <QGridLayout>
 #include <QPainter>
 
+#include <vector>
+
 #include "tablewidget.h"
 #include "widget.h"
+#include "common.h"
 
-TableWidget::TableWidget(QWidget *parent) :
+TableWidget::TableWidget( QWidget *parent, int size, COLOR color) :
     QWidget(parent),
-    dominos(  static_cast<Widget*>(parent)->dominos )
+    dominos(  static_cast<PlayerWidget*>(parent)->dominos )
 {
     QGridLayout *layout = new QGridLayout;
 
-    //layout->addWidget(button1);
+    //szin beallitasa:
+    switch(color){
+    case RED:{qColor = QColor(255,0,0);break;};
+    case GREEN:{qColor = QColor(0,255,0);break;};
+    case BLUE:{qColor = QColor(0,0,255);break;};
+    case YELLOW:{qColor = QColor(200,200,0);break;};
+    default: assert(false);
+    }
 
     setLayout(layout);
+    setFixedWidth(size);
+    setFixedHeight(size);
 
     setMouseTracking(true);
 
@@ -27,9 +39,6 @@ TableWidget::~TableWidget(){
 void TableWidget::paintEvent(QPaintEvent* e){
     QPainter p(this);
 
-
-
-
     int w = width();
     int h = height();
 
@@ -37,9 +46,7 @@ void TableWidget::paintEvent(QPaintEvent* e){
 
     //elso mezo kozepe
     int x0 = 0;
-    int y0 = 0  ;
-
-
+    int y0 = 0;
 
     for(auto row = dominos.begin(); row != dominos.end() ; ++row){
         x0 = 0;
@@ -47,14 +54,11 @@ void TableWidget::paintEvent(QPaintEvent* e){
 
             QRect r(x0,y0, w, h);
 
-
-
             //mezo letakaritasa:
             p.fillRect(r, QBrush(QColor(255,255,255)));
-            p.setPen({128, 0, 0, 255});
 
             //mezok kerete:
-            p.setPen({0, 0, 0, 255});
+            p.setPen(qColor);
             p.drawRect(r);
 
             //ha tul szeles lenne a szoveg, akkor leszoritjuk a magassagat, hogy beeferjen w/n pixelbe
@@ -73,7 +77,8 @@ void TableWidget::paintEvent(QPaintEvent* e){
     }
 
     //tabla kerete:
-    p.setPen({0, 0, 0, 255});
+
+    p.setPen(qColor);
     p.drawRect(0,0, w-1, h-1);
 }
 void TableWidget::mouseMoveEvent(QMouseEvent *event){

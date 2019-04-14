@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
+    <width>661</width>
     <height>392</height>
    </rect>
   </property>
@@ -32,36 +32,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>tábla: ez alatt lesz a játékos királysága</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="tableContainerLaout">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
-         </property>
-         <item row="0" column="0">
-          <widget class="TableWidget" name="table" native="true"/>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>itt jelenik meg valahogy a tablara helyezendo domino</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <layout class="QHBoxLayout" name="playerLayout" stretch=""/>
    </item>
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout">
@@ -90,14 +61,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>TableWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">tablewidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

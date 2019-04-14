@@ -1,35 +1,35 @@
-
 #include "widget.h"
 #include "ui_widget.h"
 #include <QEvent>
 #include <algorithm>
 
-
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Widget)
+    ui(new Ui::Widget),
+    players()
 {
-    uint tSize = 5;
-    dominos = vector< vector<QString> >(tSize);
-
-    for(int i = 0 ; i < tSize ; ++i){
-        vector<QString> v(tSize);
-        dominos[i] = v;
-
-        for(auto y = dominos[i].begin(); y != dominos[i].end(); ++y){
-            *y = "";
-        }
-    }
-
-    dominos[tSize/2][tSize/2] = "Kastély";
+    playerNum =3;
+    int playerWidgetWidth = 500;
+    int playerWidgetHeight = 500;
+    int playerTableSize = 400;
+    assert(playerTableSize<=playerWidgetHeight &&
+           playerTableSize<=playerWidgetWidth);
 
     ui->setupUi(this);
+    setMinimumWidth(playerNum * playerWidgetWidth + 50);
+    setMinimumHeight(playerWidgetHeight+100);
 
-
+    for(int i = 0; i<playerNum ; ++i){
+        players.push_back(new PlayerWidget(COLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
+        ui->playerLayout->addWidget( players[i],1 );
+    }
 }
 
 Widget::~Widget()
 {
+    for(int i = 0; i<playerNum ; ++i){
+        delete players[i];
+    }
     delete ui;
 }
 

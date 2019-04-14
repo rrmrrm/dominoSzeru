@@ -30,7 +30,8 @@ SOURCES += \
     tablewidget.cpp \
     player.cpp \
     deck.cpp \
-    board.cpp
+    board.cpp \
+    playerwidget.cpp
 
 HEADERS += \
         widget.h \
@@ -40,11 +41,12 @@ HEADERS += \
     player.h \
     king.h \
     deck.h \
-    board.h
+    board.h \
+    playerwidget.h
 
 FORMS += \
-        widget.ui \
-    widget.ui
+    widget.ui \
+    playerwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

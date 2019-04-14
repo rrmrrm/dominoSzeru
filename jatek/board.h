@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <QVector>
+#include <vector>
 #include <string>
 #include "common.h"
 #include "Domino.h"
@@ -9,7 +9,7 @@
 using namespace std;
 class Board
 {
-    QVector<QVector<string>> Fields;
+    vector<vector<string>> Fields;
     int owner;
 public:
     Board();
