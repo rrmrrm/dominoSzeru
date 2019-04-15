@@ -1,11 +1,16 @@
-#include <QApplication>
+#include "common.h"
+#include "Domino.h"
+
+
+
 #include "widget.h"
+#include <QApplication>
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+    Widget w;
+    w.show();
 
-        QApplication app(argc, argv);
-        Widget w;
-        w.show();
-        return app.exec();
+    return a.exec();
 }

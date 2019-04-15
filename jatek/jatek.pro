@@ -27,6 +27,11 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         widget.cpp \
+    board.cpp \
+    deck.cpp \
+    player.cpp \
+    domino.cpp \
+    model.cpp \
     tablewidget.cpp \
     playerwidget.cpp \
 
@@ -34,6 +39,11 @@ HEADERS += \
         widget.h \
     common.h \
     Domino.h \
+    Deck.h \
+    King.h \
+    Player.h \
+    Board.h \
+    model.h \
     tablewidget.h \
     playerwidget.h
 
