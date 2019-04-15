@@ -35,7 +35,7 @@ void model::startGame()
         currentplayer=&players[sorrend[0]];
         //AddDominoConfirm();
         emit updateActivePlayer(sorrend[0]);
-        currentplayer=0;
+        currentnumber=0;
     //}
     deck->draw();
     emit newDominos(deck->getNewOnes());
