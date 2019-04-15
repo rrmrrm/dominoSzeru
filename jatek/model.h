@@ -43,6 +43,7 @@ signals:
     void updateDeckSize(int number);
     void updateActivePlayer(int number);
 
+    void notTheFirstTurn();
 
 
 
