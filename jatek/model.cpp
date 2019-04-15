@@ -30,12 +30,13 @@ void model::startGame()
         sorrend[a]=sorrend[b];
         sorrend [b]=temp;
     }
-    for(int i = 0; i < playernum; i++)
-    {
-        currentplayer=&players[sorrend[i]];
-        AddDominoConfirm();
-        emit updateActivePlayer(sorrend[i]);
-    }
+    //for(int i = 0; i < playernum; i++)
+    //{
+        currentplayer=&players[sorrend[0]];
+        //AddDominoConfirm();
+        emit updateActivePlayer(sorrend[0]);
+        currentplayer=0;
+    //}
     deck->draw();
     emit newDominos(deck->getNewOnes());
 }
@@ -57,15 +58,19 @@ void model::PutKingAttempt(int place)
                 firstTurn=false;
                 emit notTheFirstTurn();                
             }
-        }
-        currentnumber++;
-        for(int i = 0; i < playernum; i++)
-        {
-            if(players[i].getKingPlace()==currentnumber)
+            for(int i = 0; i < playernum; i++)
             {
-                currentplayer=&players[i];
+                for(int j = 0; j < playernum; j++)
+                {
+                    if(players[j].getKingPlace()==i)
+                    {
+                        sorrend[i]=j;
+                    }
+                }
             }
         }
+        currentnumber++;
+        currentplayer=&players[sorrend[currentnumber]];
     }
     emit updateActivePlayer(currentnumber);
 }
@@ -79,7 +84,7 @@ void model::AddDominoAttempt()
         AddDominoConfirm();
         if(deck->cardsLeftNum()==0)
         {
-            PutKingConfirm(-1);
+            PutKingConfirm(-1, currentnumber);
         }
     }
 }
