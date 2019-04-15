@@ -1,9 +1,12 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include <QEvent>
+#include <QString>
 #include <algorithm>
-
+#include <QPushButton>
+#include <QPainter>
 #include "model.h"
+using namespace std;
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
@@ -25,22 +28,43 @@ Widget::Widget(QWidget *parent) :
         ui->playerLayout->addWidget( players[i],1 );
     }
 
-    //connect(m, updateTurnsleft, )
-
-
     m = new model();
     m->setPlayernum(playerNum);
     m->startGame();
+    ///domino sort abrazolo gombok hozzadasa:
+    for(int i = 0 ; i < playerNum ; ++i ){
+        QPushButton* d = new QPushButton(this);
+        dominoRow1.push_back(d);
+        ui->dominoRowLayout->addWidget(d);
+    }
+
+
+    connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(ui->turnsLeft->display(int)) );
+    connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
+
+
 }
 
-Widget::~Widget()
-{
+Widget::~Widget(){
     delete ui;
 }
 
 
-void Widget::showNewDominos(){
+void Widget::showNewDominos(vector<Domino> v){
+    int dominoSideSize = 50;
+    for(int i = 0 ; i < dominoRow1.size(); ++ i){
+        switch(v[i].GetColors().first){
+            case MOUNTAIN: {
+                QPixmap pm(":/testSprite.png");
+                dominoRow1[i]->setIcon(pm);
+                dominoRow1[i]->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+                break;
+            }
 
+        default: {break;}
+        }
+
+    }
 }
 
 
