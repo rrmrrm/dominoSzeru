@@ -17,7 +17,7 @@ class model : public QObject
     vector<Player> players;
     vector<int> sorrend;
     Deck *deck;
-    int playernum;
+    int playernum=3;
     Player *currentplayer;
     int currentnumber;
 
