@@ -12,6 +12,7 @@ void model::setPlayernum(int number)
 
 void model::startGame()
 {
+    firstTurn=true;
     deck= new Deck(playernum);
     currentnumber=0;
     sorrend.resize(playernum);
@@ -51,6 +52,11 @@ void model::PutKingAttempt(int place)
             deck->draw();
             emit newDominos(deck->getNewOnes());
             currentnumber=-1;
+            if(firstTurn)
+            {
+                firstTurn=false;
+                emit notTheFirstTurn();                
+            }
         }
         currentnumber++;
         for(int i = 0; i < playernum; i++)
