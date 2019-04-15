@@ -26,12 +26,20 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        widget.cpp
+        widget.cpp \
+    board.cpp \
+    deck.cpp \
+    player.cpp \
+    domino.cpp
 
 HEADERS += \
         widget.h \
     common.h \
-    Domino.h
+    Domino.h \
+    Deck.h \
+    King.h \
+    Player.h \
+    Board.h
 
 FORMS += \
         widget.ui

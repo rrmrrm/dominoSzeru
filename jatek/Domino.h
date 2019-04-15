@@ -9,16 +9,23 @@ using namespace common;
 ///a dominot a bal mezoje korul lehet majd forgatni
 
 class Domino{
-    string color1;
-    string color2;
+    COLORS color1;
+    COLORS color2;
+    int crown1;
+    int crown2;
     DIR direction;
+    int pos1;
+    int pos2;
 
     int owner;
 public:
-    void Rotate( DIR);
-
-    pair<string, string> GetColors();
-    pair<int, int> GetPos();
+    Domino(COLORS color_1, COLORS color_2, int crown_1, int crown_2);
+    Domino();
+    void Rotate( DIR newDir) {direction=newDir;}
+    void move(DIR newDIR);
+    pair<COLORS, COLORS> GetColors() {return std::pair<COLORS,COLORS>(color1,color2); }
+    pair<int, int> GetPosition() {return std::pair<int,int>(pos1,pos2); }
+    DIR GetDirection() {return direction;}
 };
 
 #endif //DOMINO_H

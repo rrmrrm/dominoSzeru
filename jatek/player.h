@@ -3,20 +3,21 @@
 
 #include "King.h"
 #include "Board.h"
+#include "deck.h"
 #include <string>
 
 using namespace std;
 
 class Player
 {
-    King* king;
-    Board* board;
+    King king;
+    Board board;
     string name;
 public:
     Player();
     ~Player();
     void placeKing(int place);
-    void placeDomino();
+    void placeDomino(Deck * deck);
     void moveDomino();
     void changeName(string newName) {name=newName;}
 };

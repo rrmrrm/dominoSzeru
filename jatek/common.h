@@ -4,6 +4,7 @@
 namespace common{
 
 enum DIR {UP, DOWN, LEFT, RIGHT};
+enum COLORS{ SWAMP, MOUNTAIN, WHEATFIELD, FOREST, LAKE, PASTURE, EMPTY, CASTLE};
 
 }
 

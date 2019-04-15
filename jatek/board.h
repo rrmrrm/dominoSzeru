@@ -9,7 +9,7 @@
 using namespace std;
 class Board
 {
-    QVector<QVector<string>> Fields;
+    QVector<QVector<COLORS>> Fields;
     int owner;
 public:
     Board();

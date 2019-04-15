@@ -1,20 +1,30 @@
 #ifndef DECK_H
 #define DECK_H
+
 #include "Domino.h"
 #include<vector>
+#include "board.h"
 
 using namespace std;
 
 class Deck
 {
-    vector<Domino> DOMINOES;
+    vector<Domino> dominoes;
+    vector<Domino> current;
+    vector<Domino> newOnes;
     vector<int> order;
-    int drawnAmount;
+    int cardsDrawn;
+    int deckSize;
 public:
+    Deck(int playerNumber);
     Deck();
     ~Deck();
     void shuffle();
-    Domino draw();
+    void draw();
+    int cardsLeftNum();
+    vector<Domino> getCurrent() {return current;}
+    vector<Domino> getNewOnes() {return newOnes;}
+
 };
 
 #endif // DECK_H
