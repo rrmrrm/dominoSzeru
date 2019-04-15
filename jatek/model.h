@@ -41,6 +41,7 @@ signals:
 
     void updateTurnsleft(int number);
     void updateDeckSize(int number);
+    void updateActivePlayer(int number);
 
 
 
