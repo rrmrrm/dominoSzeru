@@ -28,20 +28,13 @@ SOURCES += \
         main.cpp \
         widget.cpp \
     tablewidget.cpp \
-    player.cpp \
-    deck.cpp \
-    board.cpp \
-    playerwidget.cpp
+    playerwidget.cpp \
 
 HEADERS += \
         widget.h \
     common.h \
     Domino.h \
     tablewidget.h \
-    player.h \
-    king.h \
-    deck.h \
-    board.h \
     playerwidget.h
 
 FORMS += \
