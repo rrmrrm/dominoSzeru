@@ -15,17 +15,18 @@ class PlayerWidget;
 class PlayerWidget : public QWidget{
     Q_OBJECT
 
-
+public:
     Ui::PlayerWidget *ui;
     TableWidget* table;
     PLAYERCOLOR color;
 
-public:
+
     bool isActive;
     vector< vector<QString> > dominos;
 
     explicit PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *parent = nullptr);
     ~PlayerWidget();
+
 
 };
 

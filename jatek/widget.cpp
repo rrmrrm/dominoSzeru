@@ -26,9 +26,12 @@ Widget::Widget(QWidget *parent) :
     setMinimumWidth(playerNum * playerWidgetWidth + 50);
     setMinimumHeight(playerWidgetHeight+100);
 
+    m = new model();
+
     for(int i = 0; i<playerNum ; ++i){
         players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
         ui->playerLayout->addWidget( players[i],1 );
+        connect( players[i]->table, SIGNAL(tableClicked(int,int)), m, SLOT(AddDominoAttempt(int,int)) );
     }
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
@@ -39,9 +42,8 @@ Widget::Widget(QWidget *parent) :
         ui->dominosRow1Layout->addWidget(right,i,1);
         connect(left, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
         connect(right, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
-
     }
-    m = new model();
+
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
     connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
     connect(m, SIGNAL(PutKingConfirm(int,int)), this, SLOT(putKingConfirmed(int,int)) );

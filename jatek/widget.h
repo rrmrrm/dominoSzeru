@@ -24,6 +24,8 @@ class Widget : public QWidget{
     model* m;
     vector< pair<DominoButton*,DominoButton*> > dominoRow1;
     bool isFirstTurn;
+
+    void playerTableClicked(QMouseEvent *event);
 public:
     int playerNum ;
     int activePlayer;

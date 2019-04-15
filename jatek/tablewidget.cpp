@@ -7,6 +7,7 @@
 #include "tablewidget.h"
 #include "widget.h"
 #include "common.h"
+using namespace std;
 
 TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR color) :
     QWidget(parent),
@@ -93,4 +94,10 @@ void TableWidget::paintEvent(QPaintEvent* e){
 }
 void TableWidget::mouseMoveEvent(QMouseEvent *event){
     cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
+
+    ///todo: 0,0helyett a jo parameterekkel hivni:
+    int row = 0;
+    int col =0;
+    cout<< "emitting tableClicked with row: " << row <<", col: " <<col << endl;
+    emit tableClicked(row, col);
 }

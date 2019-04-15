@@ -33,7 +33,7 @@ public slots:
     void mouseMoveEvent(QMouseEvent *event);
 
 signals:
-
+    void tableClicked(int,int);
 
 
 };
