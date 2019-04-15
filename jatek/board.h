@@ -18,6 +18,7 @@ public:
     void setOwner(int num) {owner=num;}
     void placeDomino(Domino domino, std::pair<int,int> coordinates);
     void EmptyBoard();
+    QVector<QVector<COLOR>> getFields() { return Fields;}
 };
 
 #endif // BOARD_H
