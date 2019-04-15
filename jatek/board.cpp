@@ -12,12 +12,12 @@ Board::Board()
 
 void Board::EmptyBoard()
 {
-    Fields.resize(9);
-    for(int i = 0; i < 9; i++)
+    Fields.resize(5);
+    for(int i = 0; i < 5; i++)
     {
-        Fields[i].resize(9);
+        Fields[i].resize(5);
     }
-    Fields[4][4]=CASTLE;
+    Fields[2][2]=CASTLE;
 
 }
 
