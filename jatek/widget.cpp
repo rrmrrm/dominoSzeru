@@ -24,24 +24,20 @@ Widget::Widget(QWidget *parent) :
         players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
         ui->playerLayout->addWidget( players[i],1 );
     }
+
+    //connect(m, updateTurnsleft, )
+
+
     m = new model();
+    m->setPlayernum(playerNum);
     m->startGame();
-
-
 }
 
 Widget::~Widget()
 {
-    for(int i = 0; i<playerNum ; ++i){
-        delete players[i];
-    }
     delete ui;
 }
 
-///public slots:
-void Widget::setPlayernum(){
-
-}
 
 void Widget::showNewDominos(){
 
