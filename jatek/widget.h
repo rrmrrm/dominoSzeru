@@ -24,12 +24,14 @@ class Widget : public QWidget{
     vector< pair<QPushButton*,QPushButton*> > dominoRow1;
 public:
     int playerNum ;
+    int activePlayer;
     vector<PlayerWidget*> players;
 
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
 
 public slots:
+    void activePlayerUpdated(int);
     void showNewDominos(vector<Domino> v);
     void putKingConfirmed(int pos, int player);
 

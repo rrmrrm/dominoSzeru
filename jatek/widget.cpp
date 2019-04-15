@@ -12,6 +12,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget),
     players()
 {
+    activePlayer = 0;
     int playerNum =3;
     int playerWidgetWidth = 500;
     int playerWidgetHeight = 500;
@@ -38,25 +39,34 @@ Widget::Widget(QWidget *parent) :
     }
     m = new model();
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
+    connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
+
+    connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
+    connect(m, SIGNAL(updateDeckSize(int)), ui->deckSize, SLOT(display(int)) );
 
     m->setPlayernum(playerNum);
     m->startGame();
 
 
 
-    //connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(ui->turnsLeft->display(int)) );
+
 
 }
 
 Widget::~Widget(){
     delete ui;
 }
+void Widget::activePlayerUpdated(int newPlayer){
+    players[activePlayer]->isActive = false;
+    activePlayer = newPlayer;
+    players[newPlayer]->isActive=true;
+}
 void Widget::showNewDominos(vector<Domino> v){
     cout << "Widget::showNewDominos(vector<Domino> v)" << endl;
 
-    int dominoSideSize = 50;
+    int dominoSideSize = 100;
     for(int i = 0 ; i < dominoRow1.size(); ++ i){
-        QPixmap pm(":resources/testSprite.png");
+        QPixmap pm("resources/testSprite.png");
         dominoRow1[i].first->setMinimumHeight(200);
         dominoRow1[i].first->setMinimumWidth(200);
         dominoRow1[i].first->setIcon(pm);

@@ -12,7 +12,7 @@ PlayerWidget::PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *par
     table(nullptr)
 {
     uint tSize = 5;
-
+    isActive = false;
     dominos = vector< vector<QString> >(tSize);
     cout << dominos.size() << endl;
     for(int i = 0 ; i < tSize ; ++i){
@@ -26,7 +26,7 @@ PlayerWidget::PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *par
 
     dominos[tSize/2][tSize/2] = "Kastély";
 
-    table = new TableWidget(this, ts, color);
+    table = new TableWidget(isActive, this, ts, color);
     ui->setupUi(this);
     ui->horizontalLayout->addWidget(table,1);
     setFixedWidth(w);

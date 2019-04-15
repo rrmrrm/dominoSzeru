@@ -18,12 +18,13 @@ using namespace std;
 class TableWidget : public QWidget {
     Q_OBJECT
 
+    bool& _isActive;
     QColor qColor;
 public:
     ///referencia a nezet-beli domino tombre
     const vector< vector<QString> >& dominos;
 
-    explicit TableWidget(QWidget *parent = nullptr, int size = 400, PLAYERCOLOR color=RED);
+    explicit TableWidget(bool& isActive, QWidget *parent = nullptr, int size = 400, PLAYERCOLOR color=RED);
     ~TableWidget();
 
 

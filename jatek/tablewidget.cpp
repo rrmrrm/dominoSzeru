@@ -8,8 +8,9 @@
 #include "widget.h"
 #include "common.h"
 
-TableWidget::TableWidget( QWidget *parent, int size, PLAYERCOLOR color) :
+TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR color) :
     QWidget(parent),
+    _isActive(isActive),
     dominos(  static_cast<PlayerWidget*>(parent)->dominos )
 {
     QGridLayout *layout = new QGridLayout;
@@ -77,7 +78,13 @@ void TableWidget::paintEvent(QPaintEvent* e){
     }
 
     //tabla kerete:
-
+    if(_isActive){
+        p.setPen(qColor);
+        p.drawRect(0,0, w-1, h-1);
+        p.drawRect(1,1, w-2, h-2);
+        p.drawRect(2,2, w-3, h-3);
+        p.drawRect(3,3, w-4, h-4);
+    }
     p.setPen(qColor);
     p.drawRect(0,0, w-1, h-1);
 }
