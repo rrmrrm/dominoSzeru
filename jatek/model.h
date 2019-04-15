@@ -32,7 +32,7 @@ public slots:
     void AddDominoAttempt();
 
 signals:
-    void PutKingConfirm(int place);
+    void PutKingConfirm(int place, int number);
     void AddDominoConfirm();
 
     void newDominos(vector<Domino> dominos);
