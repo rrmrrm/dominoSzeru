@@ -35,6 +35,7 @@ void model::startGame()
         AddDominoConfirm();
     }
     deck->draw();
+    newDominos(deck->getNewOnes());
 }
 
 void model::PutKingAttempt(int place)
@@ -47,6 +48,7 @@ void model::PutKingAttempt(int place)
         if(currentnumber==playernum)
         {
             deck->draw();
+            newDominos(deck->getNewOnes());
             currentnumber=-1;
         }
         currentnumber++;
