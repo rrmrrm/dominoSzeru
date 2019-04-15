@@ -10,6 +10,7 @@
 #include "tablewidget.h"
 #include "playerwidget.h"
 
+#include "model.h"
 namespace Ui {
 class Widget;
 }
@@ -19,7 +20,7 @@ class Widget : public QWidget{
     Q_OBJECT
 
     Ui::Widget *ui;
-
+    model* m;
 public:
     int playerNum ;
     vector<PlayerWidget*> players;

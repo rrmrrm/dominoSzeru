@@ -3,12 +3,13 @@
 #include <QEvent>
 #include <algorithm>
 
+#include "model.h"
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
     players()
 {
-    playerNum =3;
+    int playerNum =3;
     int playerWidgetWidth = 500;
     int playerWidgetHeight = 500;
     int playerTableSize = 400;
@@ -23,6 +24,10 @@ Widget::Widget(QWidget *parent) :
         players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
         ui->playerLayout->addWidget( players[i],1 );
     }
+    m = new model();
+    m->startGame();
+
+
 }
 
 Widget::~Widget()
