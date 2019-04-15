@@ -15,11 +15,12 @@ class Player
     string name;
 public:
     Player();
-    ~Player();
+    //~Player();
     void placeKing(int place);
     void placeDomino(Deck * deck);
     void moveDomino();
     void changeName(string newName) {name=newName;}
+    int getKingPlace() {return king.getPlace();}
 };
 
 #endif // PLAYER_H

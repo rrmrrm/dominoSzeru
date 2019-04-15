@@ -30,7 +30,8 @@ SOURCES += \
     board.cpp \
     deck.cpp \
     player.cpp \
-    domino.cpp
+    domino.cpp \
+    model.cpp
 
 HEADERS += \
         widget.h \
@@ -39,7 +40,8 @@ HEADERS += \
     Deck.h \
     King.h \
     Player.h \
-    Board.h
+    Board.h \
+    model.h
 
 FORMS += \
         widget.ui

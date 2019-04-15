@@ -9,11 +9,11 @@
 using namespace std;
 class Board
 {
-    QVector<QVector<COLORS>> Fields;
+    QVector<QVector<COLOR>> Fields;
     int owner;
 public:
     Board();
-    ~Board();
+    //~Board();
     std::pair<int,int> getPoint();
     void setOwner(int num) {owner=num;}
     void placeDomino(Domino domino, std::pair<int,int> coordinates);

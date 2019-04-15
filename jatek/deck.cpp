@@ -22,13 +22,15 @@ Deck::Deck(int playerNumber)
 {
     if(playerNumber==3)
     {
+        newOnes.resize(3);
         current.resize(3);
-        current.resize(3);
+        taken.resize(3);
     }
     else
     {
+        newOnes.resize(4);
         current.resize(4);
-        current.resize(4);
+        taken.resize(4);
     }
     deckSize=playerNumber*12;    
     dominoes.resize(static_cast<unsigned long long>(deckSize));
@@ -91,6 +93,7 @@ Deck::Deck(int playerNumber)
         dominoes[47]=Domino(PASTURE, PASTURE, 2, 0);
     }
     shuffle();
+    draw();
 }
 
 void Deck::shuffle()
@@ -112,6 +115,10 @@ void Deck::draw()
     {
         newOnes[i]=dominoes[cardsDrawn];
         cardsDrawn++;
+    }
+    for(int i=0; i < taken.size(); i++)
+    {
+        taken[i]=false;
     }
 }
 

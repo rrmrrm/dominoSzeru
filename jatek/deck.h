@@ -16,6 +16,7 @@ class Deck
     int cardsDrawn;
     int deckSize;
 public:
+    vector<bool> taken;
     Deck(int playerNumber);
     Deck();
     ~Deck();

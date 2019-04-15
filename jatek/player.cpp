@@ -4,13 +4,16 @@
 #include "player.h"
 #include "deck.h"
 
+Player::Player()
+{
+
+}
 
 void Player::placeKing(int place)
 {
     king.move(place);
 
 }
-
 
 void Player::placeDomino(Deck * deck = new Deck)
 {
