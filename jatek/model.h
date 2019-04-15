@@ -20,6 +20,7 @@ class model : public QObject
     int playernum=3;
     Player *currentplayer;
     int currentnumber;
+    bool firstTurn;
 
 public:
     model();
