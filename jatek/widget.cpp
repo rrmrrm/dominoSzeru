@@ -28,12 +28,6 @@ Widget::Widget(QWidget *parent) :
         players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
         ui->playerLayout->addWidget( players[i],1 );
     }
-
-    m = new model();
-    connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
-
-    m->setPlayernum(playerNum);
-    m->startGame();
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
         QPushButton* left = new QPushButton(this);
@@ -42,6 +36,12 @@ Widget::Widget(QWidget *parent) :
         ui->dominosRow1Layout->addWidget(left,i,0);
         ui->dominosRow1Layout->addWidget(right,i,1);
     }
+    m = new model();
+    connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
+
+    m->setPlayernum(playerNum);
+    m->startGame();
+
 
 
     //connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(ui->turnsLeft->display(int)) );
@@ -52,10 +52,18 @@ Widget::~Widget(){
     delete ui;
 }
 void Widget::showNewDominos(vector<Domino> v){
-
+    cout << "Widget::showNewDominos(vector<Domino> v)" << endl;
 
     int dominoSideSize = 50;
     for(int i = 0 ; i < dominoRow1.size(); ++ i){
+        QPixmap pm(":resources/testSprite.png");
+        dominoRow1[i].first->setMinimumHeight(200);
+        dominoRow1[i].first->setMinimumWidth(200);
+        dominoRow1[i].first->setIcon(pm);
+        dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+
+
+
         switch(v[i].GetColors().first){
             case MOUNTAIN: {
                 QPixmap pm(":/testSprite.png");
