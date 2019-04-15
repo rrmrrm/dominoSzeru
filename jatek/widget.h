@@ -29,8 +29,6 @@ public:
     ~Widget();
 
 public slots:
-    void setPlayernum();
-
     void showNewDominos();
 
     void putKingConfirmed(int pos, int player);
