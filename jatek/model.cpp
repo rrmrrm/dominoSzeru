@@ -75,13 +75,13 @@ void model::PutKingAttempt(int place)
     emit updateActivePlayer(currentnumber);
 }
 
-void model::AddDominoAttempt()
+void model::AddDominoAttempt(int x, int y)
 {
     bool szabalyos=true;
     if(szabalyos)
     {
-        currentplayer->placeDomino(deck);
-        AddDominoConfirm();
+        currentplayer->placeDomino(deck, x, y);
+        AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
             PutKingConfirm(-1, currentnumber);
