@@ -4,7 +4,7 @@
 #include <vector>
 #include <QString>
 #include <QWidget>
-
+#include <QPushButton>
 #include <QMouseEvent>
 
 #include "tablewidget.h"
@@ -15,12 +15,13 @@ namespace Ui {
 class Widget;
 }
 
-
+using namespace std;
 class Widget : public QWidget{
     Q_OBJECT
 
     Ui::Widget *ui;
     model* m;
+    vector< pair<QPushButton*,QPushButton*> > dominoRow1;
 public:
     int playerNum ;
     vector<PlayerWidget*> players;
@@ -29,8 +30,7 @@ public:
     ~Widget();
 
 public slots:
-    void showNewDominos();
-
+    void showNewDominos(vector<Domino> v);
     void putKingConfirmed(int pos, int player);
 
 
