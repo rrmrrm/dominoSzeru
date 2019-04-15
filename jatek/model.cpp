@@ -33,6 +33,7 @@ void model::startGame()
     {
         currentplayer=&players[sorrend[i]];
         AddDominoConfirm();
+        emit updateActivePlayer(sorrend[i]);
     }
     deck->draw();
     emit newDominos(deck->getNewOnes());
@@ -60,6 +61,7 @@ void model::PutKingAttempt(int place)
             }
         }
     }
+    emit updateActivePlayer(currentnumber);
 }
 
 void model::AddDominoAttempt()
