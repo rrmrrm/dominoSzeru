@@ -4,7 +4,7 @@
 #include <QVector>
 #include <string>
 #include "common.h"
-#include "Domino.h"
+#include "domino.h"
 
 using namespace std;
 class Board

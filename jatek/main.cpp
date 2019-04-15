@@ -1,7 +1,5 @@
 #include "common.h"
-#include "Domino.h"
-
-
+#include "domino.h"
 
 #include "widget.h"
 #include <QApplication>

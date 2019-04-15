@@ -3,7 +3,7 @@
 
 #include "board.h"
 #include "common.h"
-#include "Domino.h"
+#include "domino.h"
 #include "king.h"
 #include "player.h"
 #include <vector>

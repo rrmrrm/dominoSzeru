@@ -1,8 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "King.h"
-#include "Board.h"
+#include "king.h"
+#include "board.h"
 #include "deck.h"
 #include <string>
 

@@ -1,7 +1,7 @@
 #ifndef DECK_H
 #define DECK_H
 
-#include "Domino.h"
+#include "domino.h"
 #include<vector>
 #include "board.h"
 

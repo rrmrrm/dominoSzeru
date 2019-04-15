@@ -38,14 +38,17 @@ SOURCES += \
 HEADERS += \
         widget.h \
     common.h \
-    Domino.h \
     Deck.h \
     King.h \
     Player.h \
     Board.h \
     model.h \
     tablewidget.h \
-    playerwidget.h
+    playerwidget.h \
+    model.h \
+    king.h \
+    deck.h \
+    domino.h
 
 FORMS += \
     widget.ui \

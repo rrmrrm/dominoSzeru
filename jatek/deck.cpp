@@ -3,7 +3,7 @@
 
 #include "deck.h"
 #include "common.h"
-#include "Domino.h"
+#include "domino.h"
 
 
 
