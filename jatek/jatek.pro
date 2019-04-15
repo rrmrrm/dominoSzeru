@@ -31,7 +31,9 @@ SOURCES += \
     deck.cpp \
     player.cpp \
     domino.cpp \
-    model.cpp
+    model.cpp \
+    tablewidget.cpp \
+    playerwidget.cpp \
 
 HEADERS += \
         widget.h \
@@ -41,12 +43,18 @@ HEADERS += \
     King.h \
     Player.h \
     Board.h \
-    model.h
+    model.h \
+    tablewidget.h \
+    playerwidget.h
 
 FORMS += \
-        widget.ui
+    widget.ui \
+    playerwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+SUBDIRS += \
+    jatek.pro
