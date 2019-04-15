@@ -46,7 +46,7 @@ void model::PutKingAttempt(int place)
     {
         currentplayer->placeKing(place);
         deck->taken[place]=true;
-        PutKingConfirm(place);
+        PutKingConfirm(place, currentnumber);
         if(currentnumber==playernum)
         {
             deck->draw();
