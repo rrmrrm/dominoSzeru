@@ -11,6 +11,7 @@
 #include "playerwidget.h"
 
 #include "model.h"
+#include "dominobutton.h"
 namespace Ui {
 class Widget;
 }
@@ -21,7 +22,8 @@ class Widget : public QWidget{
 
     Ui::Widget *ui;
     model* m;
-    vector< pair<QPushButton*,QPushButton*> > dominoRow1;
+    vector< pair<DominoButton*,DominoButton*> > dominoRow1;
+    bool isFirstTurn;
 public:
     int playerNum ;
     int activePlayer;
@@ -31,6 +33,9 @@ public:
     ~Widget();
 
 public slots:
+    void notTheFirstTurn();
+
+    void dominoRow1Clicked();
     void activePlayerUpdated(int);
     void showNewDominos(vector<Domino> v);
     void putKingConfirmed(int pos, int player);

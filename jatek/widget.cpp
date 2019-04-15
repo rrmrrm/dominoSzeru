@@ -12,6 +12,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget),
     players()
 {
+    isFirstTurn = true;
     activePlayer = 0;
     int playerNum =3;
     int playerWidgetWidth = 500;
@@ -31,11 +32,14 @@ Widget::Widget(QWidget *parent) :
     }
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
-        QPushButton* left = new QPushButton(this);
-        QPushButton* right = new QPushButton(this);
-        dominoRow1.push_back(pair<QPushButton*,QPushButton*>(left,right) );
+        DominoButton* left = new DominoButton(i,this);
+        DominoButton* right = new DominoButton(i,this);
+        dominoRow1.push_back(pair<DominoButton*,DominoButton*>(left,right) );
         ui->dominosRow1Layout->addWidget(left,i,0);
         ui->dominosRow1Layout->addWidget(right,i,1);
+        connect(left, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
+        connect(right, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
+
     }
     m = new model();
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
@@ -46,15 +50,20 @@ Widget::Widget(QWidget *parent) :
 
     m->setPlayernum(playerNum);
     m->startGame();
-
-
-
-
-
 }
 
 Widget::~Widget(){
     delete ui;
+}
+void Widget::notTheFirstTurn(){
+    isFirstTurn = false;
+}
+void Widget::dominoRow1Clicked(){
+    cout << "dominoRow1Clicked" << endl;
+    DominoButton* actual = qobject_cast<DominoButton*>( sender() );
+    cout << "index:"<< actual->_row << endl;
+    m->PutKingAttempt(actual->_row);
+    int row = actual->_row;
 }
 void Widget::activePlayerUpdated(int newPlayer){
     players[activePlayer]->isActive = false;
@@ -67,8 +76,8 @@ void Widget::showNewDominos(vector<Domino> v){
     int dominoSideSize = 100;
     for(int i = 0 ; i < dominoRow1.size(); ++ i){
         QPixmap pm("resources/testSprite.png");
-        dominoRow1[i].first->setMinimumHeight(200);
-        dominoRow1[i].first->setMinimumWidth(200);
+        //dominoRow1[i].first->setMinimumHeight(200);
+        //dominoRow1[i].first->setMinimumWidth(200);
         dominoRow1[i].first->setIcon(pm);
         dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
 

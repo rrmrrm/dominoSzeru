@@ -81,9 +81,12 @@ void TableWidget::paintEvent(QPaintEvent* e){
     if(_isActive){
         p.setPen(qColor);
         p.drawRect(0,0, w-1, h-1);
-        p.drawRect(1,1, w-2, h-2);
-        p.drawRect(2,2, w-3, h-3);
-        p.drawRect(3,3, w-4, h-4);
+        p.drawRect(1,1, w-3, h-3);
+        p.drawRect(2,2, w-4, h-4);
+        p.drawRect(2,2, w-5, h-5);
+        p.drawRect(2,2, w-6, h-6);
+        p.drawRect(3,3, w-7, h-7);
+        p.drawRect(3,3, w-8, h-8);
     }
     p.setPen(qColor);
     p.drawRect(0,0, w-1, h-1);

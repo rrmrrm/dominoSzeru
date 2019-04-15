@@ -48,7 +48,8 @@ HEADERS += \
     model.h \
     king.h \
     deck.h \
-    domino.h
+    domino.h \
+    dominobutton.h
 
 FORMS += \
     widget.ui \
