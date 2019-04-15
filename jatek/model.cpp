@@ -48,7 +48,7 @@ void model::PutKingAttempt(int place)
         currentplayer->placeKing(place);
         deck->taken[place]=true;
         PutKingConfirm(place, currentnumber);
-        if(currentnumber==playernum)
+        if(currentnumber==(playernum-1))
         {
             deck->draw();
             emit newDominos(deck->getNewOnes());
