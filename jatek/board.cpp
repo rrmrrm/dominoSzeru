@@ -30,22 +30,22 @@ std::pair<int,int> Board::getPoint()
 
 void Board::placeDomino(Domino domino, std::pair<int,int> coordinates)
 {
-    Fields[domino.GetPosition().first][domino.GetPosition().second]=domino.GetColors().first;
+    Fields[coordinates.first][coordinates.second]=domino.GetColors().first;
     if(domino.GetDirection()==UP)
     {
-        Fields[domino.GetPosition().first-1][domino.GetPosition().second]=domino.GetColors().second;
+        Fields[coordinates.first-1][coordinates.second]=domino.GetColors().second;
     }
     if(domino.GetDirection()==DOWN)
     {
-        Fields[domino.GetPosition().first+1][domino.GetPosition().second]=domino.GetColors().second;
+        Fields[coordinates.first+1][coordinates.second]=domino.GetColors().second;
     }
     if(domino.GetDirection()==LEFT)
     {
-        Fields[domino.GetPosition().first][domino.GetPosition().second+1]=domino.GetColors().second;
+        Fields[coordinates.first][coordinates.second+1]=domino.GetColors().second;
     }
     if(domino.GetDirection()==RIGHT)
     {
-        Fields[domino.GetPosition().first][domino.GetPosition().second-1]=domino.GetColors().second;
+        Fields[coordinates.first][coordinates.second-1]=domino.GetColors().second;
     }
 }
 

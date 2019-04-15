@@ -20,6 +20,7 @@ class model : public QObject
     int playernum=3;
     Player *currentplayer;
     int currentnumber;
+    bool firstTurn;
 
 public:
     model();
@@ -28,11 +29,11 @@ public slots:
     void setPlayernum(int);
     void startGame();
     void PutKingAttempt(int place);
-    void AddDominoAttempt();
+    void AddDominoAttempt(int x, int y);
 
 signals:
-    void PutKingConfirm(int place);
-    void AddDominoConfirm();
+    void PutKingConfirm(int place, int number);
+    void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);
 
     void newDominos(vector<Domino> dominos);
 
@@ -41,7 +42,9 @@ signals:
 
     void updateTurnsleft(int number);
     void updateDeckSize(int number);
+    void updateActivePlayer(int number);
 
+    void notTheFirstTurn();
 
 
 

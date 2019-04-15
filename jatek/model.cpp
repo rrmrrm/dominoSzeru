@@ -12,6 +12,7 @@ void model::setPlayernum(int number)
 
 void model::startGame()
 {
+    firstTurn=true;
     deck= new Deck(playernum);
     currentnumber=0;
     sorrend.resize(playernum);
@@ -29,11 +30,13 @@ void model::startGame()
         sorrend[a]=sorrend[b];
         sorrend [b]=temp;
     }
-    for(int i = 0; i < playernum; i++)
-    {
-        currentplayer=&players[sorrend[i]];
-        AddDominoConfirm();
-    }
+    //for(int i = 0; i < playernum; i++)
+    //{
+        currentplayer=&players[sorrend[0]];
+        //AddDominoConfirm();
+        emit updateActivePlayer(sorrend[0]);
+        currentnumber=0;
+    //}
     deck->draw();
     emit newDominos(deck->getNewOnes());
 }
@@ -44,34 +47,45 @@ void model::PutKingAttempt(int place)
     {
         currentplayer->placeKing(place);
         deck->taken[place]=true;
-        PutKingConfirm(place);
-        if(currentnumber==playernum)
+        PutKingConfirm(place, currentnumber);
+        if(currentnumber==(playernum-1))
         {
             deck->draw();
             emit newDominos(deck->getNewOnes());
             currentnumber=-1;
-        }
-        currentnumber++;
-        for(int i = 0; i < playernum; i++)
-        {
-            if(players[i].getKingPlace()==currentnumber)
+            if(firstTurn)
             {
-                currentplayer=&players[i];
+                firstTurn=false;
+                emit notTheFirstTurn();                
+            }
+            for(int i = 0; i < playernum; i++)
+            {
+                for(int j = 0; j < playernum; j++)
+                {
+                    if(players[j].getKingPlace()==i)
+                    {
+                        sorrend[i]=j;
+                    }
+                }
             }
         }
+        currentnumber++;
+        currentplayer=&players[sorrend[currentnumber]];
     }
+    emit updateActivePlayer(currentnumber);
 }
 
-void model::AddDominoAttempt()
+void model::AddDominoAttempt(int x, int y)
 {
     bool szabalyos=true;
     if(szabalyos)
     {
-        currentplayer->placeDomino(deck);
-        AddDominoConfirm();
+        currentplayer->placeDomino(deck,  x,  y);
+        AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
-            PutKingConfirm(-1);
+            PutKingConfirm(-1, currentnumber);
         }
+        emit
     }
 }

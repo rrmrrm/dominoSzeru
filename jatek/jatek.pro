@@ -34,6 +34,7 @@ SOURCES += \
     model.cpp \
     tablewidget.cpp \
     playerwidget.cpp \
+    dominobutton.cpp
 
 HEADERS += \
         widget.h \
@@ -48,7 +49,8 @@ HEADERS += \
     model.h \
     king.h \
     deck.h \
-    domino.h
+    domino.h \
+    dominobutton.h
 
 FORMS += \
     widget.ui \

@@ -15,9 +15,9 @@ void Player::placeKing(int place)
 
 }
 
-void Player::placeDomino(Deck * deck = new Deck)
+void Player::placeDomino(Deck * deck = new Deck, int x=0, int y=0)
 {
-    board.placeDomino(deck->getCurrent().at(king.getPlace()), std::pair<int,int>(0,0));
+    board.placeDomino(deck->getCurrent().at(king.getPlace()), std::pair<int,int>(x,y));
 }
 
 #endif

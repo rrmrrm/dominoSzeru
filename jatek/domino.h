@@ -13,7 +13,7 @@ class Domino{
     COLOR color2;
     int crown1;
     int crown2;
-    DIR direction;
+    DIR direction=UP;
     int pos1;
     int pos2;
 
