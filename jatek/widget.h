@@ -21,7 +21,7 @@ class Widget : public QWidget{
 
     Ui::Widget *ui;
     model* m;
-    vector<QPushButton*> dominoRow1;
+    vector< pair<QPushButton*,QPushButton*> > dominoRow1;
 public:
     int playerNum ;
     vector<PlayerWidget*> players;
@@ -30,8 +30,7 @@ public:
     ~Widget();
 
 public slots:
-    void showNewDominos(vector<Domino>);
-
+    void showNewDominos(vector<Domino> v);
     void putKingConfirmed(int pos, int player);
 
 

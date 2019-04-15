@@ -20,6 +20,7 @@ Widget::Widget(QWidget *parent) :
            playerTableSize<=playerWidgetWidth);
 
     ui->setupUi(this);
+
     setMinimumWidth(playerNum * playerWidgetWidth + 50);
     setMinimumHeight(playerWidgetHeight+100);
 
@@ -29,35 +30,48 @@ Widget::Widget(QWidget *parent) :
     }
 
     m = new model();
+    connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
+
     m->setPlayernum(playerNum);
     m->startGame();
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
-        QPushButton* d = new QPushButton(this);
-        dominoRow1.push_back(d);
-        ui->dominoRowLayout->addWidget(d);
+        QPushButton* left = new QPushButton(this);
+        QPushButton* right = new QPushButton(this);
+        dominoRow1.push_back(pair<QPushButton*,QPushButton*>(left,right) );
+        ui->dominosRow1Layout->addWidget(left,i,0);
+        ui->dominosRow1Layout->addWidget(right,i,1);
     }
 
 
-    connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(ui->turnsLeft->display(int)) );
-    connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
-
+    //connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(ui->turnsLeft->display(int)) );
 
 }
 
 Widget::~Widget(){
     delete ui;
 }
-
-
 void Widget::showNewDominos(vector<Domino> v){
+
+
     int dominoSideSize = 50;
     for(int i = 0 ; i < dominoRow1.size(); ++ i){
         switch(v[i].GetColors().first){
             case MOUNTAIN: {
                 QPixmap pm(":/testSprite.png");
-                dominoRow1[i]->setIcon(pm);
-                dominoRow1[i]->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+                dominoRow1[i].first->setIcon(pm);
+                dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+                break;
+            }
+
+        default: {break;}
+        }
+
+        switch(v[i].GetColors().second){
+            case MOUNTAIN: {
+                QPixmap pm(":/testSprite.png");
+                dominoRow1[i].second->setIcon(pm);
+                dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
                 break;
             }
 
@@ -66,7 +80,6 @@ void Widget::showNewDominos(vector<Domino> v){
 
     }
 }
-
 
 void Widget::putKingConfirmed(int pos, int player){
 
