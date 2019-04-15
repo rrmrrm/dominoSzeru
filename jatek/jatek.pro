@@ -34,6 +34,7 @@ SOURCES += \
     model.cpp \
     tablewidget.cpp \
     playerwidget.cpp \
+    dominobutton.cpp
 
 HEADERS += \
         widget.h \

@@ -44,6 +44,8 @@ Widget::Widget(QWidget *parent) :
     m = new model();
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
     connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
+    connect(m, SIGNAL(PutKingConfirm(int,int)), this, SLOT(putKingConfirmed(int,int)) );
+    void putKingConfirmed(int pos, int player);
 
     connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
     connect(m, SIGNAL(updateDeckSize(int)), ui->deckSize, SLOT(display(int)) );
@@ -109,7 +111,12 @@ void Widget::showNewDominos(vector<Domino> v){
 }
 
 void Widget::putKingConfirmed(int pos, int player){
-
+    switch( PLAYERCOLOR(player) ){
+    case RED: {}
+    case GREEN: {}
+    case BLUE: {}
+    case YELLOW: {}
+    }
 }
 
 

@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include "common.h"
+
+using namespace common;
 
 class DominoButton: public QPushButton{
     Q_OBJECT
@@ -14,6 +17,8 @@ public:
     ~DominoButton(){
 
     }
+
+    void drawCrown(PLAYERCOLOR color);
 };
 
 #endif // DOMINOBUTTON_H
