@@ -17,10 +17,11 @@ public:
     Player();
     //~Player();
     void placeKing(int place);
-    void placeDomino(Deck * deck);
+    void placeDomino(Deck * deck,int x, int y);
     void moveDomino();
     void changeName(string newName) {name=newName;}
     int getKingPlace() {return king.getPlace();}
+    QVector<QVector<COLOR>> getFields() { return board.getFields();}
 };
 
 #endif // PLAYER_H
