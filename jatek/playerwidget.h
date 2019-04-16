@@ -22,7 +22,7 @@ public:
 
 
     bool isActive;
-    vector< vector<QString> > dominos;
+    vector< vector<COLOR> > dominos;
 
     explicit PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *parent = nullptr);
     ~PlayerWidget();

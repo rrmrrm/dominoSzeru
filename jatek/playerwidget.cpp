@@ -13,18 +13,18 @@ PlayerWidget::PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *par
 {
     uint tSize = 5;
     isActive = false;
-    dominos = vector< vector<QString> >(tSize);
+    dominos = vector< vector<COLOR> >(tSize);
     cout << dominos.size() << endl;
     for(int i = 0 ; i < tSize ; ++i){
-        vector<QString> v(tSize);
+        vector<COLOR> v(tSize);
         dominos[i] = v;
 
         for(auto y = dominos[i].begin(); y != dominos[i].end(); ++y){
-            *y = "";
+            *y = EMPTY;
         }
     }
 
-    dominos[tSize/2][tSize/2] = "Kastély";
+    dominos[tSize/2][tSize/2] = CASTLE;
 
     table = new TableWidget(isActive, this, ts, color);
     ui->setupUi(this);

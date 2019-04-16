@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QVector>
+
 
 #include "tablewidget.h"
 #include "playerwidget.h"
@@ -45,7 +47,7 @@ public slots:
 
     ///show domino placed,and
     ///show next player's domino over his/her table's center
-    void addDominoConfirmed(Domino& d);
+    void addDominoConfirmed(QVector< QVector<COLOR> > newDominos);
 
 
     ///winners contains the winners' indexes in the players array

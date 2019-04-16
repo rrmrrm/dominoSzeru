@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <QPushButton>
 #include <QPainter>
+#include <QVector>
+
 #include "model.h"
 using namespace std;
 Widget::Widget(QWidget *parent) :
@@ -47,6 +49,7 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
     connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
     connect(m, SIGNAL(PutKingConfirm(int,int)), this, SLOT(putKingConfirmed(int,int)) );
+    connect(m, SIGNAL(AddDominoConfirm(Qvect)), this, SLOT(putKingConfirmed(int,int)) );
     void putKingConfirmed(int pos, int player);
 
     connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
@@ -124,9 +127,15 @@ void Widget::putKingConfirmed(int pos, int player){
 
 
 ///show domino placed,and
-///show next player's domino over his/her table's center
-void Widget::addDominoConfirmed(Domino& d){
+///show next player's domino over his/her table's center?
+void Widget::addDominoConfirmed(QVector< QVector<COLOR> > newDominos){
+    vector< vector<COLOR> >& dominos = players[activePlayer]->dominos;
 
+    for(int i = 0 ; i < dominos.size(); ++i){
+        for(int j = 0 ; j < dominos[i].size(); ++j){
+            dominos[i][j] = newDominos[i][j];
+        }
+    }
 }
 
 

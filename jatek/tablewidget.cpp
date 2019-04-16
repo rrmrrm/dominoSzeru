@@ -65,8 +65,9 @@ void TableWidget::paintEvent(QPaintEvent* e){
 
             //ha tul szeles lenne a szoveg, akkor leszoritjuk a magassagat, hogy beeferjen w/n pixelbe
             int textHeight = h/n;
-            if(it->size() != 0 && h != 0 && w/h/it->size()*1.4 < 1)//kb 1.4 a karakterek magassaganak és szelessegenek az aranya
-                textHeight = w/n/it->size()*1.4;//ezt a sort majd normalisan meg kell irni...
+            ///TODO: ezt a ket sort visszairni:
+            //if(it->size() != 0 && h != 0 && w/h/it->size()*1.4 < 1)//kb 1.4 a karakterek magassaganak és szelessegenek az aranya
+             //   textHeight = w/n/it->size()*1.4;//ezt a sort majd normalisan meg kell irni...
 
             //kirajzoljuk a szoveget egy kicsit feljebb tolva, hogy jo helyen jelenjen meg
             int y0CorrectorForText = -textHeight /4 ; // '/4' al talan jo lesz
@@ -95,9 +96,14 @@ void TableWidget::paintEvent(QPaintEvent* e){
 void TableWidget::mouseMoveEvent(QMouseEvent *event){
     cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
 
+}
+void TableWidget::mousePressEvent(QMouseEvent *event){
+    cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
+
     ///todo: 0,0helyett a jo parameterekkel hivni:
-    int row = 0;
-    int col =0;
+    /// ///todo: hardcoded 5 helyett vmi
+    int row = event->y() / (height()/5);
+    int col =  event->x() / (width()/5);
     cout<< "emitting tableClicked with row: " << row <<", col: " <<col << endl;
     emit tableClicked(row, col);
 }
