@@ -1,2 +1,5 @@
-<file>resources/testSprite.png</file>
-<RCC/>
+<RCC>
+  <qresource>
+    <file>testSprite.png</file>
+  </qresource>
+</RCC>
