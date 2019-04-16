@@ -94,7 +94,7 @@ void TableWidget::paintEvent(QPaintEvent* e){
     p.drawRect(0,0, w-1, h-1);
 }
 void TableWidget::mouseMoveEvent(QMouseEvent *event){
-    cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
+   // cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
 
 }
 void TableWidget::mousePressEvent(QMouseEvent *event){
