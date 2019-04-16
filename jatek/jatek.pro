@@ -56,6 +56,8 @@ FORMS += \
     widget.ui \
     playerwidget.ui
 
+RESOURCES = resources/dominoSide.qrc
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
