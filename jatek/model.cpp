@@ -1,4 +1,5 @@
 #include "model.h"
+#include <iostream>
 
 model::model()
 {
@@ -71,6 +72,7 @@ void model::PutKingAttempt(int place)
         }
         currentnumber++;
         currentplayer=&players[sorrend[currentnumber]];
+        std::cout << "JELENLEGI JATEKOS: " << currentnumber << std::endl;
     }
     emit updateActivePlayer(currentnumber);
 }
