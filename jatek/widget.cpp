@@ -47,7 +47,7 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
     connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
     connect(m, SIGNAL(PutKingConfirm(int,int)), this, SLOT(putKingConfirmed(int,int)) );
-    connect(m, SIGNAL(AddDominoConfirm(Qvect)), this, SLOT(putKingConfirmed(int,int)) );
+    connect(m, SIGNAL(AddDominoConfirm(QVector<QVector<COLOR>>)), this, SLOT(addDominoConfirmed(QVector< QVector<COLOR> >)) );
     void putKingConfirmed(int pos, int player);
 
     connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
