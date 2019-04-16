@@ -69,11 +69,13 @@ void Widget::dominoRow1Clicked(){
     cout << "index:"<< actual->_row << endl;
     m->PutKingAttempt(actual->_row);
     int row = actual->_row;
+    update();
 }
 void Widget::activePlayerUpdated(int newPlayer){
     players[activePlayer]->isActive = false;
     activePlayer = newPlayer;
     players[newPlayer]->isActive=true;
+    update();
 }
 void Widget::showNewDominos(vector<Domino> v){
     cout << "Widget::showNewDominos(vector<Domino> v)" << endl;
@@ -111,6 +113,7 @@ void Widget::showNewDominos(vector<Domino> v){
         }
 
     }
+    update();
 }
 
 void Widget::putKingConfirmed(int pos, int player){
@@ -120,6 +123,7 @@ void Widget::putKingConfirmed(int pos, int player){
     case BLUE: {}
     case YELLOW: {}
     }
+    update();
 }
 
 
@@ -134,12 +138,14 @@ void Widget::addDominoConfirmed(QVector< QVector<COLOR> > newDominos){
             dominos[i][j] = newDominos[i][j];
         }
     }
+    update();
 }
 
 
 
 ///winners contains the winners' indexes in the players array
 void Widget::show_winner( vector<int> winners){
+    update();
 
 }
 
