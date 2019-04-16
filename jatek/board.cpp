@@ -3,6 +3,7 @@
 
 #include "board.h"
 #include "deck.h"
+#include <iostream>
 
 Board::Board()
 {
@@ -46,6 +47,14 @@ void Board::placeDomino(Domino domino, std::pair<int,int> coordinates)
     if(domino.GetDirection()==RIGHT)
     {
         Fields[coordinates.first][coordinates.second-1]=domino.GetColors().second;
+    }
+    for(int i = 0; i < 5; i++)
+    {
+        for(int j = 0; j < 5; j++)
+        {
+            std::cout << Fields[i][j]<< " ";
+        }
+        std::cout << std::endl;
     }
 }
 
