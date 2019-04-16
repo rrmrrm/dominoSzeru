@@ -22,7 +22,7 @@ TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR 
     case GREEN:{qColor = QColor(0,255,0);break;};
     case BLUE:{qColor = QColor(0,0,255);break;};
     case YELLOW:{qColor = QColor(200,200,0);break;};
-    default: assert(false);
+    default: {};
     }
 
     setLayout(layout);
