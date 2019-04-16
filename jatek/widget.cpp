@@ -20,8 +20,6 @@ Widget::Widget(QWidget *parent) :
     int playerWidgetWidth = 500;
     int playerWidgetHeight = 500;
     int playerTableSize = 400;
-    assert(playerTableSize<=playerWidgetHeight &&
-           playerTableSize<=playerWidgetWidth);
 
     ui->setupUi(this);
 
