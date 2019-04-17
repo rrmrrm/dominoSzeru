@@ -8,7 +8,7 @@
 #include <QMouseEvent>
 #include <QVector>
 
-
+#include "color.h"
 #include "tablewidget.h"
 #include "playerwidget.h"
 
@@ -19,13 +19,14 @@ class Widget;
 }
 
 using namespace std;
-class Widget : public QWidget{
+class Widget : public QWidget, ColorConverter{
     Q_OBJECT
 
     Ui::Widget *ui;
     model* m;
     vector< pair<DominoButton*,DominoButton*> > dominoRow1;
     bool isFirstTurn;
+    int dominoSideSize;
 
     void playerTableClicked(QMouseEvent *event);
 public:

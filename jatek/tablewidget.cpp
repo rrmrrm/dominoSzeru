@@ -7,6 +7,8 @@
 #include "tablewidget.h"
 #include "widget.h"
 #include "common.h"
+#include "color.h"
+
 using namespace std;
 
 TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR color) :
@@ -40,11 +42,12 @@ TableWidget::~TableWidget(){
 ///public slots:
 void TableWidget::paintEvent(QPaintEvent* e){
     QPainter p(this);
-
-    int w = width();
-    int h = height();
-
     int n = 5;
+
+    int w = width() / n;
+    int h = height() / n;
+
+
 
     //elso mezo kozepe
     int x0 = 0;
@@ -58,25 +61,26 @@ void TableWidget::paintEvent(QPaintEvent* e){
 
             //mezo letakaritasa:
             p.fillRect(r, QBrush(QColor(255,255,255)));
-
+            p.drawImage(r, colorToImage(*it));
             //mezok kerete:
             p.setPen(qColor);
             p.drawRect(r);
 
             //ha tul szeles lenne a szoveg, akkor leszoritjuk a magassagat, hogy beeferjen w/n pixelbe
-            int textHeight = h/n;
+            //int textHeight = h/n;
             ///TODO: ezt a ket sort visszairni:
             //if(it->size() != 0 && h != 0 && w/h/it->size()*1.4 < 1)//kb 1.4 a karakterek magassaganak és szelessegenek az aranya
              //   textHeight = w/n/it->size()*1.4;//ezt a sort majd normalisan meg kell irni...
 
             //kirajzoljuk a szoveget egy kicsit feljebb tolva, hogy jo helyen jelenjen meg
-            int y0CorrectorForText = -textHeight /4 ; // '/4' al talan jo lesz
-            QRect rCorrected(x0,y0+y0CorrectorForText, w, h);
-            p.setFont({"Arial", textHeight});
-            p.drawText(rCorrected, Qt::AlignJustify, *it + "");
-            x0 += w / n;
+            //int y0CorrectorForText = -textHeight /4 ; // '/4' al talan jo lesz
+            //QRect rCorrected(x0,y0, w, h);
+            //p.setFont({"Arial", textHeight});
+            //p.drawText(rCorrected, Qt::AlignJustify, *it + "");
+
+            x0 += w;
         }
-        y0 += h / n;
+        y0 += h;
     }
 
     //tabla kerete:
@@ -98,12 +102,15 @@ void TableWidget::mouseMoveEvent(QMouseEvent *event){
 
 }
 void TableWidget::mousePressEvent(QMouseEvent *event){
+    ///todo: tableSize-t mashol defifnialni
+    int tableSize= 5;
     cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
 
-    ///todo: 0,0helyett a jo parameterekkel hivni:
-    /// ///todo: hardcoded 5 helyett vmi
-    int row = event->y() / (height()/5);
-    int col =  event->x() / (width()/5);
+    int row = event->y() / (height()/tableSize);
+    int col =  event->x() / (width()/tableSize);
+    //hibas koordinatak eseten nem kuldunk esemenyt:
+    if(row<0 || col < 0 || row >= tableSize || col >= tableSize)
+        return ;
     cout<< "emitting tableClicked with row: " << row <<", col: " <<col << endl;
     emit tableClicked(row, col);
 }

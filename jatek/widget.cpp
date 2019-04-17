@@ -8,13 +8,19 @@
 #include <QVector>
 
 #include "model.h"
+#include "color.h"
+
 using namespace std;
+
+
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
     players()
 {
     isFirstTurn = true;
+    dominoSideSize = 50;
     activePlayer = 0;
     int playerNum =3;
     int playerWidgetWidth = 500;
@@ -22,9 +28,10 @@ Widget::Widget(QWidget *parent) :
     int playerTableSize = 400;
 
     ui->setupUi(this);
+    ui->dominosRow1Layout->setHorizontalSpacing(0);
 
     setMinimumWidth(playerNum * playerWidgetWidth + 50);
-    setMinimumHeight(playerWidgetHeight+100);
+    setMinimumHeight(playerNum * dominoSideSize + playerWidgetHeight+20);
 
     m = new model();
 
@@ -36,7 +43,10 @@ Widget::Widget(QWidget *parent) :
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
         DominoButton* left = new DominoButton(i,this);
+        left->setFixedHeight(dominoSideSize);
         DominoButton* right = new DominoButton(i,this);
+        right->setFixedHeight(dominoSideSize);
+
         dominoRow1.push_back(pair<DominoButton*,DominoButton*>(left,right) );
         ui->dominosRow1Layout->addWidget(left,i,0);
         ui->dominosRow1Layout->addWidget(right,i,1);
@@ -80,38 +90,12 @@ void Widget::activePlayerUpdated(int newPlayer){
 void Widget::showNewDominos(vector<Domino> v){
     cout << "Widget::showNewDominos(vector<Domino> v)" << endl;
 
-    int dominoSideSize = 100;
     for(int i = 0 ; i < dominoRow1.size(); ++ i){
-        QPixmap pm("resources/testSprite.png");
-        //dominoRow1[i].first->setMinimumHeight(200);
-        //dominoRow1[i].first->setMinimumWidth(200);
-        dominoRow1[i].first->setIcon(pm);
+        QPixmap pm(":/empty.png");
+        dominoRow1[i].first->setIcon( colorToPixmap(v[i].GetColors().first) );
         dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-
-
-
-        switch(v[i].GetColors().first){
-            case MOUNTAIN: {
-                QPixmap pm(":/testSprite.png");
-                dominoRow1[i].first->setIcon(pm);
-                dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-                break;
-            }
-
-        default: {break;}
-        }
-
-        switch(v[i].GetColors().second){
-            case MOUNTAIN: {
-                QPixmap pm(":/testSprite.png");
-                dominoRow1[i].second->setIcon(pm);
-                dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-                break;
-            }
-
-        default: {break;}
-        }
-
+        dominoRow1[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
+        dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
     }
     update();
 }

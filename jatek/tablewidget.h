@@ -10,12 +10,13 @@
 #include <vector>
 #include <QString>
 
+#include "color.h"
 #include "domino.h"
 #include "common.h"
 
 using namespace std;
 
-class TableWidget : public QWidget {
+class TableWidget : public QWidget, ColorConverter {
     Q_OBJECT
 
     bool& _isActive;
