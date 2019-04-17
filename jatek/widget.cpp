@@ -43,8 +43,10 @@ Widget::Widget(QWidget *parent) :
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
         DominoButton* left = new DominoButton(i,this);
+        left->setFixedWidth(dominoSideSize);
         left->setFixedHeight(dominoSideSize);
         DominoButton* right = new DominoButton(i,this);
+        right->setFixedWidth(dominoSideSize);
         right->setFixedHeight(dominoSideSize);
 
         dominoRow1.push_back(pair<DominoButton*,DominoButton*>(left,right) );
@@ -91,7 +93,6 @@ void Widget::showNewDominos(vector<Domino> v){
     cout << "Widget::showNewDominos(vector<Domino> v)" << endl;
 
     for(int i = 0 ; i < dominoRow1.size(); ++ i){
-        QPixmap pm(":/empty.png");
         dominoRow1[i].first->setIcon( colorToPixmap(v[i].GetColors().first) );
         dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
         dominoRow1[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
