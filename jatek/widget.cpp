@@ -19,6 +19,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget),
     players()
 {
+    int torolheto=0;
     isFirstTurn = true;
     dominoSideSize = 50;
     activePlayer = 0;
