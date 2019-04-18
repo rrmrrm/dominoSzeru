@@ -23,9 +23,9 @@ public:
     Domino();
     void Rotate( DIR newDir) {direction=newDir;}
     void move(DIR newDIR);
-    pair<COLOR, COLOR> GetColors() {return std::pair<COLOR,COLOR>(color1,color2); }
-    pair<int, int> GetPosition() {return std::pair<int,int>(pos1,pos2); }
-    DIR GetDirection() {return direction;}
+    pair<COLOR, COLOR> GetColors() const {return std::pair<COLOR,COLOR>(color1,color2); }
+    pair<int, int> GetPosition() const {return std::pair<int,int>(pos1,pos2); }
+    DIR GetDirection() const {return direction;}
 };
 
 #endif //DOMINO_H

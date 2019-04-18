@@ -51,14 +51,14 @@ void model::PutKingAttempt(int place)
         PutKingConfirm(place, currentnumber);
         if(currentnumber==(playernum-1))
         {
-            deck->draw();
-            emit newDominos(deck->getNewOnes());
-            currentnumber=-1;
             if(firstTurn)
             {
                 firstTurn=false;
-                emit notTheFirstTurn();                
+                emit notTheFirstTurn();
             }
+            deck->draw();
+            emit newDominos(deck->getNewOnes());
+            currentnumber=-1;
             for(int i = 0; i < playernum; i++)
             {
                 for(int j = 0; j < playernum; j++)

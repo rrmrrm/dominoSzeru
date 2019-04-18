@@ -25,10 +25,12 @@ class Widget : public QWidget, ColorConverter{
     Ui::Widget *ui;
     model* m;
     vector< pair<DominoButton*,DominoButton*> > dominoRow1;
+    vector< pair<DominoButton*,DominoButton*> > dominoRow2;
     bool isFirstTurn;
     int dominoSideSize;
 
-    void playerTableClicked(QMouseEvent *event);
+
+    void addSecondDominoRow();
 public:
     int playerNum ;
     int activePlayer;
@@ -41,6 +43,7 @@ public slots:
     void notTheFirstTurn();
 
     void dominoRow1Clicked();
+    void dominoRow2Clicked();
     void activePlayerUpdated(int);
     void showNewDominos(vector<Domino> v);
     void putKingConfirmed(int pos, int player);
