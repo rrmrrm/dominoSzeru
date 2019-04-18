@@ -19,7 +19,6 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget),
     players()
 {
-    int torolheto=0;
     isFirstTurn = true;
     dominoSideSize = 50;
     activePlayer = 0;
@@ -88,7 +87,6 @@ void Widget::addSecondDominoRow(){
         connect(left, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
         connect(right, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
     }
-
 }
 
 void Widget::notTheFirstTurn(){
@@ -122,7 +120,7 @@ void Widget::showNewDominos(vector<Domino> v){
     cout << "isfirstturn: " << isFirstTurn << endl;
     if(isFirstTurn){
         for(int i = 0 ; i < dominoRow1.size(); ++ i){
-            dominoRow1[i].first->setIcon( colorToPixmap(v[i].GetColors().first) );
+            dominoRow1[i].first-> setIcon( colorToPixmap(v[i].GetColors().first) );
             dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
             dominoRow1[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
             dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
@@ -156,13 +154,7 @@ void Widget::showNewDominos(vector<Domino> v){
 
 void Widget::putKingConfirmed(int pos, int player){
     cout << "putKingConfirmed(int pos, int player)" << endl;
-
-    switch( PLAYERCOLOR(player) ){
-    case RED: {}
-    case GREEN: {}
-    case BLUE: {}
-    case YELLOW: {}
-    }
+    dominoRow1[pos].first->drawCrown( PLAYERCOLOR(player) );
     update();
 }
 

@@ -1,4 +1,5 @@
 #include "color.h"
+#include "common.h"
 
 using namespace common;
 using namespace std;
@@ -27,6 +28,11 @@ ColorConverter::ColorConverter(): images(), pixmaps() {
     pixmaps.insert(  pair<COLOR,QPixmap>( EMPTY,    QPixmap(resourcePrefix+"empty.png"  ) )  );
     pixmaps.insert(  pair<COLOR,QPixmap>( CASTLE,   QPixmap(resourcePrefix+"castle.png" ) )  );
 
+    crownPixmaps.insert(pair<PLAYERCOLOR,QPixmap>(RED, QPixmap(resourcePrefix+"redCrown.png")));
+    crownPixmaps.insert(pair<PLAYERCOLOR,QPixmap>(GREEN, QPixmap(resourcePrefix+"greenCrown.png")));
+    crownPixmaps.insert(pair<PLAYERCOLOR,QPixmap>(BLUE, QPixmap(resourcePrefix+"blueCrown.png")));
+    crownPixmaps.insert(pair<PLAYERCOLOR,QPixmap>(YELLOW, QPixmap(resourcePrefix+"yellowCrown.png")));
+
 
 }
 
@@ -36,4 +42,8 @@ const QPixmap ColorConverter::colorToPixmap(COLOR c){
 
 const QImage ColorConverter::colorToImage(COLOR c){
     return images.at(c);
+}
+const QPixmap ColorConverter::playerColorToPixmap(common::PLAYERCOLOR pc){
+    QString resourcePrefix = ":/";
+    return crownPixmaps.at(pc);
 }

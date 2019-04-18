@@ -58,7 +58,8 @@ FORMS += \
     widget.ui \
     playerwidget.ui
 
-RESOURCES = resources/dominoSide.qrc
+RESOURCES = resources/dominoSide.qrc \
+    resources/crowns.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

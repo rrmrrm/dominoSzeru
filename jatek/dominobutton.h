@@ -4,10 +4,11 @@
 #include <QWidget>
 #include <QPushButton>
 #include "common.h"
+#include "color.h"
 
 using namespace common;
 
-class DominoButton: public QPushButton{
+class DominoButton: public QPushButton, ColorConverter{
     Q_OBJECT
 public:
     int _row;
