@@ -42,18 +42,11 @@ Widget::Widget(QWidget *parent) :
     }
     ///domino sort abrazolo gombok hozzadasa:
     for(int i = 0 ; i < playerNum ; ++i ){
-        DominoButton* left = new DominoButton(i,this);
-        left->setFixedWidth(dominoSideSize);
-        left->setFixedHeight(dominoSideSize);
-        DominoButton* right = new DominoButton(i,this);
-        right->setFixedWidth(dominoSideSize);
-        right->setFixedHeight(dominoSideSize);
+        DominoButton* d = new DominoButton(dominoSideSize,i,this);
 
-        dominoRow1.push_back(pair<DominoButton*,DominoButton*>(left,right) );
-        ui->dominosRow1Layout->addWidget(left,i,0);
-        ui->dominosRow1Layout->addWidget(right,i,1);
-        connect(left, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
-        connect(right, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
+        dominoRow1.push_back(d);
+        ui->dominosRow1Layout->addWidget(d,i,0);
+        connect(d, SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
     }
     connect(m, SIGNAL(notTheFirstTurn()), this, SLOT(notTheFirstTurn()) );
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
@@ -74,18 +67,11 @@ Widget::~Widget(){
 
 void Widget::addSecondDominoRow(){
     for(int i = 0 ; i < playerNum ; ++i ){
-        DominoButton* left = new DominoButton(i,this);
-        left->setFixedWidth(dominoSideSize);
-        left->setFixedHeight(dominoSideSize);
-        DominoButton* right = new DominoButton(i,this);
-        right->setFixedWidth(dominoSideSize);
-        right->setFixedHeight(dominoSideSize);
+        DominoButton* d = new DominoButton(dominoSideSize,i,this);
 
-        dominoRow2.push_back(pair<DominoButton*,DominoButton*>(left,right) );
-        ui->dominosRow2Layout->addWidget(left,i,0);
-        ui->dominosRow2Layout->addWidget(right,i,1);
-        connect(left, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
-        connect(right, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
+        dominoRow2.push_back(d);
+        ui->dominosRow2Layout->addWidget(d,i,0);
+        connect(d, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
     }
 }
 
@@ -120,10 +106,11 @@ void Widget::showNewDominos(vector<Domino> v){
     cout << "isfirstturn: " << isFirstTurn << endl;
     if(isFirstTurn){
         for(int i = 0 ; i < dominoRow1.size(); ++ i){
-            dominoRow1[i].first-> setIcon( colorToPixmap(v[i].GetColors().first) );
-            dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-            dominoRow1[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
-            dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+            dominoRow1[i]->setDomino(v[i]);
+            //dominoRow1[i].first-> setIcon( colorToPixmap(v[i].GetColors().first) );
+            //dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+            //dominoRow1[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
+            //dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
         }
     }
     else{
@@ -136,17 +123,19 @@ void Widget::showNewDominos(vector<Domino> v){
 
             ///atmasolom a masodik domino sor ábráit az elsőbe:
             for(int i = 0 ; i < dominoRow1.size(); ++ i){
-                dominoRow1[i].first->setIcon( dominoRow2[i].first->icon() );
-                dominoRow1[i].second->setIcon( dominoRow2[i].second->icon() );
+                //dominoRow1[i].first->setIcon( dominoRow2[i].first->icon() );
+                //dominoRow1[i].second->setIcon( dominoRow2[i].second->icon() );
+                dominoRow1[i]->setDomino(dominoRow1[i]->d);
             }
         }
 
         ///frissitem a masodik dominosor kepeit v alapján
         for(int i = 0 ; i < dominoRow2.size(); ++ i){
-            dominoRow2[i].first->setIcon( colorToPixmap(v[i].GetColors().first) );
-            dominoRow2[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-            dominoRow2[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
-            dominoRow2[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+            //dominoRow2[i].first->setIcon( colorToPixmap(v[i].GetColors().first) );
+            //dominoRow2[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+            //dominoRow2[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
+            //dominoRow2[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
+            dominoRow2[i]->setDomino(v[i]);
         }
     }
     update();
@@ -154,7 +143,7 @@ void Widget::showNewDominos(vector<Domino> v){
 
 void Widget::putKingConfirmed(int pos, int player){
     cout << "putKingConfirmed(int pos, int player)" << endl;
-    dominoRow1[pos].first->drawCrown( PLAYERCOLOR(player) );
+    dominoRow1[pos]->drawCrown( PLAYERCOLOR(player) );
     update();
 }
 

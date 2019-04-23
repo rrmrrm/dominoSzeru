@@ -24,8 +24,8 @@ class Widget : public QWidget, ColorConverter{
 
     Ui::Widget *ui;
     model* m;
-    vector< pair<DominoButton*,DominoButton*> > dominoRow1;
-    vector< pair<DominoButton*,DominoButton*> > dominoRow2;
+    vector<DominoButton*> dominoRow1;
+    vector<DominoButton*> dominoRow2;
     bool isFirstTurn;
     int dominoSideSize;
 

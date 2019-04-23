@@ -19,7 +19,7 @@ class Domino{
 
     int owner;
 public:
-    Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2);
+    Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2, DIR dir=RIGHT);
     Domino();
     void Rotate( DIR newDir) {direction=newDir;}
     void move(DIR newDIR);
