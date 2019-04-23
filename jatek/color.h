@@ -18,9 +18,9 @@ class ColorConverter{
 public:
     ColorConverter();
 
-    const QPixmap colorToPixmap(common::COLOR c);
-    const QImage colorToImage(common::COLOR c);
+    const QPixmap& colorToPixmap(common::COLOR c);
+    const QImage& colorToImage(common::COLOR c);
 
-    const QPixmap playerColorToPixmap(common::PLAYERCOLOR pc);
+    const QPixmap& playerColorToPixmap(common::PLAYERCOLOR pc);
 };
 #endif // COLOR_H

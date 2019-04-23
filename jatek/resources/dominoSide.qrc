@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+	<file>mountain.png</file>
         <file>swamp.png</file>
         <file>empty.png</file>
         <file>pasture.png</file>

@@ -36,14 +36,14 @@ ColorConverter::ColorConverter(): images(), pixmaps() {
 
 }
 
-const QPixmap ColorConverter::colorToPixmap(COLOR c){
+const QPixmap& ColorConverter::colorToPixmap(COLOR c){
     return pixmaps.at(c);
 }
 
-const QImage ColorConverter::colorToImage(COLOR c){
+const QImage& ColorConverter::colorToImage(COLOR c){
     return images.at(c);
 }
-const QPixmap ColorConverter::playerColorToPixmap(common::PLAYERCOLOR pc){
+const QPixmap& ColorConverter::playerColorToPixmap(common::PLAYERCOLOR pc){
     QString resourcePrefix = ":/";
     return crownPixmaps.at(pc);
 }
