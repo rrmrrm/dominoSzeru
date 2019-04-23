@@ -143,7 +143,7 @@ void Widget::showNewDominos(vector<Domino> v){
 
 void Widget::putKingConfirmed(int pos, int player){
     cout << "putKingConfirmed(int pos, int player)" << endl;
-    dominoRow1[pos]->drawCrown( PLAYERCOLOR(player) );
+    dominoRow1[pos]->ownerColor = PLAYERCOLOR(player);
     update();
 }
 

@@ -15,11 +15,13 @@ class DominoButton: public QPushButton, ColorConverter{
 public:
     int _row;
     int sideSize;
+    PLAYERCOLOR ownerColor;
     Domino d;
 
     DominoButton(int sideSize, int row, QWidget* parent = nullptr){
         this->sideSize = sideSize;
         _row = row;
+        ownerColor = PLAYERCOLOR::_last;
     }
     ~DominoButton(){
 

@@ -4,7 +4,11 @@
 namespace common{
 
 enum DIR {UP, DOWN, LEFT, RIGHT};
-enum PLAYERCOLOR{ RED, GREEN, BLUE, YELLOW};
+
+///\value  _lastVal :
+/// ha _lastVal-tól balra vannak az értékek, akkor
+/// _lastVal egyenlő a COLOR értékeinek a számával, és ez nekem jól jön.
+enum PLAYERCOLOR{ RED, GREEN, BLUE, YELLOW, _last};
 
 ///\value  _lastVal :
 /// ha _lastVal-tól balra vannak az értékek (SWAMP...CASTLE), akkor

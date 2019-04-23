@@ -37,9 +37,11 @@ void DominoButton::setDomino(Domino domino){
 void DominoButton::paintEvent(QPaintEvent* e){
     QPainter p(this);
 
+    ///a domino 2 oldala:
     const QPixmap& ico1 = colorToPixmap(d.GetColors().first);
     const QPixmap& ico2 = colorToPixmap(d.GetColors().second);
 
+    ///allitjuk vagy elfektetjuk a domniot
     switch(d.GetDirection()){
     case UP:
     case DOWN:{setFixedWidth(sideSize);setFixedHeight(2*sideSize);break;}
@@ -50,6 +52,7 @@ void DominoButton::paintEvent(QPaintEvent* e){
     QRect r(0,0, width(), height());
     p.fillRect(r, QBrush(QColor(0,255,255)));
 
+    ///a domino képeit megjelenitjuk az iranya(GetDirection()) szerint
     switch(d.GetDirection()){
     case UP:{
         p.drawPixmap(0,0,sideSize,sideSize,ico2);
@@ -68,4 +71,10 @@ void DominoButton::paintEvent(QPaintEvent* e){
         p.drawPixmap(sideSize,0,sideSize,sideSize,ico2);
         break;}
     };
+
+    ///ha az egyik jatekos birtokolja, akkor a megfelelo szinu jatekos-koronat is felrajzoljuk
+    if(ownerColor < PLAYERCOLOR::_last){
+        QPixmap crown = playerColorToPixmap(ownerColor);
+        p.drawPixmap(sideSize/3,sideSize/3,sideSize*2/3,sideSize*2/3,crown);
+    }
 }
