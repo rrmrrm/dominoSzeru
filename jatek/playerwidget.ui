@@ -15,14 +15,10 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
     </layout>
    </item>
   </layout>

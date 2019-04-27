@@ -23,14 +23,15 @@ Widget::Widget(QWidget *parent) :
     dominoSideSize = 50;
     activePlayer = 0;
     playerNum =3;
-    int playerWidgetWidth = 500;
     int playerWidgetHeight = 500;
     int playerTableSize = 400;
+
+    int playerWidgetWidth = playerTableSize + 2*dominoSideSize;
 
     ui->setupUi(this);
     ui->dominosRow1Layout->setHorizontalSpacing(0);
 
-    setMinimumWidth(playerNum * playerWidgetWidth + 50);
+    setMinimumWidth(playerNum * (playerWidgetWidth) + 50);
     setMinimumHeight(playerNum * dominoSideSize + playerWidgetHeight+20);
 
     m = new model();
@@ -43,7 +44,7 @@ Widget::Widget(QWidget *parent) :
         ///hozzáadom a jatekosok kivalasztott dominojat abrazolo DominoButton-t
         ///the second parameter of the constructor represent the owning player.
         players[i]->dominoButton = new DominoButton(dominoSideSize, i, this);
-        players[i]->ui->horizontalLayout->addWidget(players[i]->dominoButton,10);
+        players[i]->ui->horizontalLayout->addWidget(players[i]->dominoButton);
         connect( players[i]->dominoButton, SIGNAL(clicked()), this, SLOT(playerDominoClicked()) );
 
     }

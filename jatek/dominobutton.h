@@ -22,6 +22,8 @@ public:
         this->sideSize = sideSize;
         _row = row;
         ownerColor = PLAYERCOLOR::_last;
+
+        d = Domino(EMPTY,EMPTY,0,0);
     }
     ~DominoButton(){
 

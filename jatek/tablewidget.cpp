@@ -86,13 +86,13 @@ void TableWidget::paintEvent(QPaintEvent* e){
     //tabla kerete:
     if(_isActive){
         p.setPen(qColor);
-        p.drawRect(0,0, w-1, h-1);
-        p.drawRect(1,1, w-3, h-3);
-        p.drawRect(2,2, w-4, h-4);
-        p.drawRect(2,2, w-5, h-5);
-        p.drawRect(2,2, w-6, h-6);
-        p.drawRect(3,3, w-7, h-7);
-        p.drawRect(3,3, w-8, h-8);
+        p.drawRect(0,0, width()-1, height()-1);
+        p.drawRect(1,1, width()-3, height()-3);
+        p.drawRect(2,2, width()-4, height()-4);
+        p.drawRect(2,2, width()-5, height()-5);
+        p.drawRect(2,2, width()-6, height()-6);
+        p.drawRect(3,3, width()-7, height()-7);
+        p.drawRect(3,3, width()-8, height()-8);
     }
     p.setPen(qColor);
     p.drawRect(0,0, w-1, h-1);
