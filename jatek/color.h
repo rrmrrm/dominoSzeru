@@ -1,7 +1,6 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-
 #include <assert.h>
 #include <map>
 #include <QPixmap>

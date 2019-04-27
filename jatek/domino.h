@@ -26,6 +26,8 @@ public:
     pair<COLOR, COLOR> GetColors() const {return std::pair<COLOR,COLOR>(color1,color2); }
     pair<int, int> GetPosition() const {return std::pair<int,int>(pos1,pos2); }
     DIR GetDirection() const {return direction;}
+    void setOwner(int newOwner){ owner=newOwner;}
+    int getOwner(){return owner;}
 };
 
 #endif //DOMINO_H

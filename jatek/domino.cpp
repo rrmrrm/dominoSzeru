@@ -12,7 +12,7 @@ Domino::Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2, DIR dir)
     direction=dir;
     this->pos1=0;
     this->pos2=0;
-    this->owner=0;
+    this->owner=-1;
 }
 Domino::Domino()
 {
@@ -22,7 +22,6 @@ Domino::Domino()
     crown2=0;
 
 }
-
 
 void Domino::move(DIR newDIR)
 {

@@ -1,3 +1,5 @@
+
+#include "ui_playerwidget.h"
 #include "widget.h"
 #include "ui_widget.h"
 #include <QEvent>
@@ -9,9 +11,7 @@
 
 #include "model.h"
 #include "color.h"
-
 using namespace std;
-
 
 
 Widget::Widget(QWidget *parent) :
@@ -39,9 +39,18 @@ Widget::Widget(QWidget *parent) :
         players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
         ui->playerLayout->addWidget( players[i],1 );
         connect( players[i]->table, SIGNAL(tableClicked(int,int)), m, SLOT(AddDominoAttempt(int,int)) );
+
+        ///hozzáadom a jatekosok kivalasztott dominojat abrazolo DominoButton-t
+        ///the second parameter of the constructor represent the owning player.
+        players[i]->dominoButton = new DominoButton(dominoSideSize, i, this);
+        players[i]->ui->horizontalLayout->addWidget(players[i]->dominoButton,10);
+        connect( players[i]->dominoButton, SIGNAL(clicked()), this, SLOT(playerDominoClicked()) );
+
     }
-    ///domino sort abrazolo gombok hozzadasa:
+
     for(int i = 0 ; i < playerNum ; ++i ){
+
+        ///domino sort abrazolo gombok hozzadasa:
         DominoButton* d = new DominoButton(dominoSideSize,i,this);
 
         dominoRow1.push_back(d);
@@ -51,7 +60,7 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(notTheFirstTurn()), this, SLOT(notTheFirstTurn()) );
     connect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
     connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
-    connect(m, SIGNAL(PutKingConfirm(int,int)), this, SLOT(putKingConfirmed(int,int)) );
+    connect(m, SIGNAL(PutKingConfirm(bool,int,int)), this, SLOT(putKingConfirmed(bool,int,int)) );
     connect(m, SIGNAL(AddDominoConfirm(QVector<QVector<COLOR>>)), this, SLOT(addDominoConfirmed(QVector< QVector<COLOR> >)) );
 
     connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
@@ -83,7 +92,7 @@ void Widget::dominoRow1Clicked(){
     cout << "dominoRow1Clicked" << endl;
     DominoButton* actual = qobject_cast<DominoButton*>( sender() );
     cout << "index:"<< actual->_row << endl;
-    m->PutKingAttempt(actual->_row);
+    m->PutKingAttempt(true,actual->_row);
     int row = actual->_row;
     update();
 }
@@ -91,7 +100,8 @@ void Widget::dominoRow2Clicked(){
     cout << "dominoRow2Clicked-nincs rendesen megirva" << endl;
     DominoButton* actual = qobject_cast<DominoButton*>( sender() );
     cout << "index:"<< actual->_row << endl;
-
+    m->PutKingAttempt(false, actual->_row);
+    int row = actual->_row;
     update();
 }
 void Widget::activePlayerUpdated(int newPlayer){
@@ -107,10 +117,6 @@ void Widget::showNewDominos(vector<Domino> v){
     if(isFirstTurn){
         for(int i = 0 ; i < dominoRow1.size(); ++ i){
             dominoRow1[i]->setDomino(v[i]);
-            //dominoRow1[i].first-> setIcon( colorToPixmap(v[i].GetColors().first) );
-            //dominoRow1[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-            //dominoRow1[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
-            //dominoRow1[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
         }
     }
     else{
@@ -123,31 +129,26 @@ void Widget::showNewDominos(vector<Domino> v){
 
             ///atmasolom a masodik domino sor ábráit az elsőbe:
             for(int i = 0 ; i < dominoRow1.size(); ++ i){
-                //dominoRow1[i].first->setIcon( dominoRow2[i].first->icon() );
-                //dominoRow1[i].second->setIcon( dominoRow2[i].second->icon() );
-                dominoRow1[i]->setDomino(dominoRow1[i]->d);
+                dominoRow1[i]->setDomino(dominoRow2[i]->d);
             }
         }
 
         ///frissitem a masodik dominosor kepeit v alapján
         for(int i = 0 ; i < dominoRow2.size(); ++ i){
-            //dominoRow2[i].first->setIcon( colorToPixmap(v[i].GetColors().first) );
-            //dominoRow2[i].first->setIconSize( QSize(dominoSideSize,dominoSideSize) );
-            //dominoRow2[i].second->setIcon( colorToPixmap(v[i].GetColors().second) );
-            //dominoRow2[i].second->setIconSize( QSize(dominoSideSize,dominoSideSize) );
             dominoRow2[i]->setDomino(v[i]);
         }
     }
     update();
 }
 
-void Widget::putKingConfirmed(int pos, int player){
+void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
     cout << "putKingConfirmed(int pos, int player)" << endl;
-    dominoRow1[pos]->ownerColor = PLAYERCOLOR(player);
+    if(firstDominoRow)
+        dominoRow1[pos]->d.setOwner(player);
+    else
+        dominoRow2[pos]->d.setOwner(player);
     update();
 }
-
-
 
 ///show domino placed,and
 ///show next player's domino over his/her table's center?
@@ -170,3 +171,13 @@ void Widget::show_winner( vector<int> winners){
 
 }
 
+void Widget::playerDominoClicked(){
+    DominoButton* source = static_cast<DominoButton*>(sender());
+
+    //m->rotateDomino(source->_row);
+
+}
+
+void Widget::showChosenDomino(Domino d){
+    players[activePlayer]->dominoButton->setDomino(d);
+}

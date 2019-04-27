@@ -46,7 +46,7 @@ public slots:
     void dominoRow2Clicked();
     void activePlayerUpdated(int);
     void showNewDominos(vector<Domino> v);
-    void putKingConfirmed(int pos, int player);
+    void putKingConfirmed(bool firstDominoRow,int pos, int player);
 
 
     ///show domino placed,and
@@ -57,6 +57,8 @@ public slots:
     ///winners contains the winners' indexes in the players array
     void show_winner( vector<int> winners);
 
+    void playerDominoClicked();
+    void showChosenDomino(Domino d);
     ///todo halozati jaték nézetét megírni
 
     ///todo:

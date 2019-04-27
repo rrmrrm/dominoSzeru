@@ -27,7 +27,6 @@ public:
 
     }
 
-    void drawCrown(PLAYERCOLOR color);
     void setDomino(Domino domino);
 
 public slots:

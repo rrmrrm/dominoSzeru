@@ -42,13 +42,13 @@ void model::startGame()
     emit newDominos(deck->getNewOnes());
 }
 
-void model::PutKingAttempt(int place)
+void model::PutKingAttempt(bool firstDominoRow, int place)
 {
     if(!(deck->taken[place]))
     {
         currentplayer->placeKing(place);
         deck->taken[place]=true;
-        PutKingConfirm(place, currentnumber);
+        PutKingConfirm(firstDominoRow, place, currentnumber);
         if(currentnumber==(playernum-1))
         {
             if(firstTurn)
@@ -86,7 +86,7 @@ void model::AddDominoAttempt(int x, int y)
         AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
-            PutKingConfirm(-1, currentnumber);
+            PutKingConfirm(true,-1, currentnumber);
         }
     }
 }

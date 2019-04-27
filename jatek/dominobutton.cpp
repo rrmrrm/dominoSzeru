@@ -16,19 +16,7 @@
 
 using namespace common;
 using namespace std;
-void DominoButton::drawCrown(PLAYERCOLOR color){
-    cout << "DominoButton::drawCrown, color: " << color << endl;
-    QPixmap background =icon().pixmap(QSize(width(),height() )  );
-    QPainter p(&background);
-    QPixmap crown = playerColorToPixmap(color);
 
-    QRect rect(0,0, width(), height());
-    p.drawImage(rect, crown.toImage());
-    setIcon(background);
-    //ico.addPixmap(crown);
-    //setIcon(ico);
-    //setIcon(crown);
-}
 
 void DominoButton::setDomino(Domino domino){
     this->d = domino;
@@ -73,8 +61,8 @@ void DominoButton::paintEvent(QPaintEvent* e){
     };
 
     ///ha az egyik jatekos birtokolja, akkor a megfelelo szinu jatekos-koronat is felrajzoljuk
-    if(ownerColor < PLAYERCOLOR::_last){
-        QPixmap crown = playerColorToPixmap(ownerColor);
+    if(0 <= d.getOwner() && d.getOwner() < PLAYERCOLOR::_last){
+        QPixmap crown = playerColorToPixmap( PLAYERCOLOR(d.getOwner()) );
         p.drawPixmap(sideSize/3,sideSize/3,sideSize*2/3,sideSize*2/3,crown);
     }
 }

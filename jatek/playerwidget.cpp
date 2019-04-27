@@ -1,6 +1,7 @@
 #include "playerwidget.h"
 #include "ui_playerwidget.h"
 #include "tablewidget.h"
+#include "dominobutton.h"
 #include "common.h"
 #include <iostream>
 
@@ -14,7 +15,7 @@ PlayerWidget::PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *par
     uint tSize = 5;
     isActive = false;
     dominos = vector< vector<COLOR> >(tSize);
-    cout << dominos.size() << endl;
+
     for(int i = 0 ; i < tSize ; ++i){
         vector<COLOR> v(tSize);
         dominos[i] = v;

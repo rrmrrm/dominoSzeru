@@ -2,6 +2,7 @@
 #define PLAYERWIDGET_H
 
 #include "tablewidget.h"
+#include "dominobutton.h"
 #include "common.h"
 #include <QWidget>
 #include <vector>
@@ -18,6 +19,7 @@ class PlayerWidget : public QWidget{
 public:
     Ui::PlayerWidget *ui;
     TableWidget* table;
+    DominoButton* dominoButton;
     PLAYERCOLOR color;
 
 
