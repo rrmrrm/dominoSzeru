@@ -52,7 +52,9 @@ HEADERS += \
     deck.h \
     domino.h \
     dominobutton.h \
-    color.h
+    color.h \
+    player.h \
+    board.h
 
 FORMS += \
     widget.ui \

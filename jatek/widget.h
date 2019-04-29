@@ -47,7 +47,7 @@ public slots:
     void activePlayerUpdated(int);
     void showNewDominos(vector<Domino> v);
     void putKingConfirmed(bool firstDominoRow,int pos, int player);
-
+    void rotateDominoConfirmed(int player, DIR newDir);
 
     ///show domino placed,and
     ///show next player's domino over his/her table's center
@@ -59,6 +59,7 @@ public slots:
 
     void playerDominoClicked();
     void showChosenDomino(Domino d);
+
     ///todo halozati jaték nézetét megírni
 
     ///todo:

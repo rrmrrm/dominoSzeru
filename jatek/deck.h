@@ -24,6 +24,11 @@ public:
     void draw();
     int cardsLeftNum();
     vector<Domino> getCurrent() {return current;}
+
+    ///setter szerűség.
+    ///a rotateDominoAttempt-ben van erre szükség
+    vector<Domino>& Current() {return current;}
+
     vector<Domino> getNewOnes() {return newOnes;}
 
 };

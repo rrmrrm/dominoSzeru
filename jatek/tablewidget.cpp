@@ -14,6 +14,7 @@ using namespace std;
 TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR color) :
     QWidget(parent),
     _isActive(isActive),
+    dominoHighlight(nullptr),
     dominos(  static_cast<PlayerWidget*>(parent)->dominos )
 {
     QGridLayout *layout = new QGridLayout;
@@ -98,7 +99,19 @@ void TableWidget::paintEvent(QPaintEvent* e){
     p.drawRect(0,0, w-1, h-1);
 }
 void TableWidget::mouseMoveEvent(QMouseEvent *event){
-   // cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
+    // cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
+    int tableSize= 5;
+    int row = event->y() / (height()/tableSize);
+    int col =  event->x() / (width()/tableSize);
+
+
+    if(row<0 || col < 0 || row >= tableSize || col >= tableSize)
+        return ;
+
+    if(dominoHighlight == nullptr)
+        return;
+
+    dominoHighlight->SetPosition(row, col);
 
 }
 void TableWidget::mousePressEvent(QMouseEvent *event){

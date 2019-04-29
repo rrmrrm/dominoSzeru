@@ -63,9 +63,11 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
     connect(m, SIGNAL(PutKingConfirm(bool,int,int)), this, SLOT(putKingConfirmed(bool,int,int)) );
     connect(m, SIGNAL(AddDominoConfirm(QVector<QVector<COLOR>>)), this, SLOT(addDominoConfirmed(QVector< QVector<COLOR> >)) );
+    connect(m, SIGNAL(rotateDominoConfirm(int,DIR)), this, SLOT(rotateDominoConfirmed(int,DIR)) );
 
     connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
     connect(m, SIGNAL(updateDeckSize(int)), ui->deckSize, SLOT(display(int)) );
+
 
     m->setPlayernum(playerNum);
     m->startGame();
@@ -151,6 +153,10 @@ void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
     update();
 }
 
+void Widget::rotateDominoConfirmed(int player, DIR newDir){
+    players[player]->dominoButton->d.Rotate(newDir);
+}
+
 ///show domino placed,and
 ///show next player's domino over his/her table's center?
 void Widget::addDominoConfirmed(QVector< QVector<COLOR> > newDominos){
@@ -174,8 +180,17 @@ void Widget::show_winner( vector<int> winners){
 
 void Widget::playerDominoClicked(){
     DominoButton* source = static_cast<DominoButton*>(sender());
+    DIR currentDir = source->d.GetDirection();
 
-    //m->rotateDomino(source->_row);
+    ///newDir lesz a currentDir 1el jobbra forgatottja
+    DIR newDir = UP;
+    switch (currentDir) {
+    case LEFT: {newDir=UP;break;}
+    case UP: {newDir=RIGHT;break;}
+    case RIGHT: {newDir=DOWN;break;}
+    case DOWN: {newDir=LEFT;break;}
+    }
+    m->rotateDominoAttempt(source->_row, newDir);
 
 }
 

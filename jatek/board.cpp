@@ -3,6 +3,7 @@
 
 #include "board.h"
 #include "deck.h"
+#include "common.h"
 #include <iostream>
 
 Board::Board()
@@ -17,6 +18,10 @@ void Board::EmptyBoard()
     for(int i = 0; i < 5; i++)
     {
         Fields[i].resize(5);
+        for(int j = 0; j < 5; j++)
+        {
+            Fields[i][j]=EMPTY;
+        }
     }
     Fields[2][2]=CASTLE;
 

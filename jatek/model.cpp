@@ -90,3 +90,12 @@ void model::AddDominoAttempt(int x, int y)
         }
     }
 }
+
+void model::rotateDominoAttempt(int player, DIR newDir){
+    if( player == currentnumber){
+        ///elforgatom a jatekos dominojat newDire fele
+        deck->Current().at(currentplayer->getKingPlace()).Rotate(newDir);
+        ///jelzem a nezetnek, hogy elforgattuk a dominot a modellben
+        rotateDominoConfirm(player, newDir);
+    }
+}

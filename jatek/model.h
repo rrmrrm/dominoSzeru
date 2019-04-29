@@ -30,10 +30,11 @@ public slots:
     void startGame();
     void PutKingAttempt(bool firstDominRow,int place);
     void AddDominoAttempt(int x, int y);
-
+    void rotateDominoAttempt(int player, DIR newDir);
 signals:
     void PutKingConfirm(bool firstDominRow,int place, int number);
     void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);
+    void rotateDominoConfirm(int player, DIR newDir);
 
     void newDominos(vector<Domino> dominos);
 

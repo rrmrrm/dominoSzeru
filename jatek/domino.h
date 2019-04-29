@@ -21,10 +21,21 @@ class Domino{
 public:
     Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2, DIR dir=RIGHT);
     Domino();
-    void Rotate( DIR newDir) {direction=newDir;}
+    void Rotate( DIR newDir) {
+        direction=newDir;
+        direction=newDir;
+
+
+    }
     void move(DIR newDIR);
     pair<COLOR, COLOR> GetColors() const {return std::pair<COLOR,COLOR>(color1,color2); }
+
+    void SetPosition(int pos1, int pos2) {
+        this->pos1 = pos1;
+        this->pos2 = pos2;
+    }
     pair<int, int> GetPosition() const {return std::pair<int,int>(pos1,pos2); }
+
     DIR GetDirection() const {return direction;}
     void setOwner(int newOwner){ owner=newOwner;}
     int getOwner(){return owner;}

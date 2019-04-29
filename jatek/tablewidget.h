@@ -23,6 +23,7 @@ class TableWidget : public QWidget, ColorConverter {
     QColor qColor;
 public:
     ///referencia a nezet-beli domino tombre
+    Domino* dominoHighlight;
     const vector< vector<COLOR> >& dominos;
 
     explicit TableWidget(bool& isActive, QWidget *parent = nullptr, int size = 400, PLAYERCOLOR color=RED);
