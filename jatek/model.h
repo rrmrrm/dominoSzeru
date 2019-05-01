@@ -36,6 +36,7 @@ signals:
     void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);
     void rotateDominoConfirm(int player, DIR newDir);
 
+    void showChosenDomino(Domino d);
     void newDominos(vector<Domino> dominos);
 
     void gameOver(  vector<int> winners) ;

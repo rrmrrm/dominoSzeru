@@ -58,6 +58,8 @@ public slots:
     void show_winner( vector<int> winners);
 
     void playerDominoClicked();
+
+    //kirajzolja az aktiv jatekos forgathato/lehelyezhető dominóját
     void showChosenDomino(Domino d);
 
     ///todo halozati jaték nézetét megírni

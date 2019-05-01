@@ -68,6 +68,7 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
     connect(m, SIGNAL(updateDeckSize(int)), ui->deckSize, SLOT(display(int)) );
 
+    connect(m, SIGNAL(showChosenDomino(Domino)), this, SLOT(showChosenDomino(Domino)));
 
     m->setPlayernum(playerNum);
     m->startGame();
@@ -155,6 +156,7 @@ void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
 
 void Widget::rotateDominoConfirmed(int player, DIR newDir){
     players[player]->dominoButton->d.Rotate(newDir);
+     players[player]->dominoButton->update();
 }
 
 ///show domino placed,and
@@ -197,3 +199,5 @@ void Widget::playerDominoClicked(){
 void Widget::showChosenDomino(Domino d){
     players[activePlayer]->dominoButton->setDomino(d);
 }
+
+
