@@ -27,6 +27,10 @@ public:
     pair<int, int> GetPosition() const {return std::pair<int,int>(pos1,pos2); }
     DIR GetDirection() const {return direction;}
     void setOwner(int newOwner){ owner=newOwner;}
+    void SetPosition(int pos1, int pos2){
+        this->pos1 = pos1;
+        this->pos2 = pos2;
+    }
     int getOwner(){return owner;}
 };
 
