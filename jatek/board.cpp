@@ -30,7 +30,39 @@ void Board::EmptyBoard()
 std::pair<int,int> Board::getPoint()
 {
     //TEMPORARY
-    return std::pair<int,int>(0,0);
+    int ures=0;
+    int pontok=0;
+    vector<vector<bool>> calculated;
+    calculated.resize(5);
+    for(int i = 0; i < 5; i++)
+    {
+        calculated[i].resize(5);
+        for(int j = 0; j < 5; j++)
+        {
+            calculated[i][j]=false;
+        }
+    }
+    for(int i = 0; i < 5; i++)
+    {
+        for(int j = 0; j< 5; j++)
+        {
+            if(Fields[i][j]==EMPTY)
+            {
+                ures++;
+            }
+
+            if(!calculated[i][j])
+            {
+
+            }
+        }
+    }
+
+
+
+
+    return std::pair<int,int>(25-ures,ures);
+
 }
 
 
@@ -61,7 +93,10 @@ void Board::placeDomino(Domino domino, std::pair<int,int> coordinates)
         }
         std::cout << std::endl;
     }
+
+    cout << "Pontok:" << getPoint().first << " " << getPoint().second << endl;
 }
+
 
 
 #endif
