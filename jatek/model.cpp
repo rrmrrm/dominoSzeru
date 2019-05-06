@@ -79,7 +79,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
 
 void model::AddDominoAttempt(int x, int y)
 {
-    bool szabalyos=true;
+    bool szabalyos=false;
     DIR dominoDir = deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection();
     int x2=x;
     int y2=y;
@@ -101,11 +101,86 @@ void model::AddDominoAttempt(int x, int y)
     }
 
     std::cout << x << " " << y << " " << x2 << " " << y2 << std::endl;
-
-    if(currentplayer->getFields()[x2][y2]!=EMPTY || currentplayer->getFields()[x2][y2]!=EMPTY)
+    if(x>=0 && x <=4 && y>=0 && y <=4 && x2>=0 && x2 <=4 && y2>=0 && y2 <=4)
     {
-        szabalyos=false;
+
+        bool bal=false;
+        bool jobb=false;
+        bool fent=false;
+        bool lent=false;
+        if(x==0)
+        {
+            fent=true;
+        }
+        if(x==4)
+        {
+            lent=true;
+        }
+        if(y==0)
+        {
+            bal=true;
+        }
+        if(y==4)
+        {
+            jobb=true;
+        }
+        if(!bal && (currentplayer->getFields()[x][y-1]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first || currentplayer->getFields()[x][y-1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!jobb && (currentplayer->getFields()[x][y+1]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first || currentplayer->getFields()[x][y+1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!fent && (currentplayer->getFields()[x-1][y]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first || currentplayer->getFields()[x-1][y]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!lent && (currentplayer->getFields()[x+1][y]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first || currentplayer->getFields()[x+1][y]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(x2==0)
+        {
+            fent=true;
+        }
+        if(x2==4)
+        {
+            lent=true;
+        }
+        if(y2==0)
+        {
+            bal=true;
+        }
+        if(y2==4)
+        {
+            jobb=true;
+        }
+        if(!bal && (currentplayer->getFields()[x2][y2-1]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second || currentplayer->getFields()[x2][y2-1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!jobb && (currentplayer->getFields()[x2][y2+1]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second || currentplayer->getFields()[x2][y2+1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!fent && (currentplayer->getFields()[x2-1][y2]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second || currentplayer->getFields()[x2-1][y2]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!lent && (currentplayer->getFields()[x2+1][y2]==deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second || currentplayer->getFields()[x2+1][y2]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(currentplayer->getFields()[x2][y2]!=EMPTY || currentplayer->getFields()[x2][y2]!=EMPTY)
+        {
+            szabalyos=false;
+        }
     }
+
+
+
+
     /*
         if(x<0 || y < 0 || x >= 5 || y >= 5)
             szabalyos = false;
