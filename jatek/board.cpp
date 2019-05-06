@@ -47,11 +47,11 @@ void Board::placeDomino(Domino domino, std::pair<int,int> coordinates)
     }
     if(domino.GetDirection()==LEFT)
     {
-        Fields[coordinates.first][coordinates.second+1]=domino.GetColors().second;
+        Fields[coordinates.first][coordinates.second-1]=domino.GetColors().second;
     }
     if(domino.GetDirection()==RIGHT)
     {
-        Fields[coordinates.first][coordinates.second-1]=domino.GetColors().second;
+        Fields[coordinates.first][coordinates.second+1]=domino.GetColors().second;
     }
     for(int i = 0; i < 5; i++)
     {

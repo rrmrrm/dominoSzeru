@@ -80,6 +80,32 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
 void model::AddDominoAttempt(int x, int y)
 {
     bool szabalyos=true;
+    DIR dominoDir = deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection();
+    int x2=x;
+    int y2=y;
+    if(dominoDir==UP)
+    {
+        x2--;
+    }
+    if(dominoDir==DOWN)
+    {
+        x2++;
+    }
+    if(dominoDir==LEFT)
+    {
+        y2--;
+    }
+    if(dominoDir==RIGHT)
+    {
+        y2++;
+    }
+
+    std::cout << x << " " << y << " " << x2 << " " << y2 << std::endl;
+
+    if(currentplayer->getFields()[x2][y2]!=EMPTY || currentplayer->getFields()[x2][y2]!=EMPTY)
+    {
+        szabalyos=false;
+    }
     /*
         if(x<0 || y < 0 || x >= 5 || y >= 5)
             szabalyos = false;
