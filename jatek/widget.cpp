@@ -17,10 +17,12 @@ using namespace std;
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
+    qmb(this),
     players()
 {
     isFirstTurn = true;
     dominoSideSize = 50;
+
     activePlayer = 0;
     playerNum =4;
     int playerWidgetHeight = 500;
@@ -71,6 +73,7 @@ Widget::Widget(QWidget *parent) :
 
     connect(m, SIGNAL(showChosenDomino(Domino)), this, SLOT(showChosenDomino(Domino)));
 
+    connect(m, SIGNAL(gameOver(vector<int>)), this, SLOT(show_winner(vector<int>)) );
     m->setPlayernum(playerNum);
     m->startGame();
 }
@@ -110,13 +113,14 @@ void Widget::dominoRow2Clicked(){
     update();
 }
 void Widget::activePlayerUpdated(int newPlayer){
-
+    cout << "DEaktivalva: " << activePlayer << endl;
     players[activePlayer]->setEnabled(false);
 
     players[activePlayer]->isActive = false;
     activePlayer = newPlayer;
     players[newPlayer]->isActive=true;
 
+    cout << "aktivalva: " << newPlayer << endl;
     players[newPlayer]->setEnabled(true);
     update();
 }
@@ -162,6 +166,7 @@ void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
 }
 
 void Widget::rotateDominoConfirmed(int player, DIR newDir){
+    cout << "rotateDominoConfirmed" << endl;
     players[player]->dominoButton->d.Rotate(newDir);
      players[player]->dominoButton->update();
 }
@@ -176,14 +181,24 @@ void Widget::addDominoConfirmed(QVector< QVector<COLOR> > newDominos){
             dominos[i][j] = newDominos[i][j];
         }
     }
-    players[activePlayer]->setEnabled(false);
+
     update();
+    players[activePlayer]->setEnabled(false);
 }
 
 
 
 ///winners contains the winners' indexes in the players array
 void Widget::show_winner( vector<int> winners){
+    QString winnersStr("");
+    for(int i = 0 ; i < winners.size(); ++i){
+        winnersStr += (" ");
+        winnersStr += QString.number(winners[i]+1);
+    }
+    qmb.information(
+        this,
+        tr("játék vége, nyertesek:"),
+        winnersStr;
     update();
 
 }

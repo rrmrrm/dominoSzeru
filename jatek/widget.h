@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QVector>
+#include <QMessageBox>
 
 #include "color.h"
 #include "tablewidget.h"
@@ -28,7 +29,7 @@ class Widget : public QWidget, ColorConverter{
     vector<DominoButton*> dominoRow2;
     bool isFirstTurn;
     int dominoSideSize;
-
+    QMessageBox qmb;
 
     void addSecondDominoRow();
 public:
