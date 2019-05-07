@@ -74,7 +74,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
         currentplayer=&players[sorrend[currentnumber]];
         std::cout << "JELENLEGI JATEKOS: " << currentnumber << std::endl;
     }
-    emit updateActivePlayer(currentnumber);
+    emit updateActivePlayer(sorrend[currentnumber]);
 }
 
 void model::AddDominoAttempt(int x, int y)
