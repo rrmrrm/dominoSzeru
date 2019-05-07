@@ -48,7 +48,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
     {
         currentplayer->placeKing(place);
         deck->taken[place]=true;
-        PutKingConfirm(firstDominoRow, place, currentnumber);
+        PutKingConfirm(firstDominoRow, place, sorrend[currentnumber]);
         if(currentnumber==(playernum-1))
         {
             if(firstTurn)
