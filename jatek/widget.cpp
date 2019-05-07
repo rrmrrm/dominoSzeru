@@ -22,9 +22,9 @@ Widget::Widget(QWidget *parent) :
     isFirstTurn = true;
     dominoSideSize = 50;
     activePlayer = 0;
-    playerNum =3;
+    playerNum =4;
     int playerWidgetHeight = 500;
-    int playerTableSize = 400;
+    int playerTableSize = 280;
 
     int playerWidgetWidth = playerTableSize + 2*dominoSideSize;
 
@@ -46,6 +46,7 @@ Widget::Widget(QWidget *parent) :
         players[i]->dominoButton = new DominoButton(dominoSideSize, i, this);
         players[i]->ui->horizontalLayout->addWidget(players[i]->dominoButton);
         connect( players[i]->dominoButton, SIGNAL(clicked()), this, SLOT(playerDominoClicked()) );
+        players[i]->setEnabled(false);
 
     }
 
@@ -109,9 +110,14 @@ void Widget::dominoRow2Clicked(){
     update();
 }
 void Widget::activePlayerUpdated(int newPlayer){
+
+    players[activePlayer]->setEnabled(false);
+
     players[activePlayer]->isActive = false;
     activePlayer = newPlayer;
     players[newPlayer]->isActive=true;
+
+    players[newPlayer]->setEnabled(true);
     update();
 }
 void Widget::showNewDominos(vector<Domino> v){
@@ -146,6 +152,7 @@ void Widget::showNewDominos(vector<Domino> v){
 }
 
 void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
+
     cout << "putKingConfirmed(int pos, int player)" << endl;
     if(firstDominoRow)
         dominoRow1[pos]->d.setOwner(player);
@@ -169,6 +176,7 @@ void Widget::addDominoConfirmed(QVector< QVector<COLOR> > newDominos){
             dominos[i][j] = newDominos[i][j];
         }
     }
+    players[activePlayer]->setEnabled(false);
     update();
 }
 

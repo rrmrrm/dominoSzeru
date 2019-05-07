@@ -61,7 +61,6 @@ public slots:
 
     //kirajzolja az aktiv jatekos forgathato/lehelyezhető dominóját
     void showChosenDomino(Domino d);
-
     ///todo halozati jaték nézetét megírni
 
     ///todo:
