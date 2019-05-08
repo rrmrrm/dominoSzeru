@@ -193,12 +193,12 @@ void Widget::show_winner( vector<int> winners){
     QString winnersStr("");
     for(int i = 0 ; i < winners.size(); ++i){
         winnersStr += (" ");
-        winnersStr += QString.number(winners[i]+1);
+        winnersStr += QString::number(winners[i]+1);
     }
     qmb.information(
         this,
         tr("játék vége, nyertesek:"),
-        winnersStr;
+        winnersStr) ;
     update();
 
 }
