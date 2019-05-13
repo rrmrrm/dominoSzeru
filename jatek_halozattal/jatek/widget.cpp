@@ -24,7 +24,7 @@ Widget::Widget(QWidget *parent) :
     dominoSideSize = 50;
 
     activePlayer = 0;
-    playerNum =3;
+    playerNum =4;
     int playerWidgetHeight = 500;
     int playerTableSize = 280;
 
