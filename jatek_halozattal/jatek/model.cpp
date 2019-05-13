@@ -208,6 +208,8 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
     emit updateActivePlayer(sorrend[currentnumber]);
     emit updateDeckSize(max(0,deck->cardsLeftNum()));
     emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
+    if(!firstTurn)
+    emit showChosenDomino(deck->Current().at(currentplayer->getKingPlace()));
 }
 
 
@@ -399,9 +401,23 @@ void model::connect()
     socket = new QTcpSocket(this);
     socket->connectToHost("localhost", 1234);
     socket->write("helloServer");
+    std::cout << "done" << endl;
 }
 
 void model::newConnnection()
 {
+    QTcpSocket *socket =server->nextPendingConnection();
 
+    socket->write("hello client");
+    socket->flush();
+}
+
+void model::readyRead()
+{if(isClient)
+    {
+        while(socket->canReadLine())
+        {
+            QString line = QString::fromUtf8(socket->readLine()).trimmed();
+        }
+    }
 }
