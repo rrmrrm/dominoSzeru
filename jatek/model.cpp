@@ -44,6 +44,8 @@ void model::startGame()
     //}
     deck->draw();
     emit newDominos(deck->getNewOnes());
+    emit updateDeckSize(max(0,deck->cardsLeftNum()));
+    emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
 }
 bool lerakahto(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* deck)
 {
@@ -203,8 +205,8 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
         std::cout << "JELENLEGI JATEKOS: " << sorrend[currentnumber] << std::endl;
     }
     emit updateActivePlayer(sorrend[currentnumber]);
-    emit updateDeckSize(deck->cardsLeftNum());
-    emit updateTurnsleft(deck->cardsLeftNum()/playernum);
+    emit updateDeckSize(max(0,deck->cardsLeftNum()));
+    emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
 }
 
 
