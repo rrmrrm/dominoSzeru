@@ -74,9 +74,9 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(showChosenDomino(Domino)), this, SLOT(showChosenDomino(Domino)));
 
     connect(m, SIGNAL(gameOver(vector<int>)), this, SLOT(show_winner(vector<int>)) );
-    connect(ui->connectButton, SIGNAL(click()), this, SLOT(ConnectButtonClicked()));
-    connect(ui->startServerButton, SIGNAL(click()), this, SLOT(startServerButtonClicked()));
-    connect(ui->setPlayerNumButton, SIGNAL(click()), this, SLOT(setPlayerNumButtonClicked()));
+    connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(ConnectButtonClicked()));
+    connect(ui->startServerButton, SIGNAL(clicked()), this, SLOT(startServerButtonClicked()));
+    connect(ui->setPlayerNumButton, SIGNAL(clicked()), this, SLOT(setPlayerNumButtonClicked()));
     m->setPlayernum(playerNum);
     m->startGame();
 }
@@ -206,6 +206,11 @@ void Widget::show_winner( vector<int> winners){
         this,
         tr("játék vége, nyertesek:"),
         winnersStr) ;
+
+    ui->connectButton->setEnabled(true);
+    ui->startServerButton->setEnabled(true);
+    ui->setPlayerNumButton->setEnabled(true);
+
     update();
 
 }
@@ -231,12 +236,21 @@ void Widget::showChosenDomino(Domino d){
 }
 
 void Widget::ConnectButtonClicked(){
-    m->connect();
+    //m->connect();
 }
-
 void Widget::startServerButtonClicked(){
-    m->startServer();
+    //m->startServer();
 }
 void Widget::setPlayerNumButtonClicked(){
-    m->playerNumChanged();
+    //m->playerNumChanged();
+}
+
+void Widget::ConnectConfirmed(){
+    ui->connectButton->setEnabled(false);
+}
+void Widget::startServerConfirmed(){
+    ui->startServerButton->setEnabled(true);
+}
+void Widget::setPlayerNumChangeConfirmed(){
+    ui->setPlayerNumButton->setEnabled(true);
 }

@@ -62,11 +62,14 @@ public slots:
 
     //kirajzolja az aktiv jatekos forgathato/lehelyezhető dominóját
     void showChosenDomino(Domino d);
-    ///todo halozati jaték nézetét megírni
+
     void ConnectButtonClicked();
     void startServerButtonClicked();
     void setPlayerNumButtonClicked();
 
+    void ConnectConfirmed();
+    void startServerConfirmed();
+    void setPlayerNumChangeConfirmed();
     //---------------------------------------------------------
 signals:
     void PutKingAttempt();
