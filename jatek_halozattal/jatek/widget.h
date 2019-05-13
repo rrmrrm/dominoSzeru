@@ -32,7 +32,9 @@ class Widget : public QWidget, ColorConverter{
     QMessageBox qmb;
 
     void addSecondDominoRow();
+    void removeSecondDominoRow();
 public:
+    void clear();
     int playerNum ;
     int activePlayer;
     vector<PlayerWidget*> players;
@@ -41,6 +43,7 @@ public:
     ~Widget();
 
 public slots:
+    void initialize(int playerNum);
     void notTheFirstTurn();
 
     void dominoRow1Clicked();
@@ -70,6 +73,7 @@ public slots:
     void ConnectConfirmed();
     void startServerConfirmed();
     void setPlayerNumChangeConfirmed();
+    void updatePlayerNum(int);
     //---------------------------------------------------------
 signals:
     void PutKingAttempt();

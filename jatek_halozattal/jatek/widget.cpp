@@ -13,30 +13,32 @@
 #include "color.h"
 using namespace std;
 
-
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
     qmb(this),
     players()
 {
+    ui->setupUi(this);
+    ui->dominosRow1Layout->setHorizontalSpacing(0);
     isFirstTurn = true;
     dominoSideSize = 50;
 
     activePlayer = 0;
     playerNum =4;
+
+
+    m = new model();
+    initialize(playerNum);
+
+}
+void Widget::initialize(int playerNum){
     int playerWidgetHeight = 500;
     int playerTableSize = 280;
 
     int playerWidgetWidth = playerTableSize + 2*dominoSideSize;
-
-    ui->setupUi(this);
-    ui->dominosRow1Layout->setHorizontalSpacing(0);
-
     setMinimumWidth(playerNum * (playerWidgetWidth) + 50);
     setMinimumHeight(playerNum * dominoSideSize + playerWidgetHeight+20);
-
-    m = new model();
 
     for(int i = 0; i<playerNum ; ++i){
         players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
@@ -76,10 +78,10 @@ Widget::Widget(QWidget *parent) :
     connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(ConnectButtonClicked()));
     connect(ui->startServerButton, SIGNAL(clicked()), this, SLOT(startServerButtonClicked()));
     connect(ui->setPlayerNumButton, SIGNAL(clicked()), this, SLOT(setPlayerNumButtonClicked()));
+    connect(m, SIGNAL(sendPlayerNum(int)), this, SLOT(updatePlayerNum(int)) );
     m->setPlayernum(playerNum);
     m->startGame();
 }
-
 Widget::~Widget(){
     delete ui;
 }
@@ -91,6 +93,14 @@ void Widget::addSecondDominoRow(){
         dominoRow2.push_back(d);
         ui->dominosRow2Layout->addWidget(d,i,0);
         connect(d, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
+    }
+}
+void Widget::removeSecondDominoRow(){
+    for(int i = 0 ; i < dominoRow2.size(); ++i ){
+        disconnect(dominoRow2[i], SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
+        ui->dominosRow2Layout->removeWidget(dominoRow2[i]);
+        delete dominoRow2[i];
+
     }
 }
 
@@ -255,4 +265,49 @@ void Widget::startServerConfirmed(){
 }
 void Widget::setPlayerNumChangeConfirmed(){
     ui->setPlayerNumButton->setEnabled(true);
+}
+
+void Widget::updatePlayerNum(int n){
+    clear();
+    playerNum = n;
+    initialize(n);
+}
+
+
+void Widget::clear(){
+
+    removeSecondDominoRow();
+
+    disconnect(m, SIGNAL(sendPlayerNum(int)), this, SLOT(updatePlayerNum(int)) );
+    disconnect(ui->setPlayerNumButton, SIGNAL(clicked()), this, SLOT(setPlayerNumButtonClicked()));
+    disconnect(ui->startServerButton, SIGNAL(clicked()), this, SLOT(startServerButtonClicked()));
+    disconnect(ui->connectButton, SIGNAL(clicked()), this, SLOT(ConnectButtonClicked()));
+    disconnect(m, SIGNAL(gameOver(vector<int>)), this, SLOT(show_winner(vector<int>)) );
+    disconnect(m, SIGNAL(showChosenDomino(Domino)), this, SLOT(showChosenDomino(Domino)));
+    disconnect(m, SIGNAL(updateDeckSize(int)), ui->deckSize, SLOT(display(int)) );
+    disconnect(m, SIGNAL(updateTurnsleft(int)), ui->turnsLeft, SLOT(display(int)) );
+    disconnect(m, SIGNAL(rotateDominoConfirm(int,DIR)), this, SLOT(rotateDominoConfirmed(int,DIR)) );
+    disconnect(m, SIGNAL(AddDominoConfirm(QVector<QVector<COLOR>>)), this, SLOT(addDominoConfirmed(QVector< QVector<COLOR> >)) );
+    disconnect(m, SIGNAL(updateActivePlayer(int)), this, SLOT(activePlayerUpdated(int)) );
+    disconnect(m, SIGNAL(PutKingConfirm(bool,int,int)), this, SLOT(putKingConfirmed(bool,int,int)) );
+    disconnect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
+    disconnect(m, SIGNAL(notTheFirstTurn()), this, SLOT(notTheFirstTurn()) );
+
+    for(int i = 0 ; i < playerNum ; ++i ){
+        disconnect(dominoRow1[i], SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
+        ui->dominosRow1Layout->removeWidget(dominoRow1[i]);
+        delete dominoRow1[i];
+    }
+
+    for(int i = 0; i<playerNum ; ++i){
+        disconnect( players[i]->dominoButton, SIGNAL(clicked()), this, SLOT(playerDominoClicked()) );
+        players[i]->ui->horizontalLayout->removeWidget(players[i]->dominoButton);
+        delete players[i]->dominoButton;
+        disconnect( players[i]->table, SIGNAL(tableClicked(int,int)), m, SLOT(AddDominoAttempt(int,int)) );
+        ui->playerLayout->removeWidget( players[i] );
+        delete players[i];
+    }
+
+    dominoRow1.resize(0);
+    players.resize(0);
 }
