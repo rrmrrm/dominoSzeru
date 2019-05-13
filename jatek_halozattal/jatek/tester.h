@@ -22,7 +22,7 @@ private slots:
         QApplication a(x, t);
 
         w = new Widget;
-        w->m = new model();
+
     }
     void test1(){
         QCOMPARE(1,0);
