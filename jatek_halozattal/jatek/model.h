@@ -8,6 +8,10 @@
 #include "player.h"
 #include <vector>
 #include <QIcon>
+#include "server.h"
+#include "client.h"
+#include <QTcpSocket>
+#include <QTcpServer>
 
 using namespace std;
 
@@ -21,6 +25,12 @@ class model : public QObject
     Player *currentplayer;
     int currentnumber;
     bool firstTurn;
+    QTcpSocket *socket;
+    QTcpServer *server;
+    bool isServer=false;
+    bool isClient=false;
+    vector<QTcpSocket> sockets;
+
 
 public:
     model();
@@ -33,7 +43,8 @@ public slots:
     void rotateDominoAttempt(int player, DIR newDir);
     void playerNumChanged();
     void startServer();
-    void connect(){}
+    void connect();
+    void newConnnection();
 signals:
     void PutKingConfirm(bool firstDominRow,int place, int number);
     void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);

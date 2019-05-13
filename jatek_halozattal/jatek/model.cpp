@@ -1,5 +1,6 @@
 #include "model.h"
 #include <iostream>
+#include <QTcpServer>
 
 model::model()
 {
@@ -312,57 +313,6 @@ void model::AddDominoAttempt(int x, int y)
         }
     }
 
-
-
-
-    /*
-        if(x<0 || y < 0 || x >= 5 || y >= 5)
-            szabalyos = false;
-        DIR dominoDir = deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection();
-
-        //próbálok összevonni lehetőségeket, hogy ne kelljen elágazás-tengert írnom
-        //ehez bevezetek 4 változót
-
-        //megállapítom hogy a dominó melyik oldala van balfentebb és melyik ballentebba másikhoz képest
-        int upperLeftX;
-        int upperLeftY;
-        COLOR upperLeftColor;
-        int lowerRigthX;
-        int lowerRigthY;
-        COLOR lowerRigthColor;
-        switch(dominoDir){
-        case UP:{
-            upperLeftX=x-1; upperLeftY=y; break;
-            lowerRigthX=x; lowerRigthY=y; break;
-            upperLeftColor =
-        }
-        case DOWN:{
-            upperLeftX=x; upperLeftY=y; break;
-            lowerRigthX=x+1; lowerRigthY=y; break;
-        }
-        case LEFT:{
-            upperLeftX=x; upperLeftY=y+1; break;
-            lowerRigthX=x; lowerRigthY=y; break;
-        }
-        case RIGHT:{
-            upperLeftX=x; upperLeftY=y; break;
-            lowerRigthX=x; lowerRigthY=y-1; break;
-        }
-        }
-
-        //megállapítom a balfelső és a jobbalsó dominó-oldal koorinátáit
-        switch(dominoDir){
-        case UP:{}
-        case DOWN:{break;}
-        case LEFT:{}
-        case RIGHT:{break;}
-        }
-
-        if(x > 0){
-            currentplayer->board.getFields()[x-1][y];
-        }
-        */
-
     if(szabalyos)
     {
         currentplayer->placeDomino(deck, x, y);
@@ -425,11 +375,33 @@ void model::playerNumChanged()
     else
         playernum=3;
     startGame();
-    sendPlayerNum(playernum);
 }
 
 
 void model::startServer()
+{
+    isServer=true;
+    server =  new QTcpServer(this);
+    QObject::connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    if(!server->listen(QHostAddress::Any, 1234))
+    {
+        std::cout << "rossz" << std::endl;
+    }
+    else
+    {
+        std::cout << "jo" << std::endl;
+    }
+}
+
+void model::connect()
+{
+    isClient=true;
+    socket = new QTcpSocket(this);
+    socket->connectToHost("localhost", 1234);
+    socket->write("helloServer");
+}
+
+void model::newConnnection()
 {
 
 }

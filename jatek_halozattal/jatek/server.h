@@ -2,10 +2,32 @@
 #define SERVER_H
 
 
-class server
+#include <QStringList>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QMap>
+#include <QSet>
+
+class server : public QTcpServer
 {
-public:
-    server();
+    Q_OBJECT
+
+    public:
+        server(QObject* parent = nullptr)
+        {}
+
+    private slots:
+        void readyRead();
+        void disconnected();
+        void sendUserList();
+
+    protected:
+        void incomingConnection(int socketfd);
+
+    private:
+        QSet<QTcpSocket*> clients;
+        QMap<QTcpSocket*, QString> users;
 };
+
 
 #endif // SERVER_H
