@@ -238,13 +238,13 @@ void Widget::showChosenDomino(Domino d){
 }
 
 void Widget::ConnectButtonClicked(){
-    //m->connect();
+    m->connect();
 }
 void Widget::startServerButtonClicked(){
-   // m->startServer();
+    m->startServer();
 }
 void Widget::setPlayerNumButtonClicked(){
-   // m->playerNumChanged();
+    m->playerNumChanged();
 }
 
 void Widget::ConnectConfirmed(){
