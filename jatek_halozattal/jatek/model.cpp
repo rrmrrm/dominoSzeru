@@ -425,5 +425,11 @@ void model::playerNumChanged()
     else
         playernum=3;
     startGame();
-    cout << "XD " << endl;
+    sendPlayerNum(playernum);
+}
+
+
+void model::startServer()
+{
+
 }

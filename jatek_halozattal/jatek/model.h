@@ -32,7 +32,7 @@ public slots:
     void AddDominoAttempt(int x, int y);
     void rotateDominoAttempt(int player, DIR newDir);
     void playerNumChanged();
-    void startServer(){}
+    void startServer();
     void connect(){}
 signals:
     void PutKingConfirm(bool firstDominRow,int place, int number);
