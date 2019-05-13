@@ -7,6 +7,7 @@
 
 
 
+#include <iostream>
 #include <algorithm>    // std::random_shuffle
 #include <ctime>        // std::time
 #include <cstdlib>      // std::rand, std::srand
@@ -111,14 +112,28 @@ int Deck::cardsLeftNum()
 void Deck::draw()
 {
     current=newOnes;
-    for(int i = 0; i < deckSize/12; i++)
+    if(cardsLeftNum()<=0)
     {
-        newOnes[i]=dominoes[cardsDrawn];
-        cardsDrawn++;
+        for(int i = 0; i < deckSize/12; i++)
+        {
+            newOnes[i]=Domino(EMPTY, EMPTY, 0,0);
+            cardsDrawn++;
+        }
+
     }
-    for(int i=0; i < taken.size(); i++)
+    else
     {
-        taken[i]=false;
+        for(int i = 0; i < deckSize/12; i++)
+        {
+            newOnes[i]=dominoes[cardsDrawn];
+            cardsDrawn++;
+        }
+        for(int i=0; i < taken.size(); i++)
+        {
+            taken[i]=false;
+        }
+        std::cout << "Lapok vissza: " << cardsLeftNum() << std::endl;
+
     }
 }
 

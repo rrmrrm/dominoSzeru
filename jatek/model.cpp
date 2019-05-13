@@ -13,13 +13,17 @@ void model::setPlayernum(int number)
 
 void model::startGame()
 {
+    //delete  deck;
     firstTurn=true;
     deck= new Deck(playernum);
     currentnumber=0;
+    players.clear();
     sorrend.resize(playernum);
     players.resize(playernum);
     for(int i = 0; i < playernum;i++)
     {
+        emit updateActivePlayer(i);
+        AddDominoConfirm(players[i].getFields());
         sorrend[i]=i;
     }
     for(int i = 0; i < 50; i++)
@@ -41,7 +45,105 @@ void model::startGame()
     deck->draw();
     emit newDominos(deck->getNewOnes());
 }
+bool lerakahto(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* deck)
+{
+        bool szabalyos;
+        int x2=x;
+        int y2=y;
+        if(dominoDir==UP)
+        {
+            x2--;
+        }
+        if(dominoDir==DOWN)
+        {
+            x2++;
+        }
+        if(dominoDir==LEFT)
+        {
+            y2--;
+        }
+        if(dominoDir==RIGHT)
+        {
+            y2++;
+        }
 
+        if(x>=0 && x <=4 && y>=0 && y <=4 && x2>=0 && x2 <=4 && y2>=0 && y2 <=4)
+        {
+        bool bal=false;
+        bool jobb=false;
+        bool fent=false;
+        bool lent=false;
+        if(x==0)
+        {
+            fent=true;
+        }
+        if(x==4)
+        {
+            lent=true;
+        }
+        if(y==0)
+        {
+            bal=true;
+        }
+        if(y==4)
+        {
+            jobb=true;
+        }
+        if(!bal && (player->getFields()[x][y-1]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x][y-1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!jobb && (player->getFields()[x][y+1]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x][y+1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!fent && (player->getFields()[x-1][y]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x-1][y]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!lent && (player->getFields()[x+1][y]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x+1][y]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(x2==0)
+        {
+            fent=true;
+        }
+        if(x2==4)
+        {
+            lent=true;
+        }
+        if(y2==0)
+        {
+            bal=true;
+        }
+        if(y2==4)
+        {
+            jobb=true;
+        }
+        if(!bal && (player->getFields()[x2][y2-1]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2][y2-1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!jobb && (player->getFields()[x2][y2+1]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2][y2+1]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!fent && (player->getFields()[x2-1][y2]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2-1][y2]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(!lent && (player->getFields()[x2+1][y2]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2+1][y2]==CASTLE))
+        {
+            szabalyos=true;
+        }
+        if(player->getFields()[x2][y2]!=EMPTY || player->getFields()[x2][y2]!=EMPTY)
+        {
+            szabalyos=false;
+        }
+}
+return szabalyos;
+}
 void model::PutKingAttempt(bool firstDominoRow, int place)
 {
     if(!(deck->taken[place]))
@@ -71,11 +173,41 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
             }
         }
         currentnumber++;
+
+        if(!firstTurn){
+                 bool lephet=false;
+                 for(int i = 0; i < 5; i++)
+                 {
+                     for(int j = 0; j < 5; j++)
+                     {
+                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),UP, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),DOWN, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),LEFT, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),RIGHT, currentplayer, i, j, deck));
+
+                     }
+                 }
+                 if(!lephet)
+                 {
+                     AddDominoConfirm(currentplayer->getFields());
+                     if(deck->cardsLeftNum()==0)
+                     {
+                         PutKingConfirm(true,-1, sorrend[currentnumber]);
+                     }
+                 }
+
+
+             }
+
         currentplayer=&players[sorrend[currentnumber]];
-        std::cout << "JELENLEGI JATEKOS: " << currentnumber << std::endl;
+        std::cout << "JELENLEGI JATEKOS: " << sorrend[currentnumber] << std::endl;
     }
     emit updateActivePlayer(sorrend[currentnumber]);
+    emit updateDeckSize(deck->cardsLeftNum());
+    emit updateTurnsleft(deck->cardsLeftNum()/playernum);
 }
+
+
 
 void model::AddDominoAttempt(int x, int y)
 {
@@ -235,13 +367,45 @@ void model::AddDominoAttempt(int x, int y)
         AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
-            PutKingConfirm(true,-1, currentnumber);
+            PutKingConfirm(true,-1, sorrend[currentnumber]);
+        }
+    }
+
+
+
+    if(deck->cardsLeftNum()==-1*playernum)
+    {
+        if(currentnumber==(playernum-1))
+        {
+            int maxpont=-1;
+            vector<int> nyertesek;
+            for(int i = 0; i < playernum; i++)
+            {
+                if(players[i].getPoint().first>maxpont)
+                {
+                    nyertesek.clear();
+                    nyertesek.resize(1);
+                    nyertesek.push_back(i);
+                }
+                if(players[i].getPoint().first==maxpont)
+                {
+                    nyertesek.push_back(i);
+                }
+            }
+            emit gameOver(nyertesek);
+            startGame();
+        }
+        else
+        {
+
+            emit
+        updateActivePlayer(sorrend[++currentnumber]);
         }
     }
 }
 
 void model::rotateDominoAttempt(int player, DIR newDir){
-    if( player == currentnumber){
+    if( player == sorrend[currentnumber]){
         ///elforgatom a jatekos dominojat newDire fele
         deck->Current().at(currentplayer->getKingPlace()).Rotate(newDir);
         ///jelzem a nezetnek, hogy elforgattuk a dominot a modellben

@@ -22,6 +22,7 @@ public:
     void changeName(string newName) {name=newName;}
     int getKingPlace() {return king.getPlace();}
     QVector<QVector<COLOR>> getFields() { return board.getFields();}
+    pair<int,int> getPoint() {return board.getPoint(); }
 };
 
 #endif // PLAYER_H

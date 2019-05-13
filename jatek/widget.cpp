@@ -24,7 +24,7 @@ Widget::Widget(QWidget *parent) :
     dominoSideSize = 50;
 
     activePlayer = 0;
-    playerNum =4;
+    playerNum =3;
     int playerWidgetHeight = 500;
     int playerTableSize = 280;
 
@@ -158,11 +158,15 @@ void Widget::showNewDominos(vector<Domino> v){
 void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
 
     cout << "putKingConfirmed(int pos, int player)" << endl;
-    if(firstDominoRow)
-        dominoRow1[pos]->d.setOwner(player);
-    else
-        dominoRow2[pos]->d.setOwner(player);
-    update();
+    if(pos!=-1)
+    {
+        if(firstDominoRow)
+            dominoRow1[pos]->d.setOwner(player);
+        else
+            dominoRow2[pos]->d.setOwner(player);
+        update();
+
+    }
 }
 
 void Widget::rotateDominoConfirmed(int player, DIR newDir){
