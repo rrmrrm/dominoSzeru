@@ -381,6 +381,7 @@ void model::playerNumChanged()
         playernum=3;
     startGame();
     sendPlayerNum(playernum);
+    setPlayerNumChangeConfirm();
 }
 
 
@@ -397,6 +398,7 @@ void model::startServer()
     {
         std::cout << "jo" << std::endl;
     }
+    startServerConfirm();
 }
 
 void model::connect()
@@ -406,14 +408,20 @@ void model::connect()
     socket->connectToHost("localhost", 1234);
     socket->write("helloServer");
     std::cout << "done" << endl;
+    if(socket->isReadable())
+    {
+        cout << "YOOOO0," << endl
+        ;
+    }
+    ConnectConfirm();
 }
 
-void model::newConnnection()
+void model::newConnection()
 {
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
-    QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket));
+    QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
     QObject::connect(this, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
     socket->write("0\n");
     QString asd = "LOL";
@@ -434,6 +442,8 @@ void model::newConnnection()
         const char* p = buf;
         socket->write(p);
     }
+    std::cout << "MIKIDSAKJ" << endl;
+    emit readyRead();
 }
 
 void model::readSocket()
