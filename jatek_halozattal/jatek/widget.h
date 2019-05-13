@@ -1,6 +1,10 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#ifdef TEST
+    class Tester;
+#endif
+
 #include <vector>
 #include <QString>
 #include <QWidget>
@@ -22,6 +26,8 @@ class Widget;
 using namespace std;
 class Widget : public QWidget, ColorConverter{
     Q_OBJECT
+
+    friend class Tester;
 
     Ui::Widget *ui;
     model* m;
