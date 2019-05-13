@@ -63,16 +63,17 @@ public slots:
     //kirajzolja az aktiv jatekos forgathato/lehelyezhető dominóját
     void showChosenDomino(Domino d);
     ///todo halozati jaték nézetét megírni
-
-    ///todo:
-    /// hatralevo korok kiirása
-    /// maradek pakli méretének kiirasa
+    void ConnectButtonClicked();
+    void startServerButtonClicked();
+    void setPlayerNumButtonClicked();
 
     //---------------------------------------------------------
 signals:
     void PutKingAttempt();
 
     void AddDominoAttempt();
+
+
 
 };
 

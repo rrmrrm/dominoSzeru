@@ -8,6 +8,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+# This gives us access to the Qt socket classes (QTcpSocket)
+QT += network
 TARGET = jatek
 TEMPLATE = app
 

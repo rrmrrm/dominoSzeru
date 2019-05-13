@@ -74,6 +74,9 @@ Widget::Widget(QWidget *parent) :
     connect(m, SIGNAL(showChosenDomino(Domino)), this, SLOT(showChosenDomino(Domino)));
 
     connect(m, SIGNAL(gameOver(vector<int>)), this, SLOT(show_winner(vector<int>)) );
+    connect(ui->connectButton, SIGNAL(click()), this, SLOT(ConnectButtonClicked()));
+    connect(ui->startServerButton, SIGNAL(click()), this, SLOT(startServerButtonClicked()));
+    connect(ui->setPlayerNumButton, SIGNAL(click()), this, SLOT(setPlayerNumButtonClicked()));
     m->setPlayernum(playerNum);
     m->startGame();
 }
@@ -227,4 +230,13 @@ void Widget::showChosenDomino(Domino d){
     players[activePlayer]->dominoButton->setDomino(d);
 }
 
+void Widget::ConnectButtonClicked(){
+    m->connect();
+}
 
+void Widget::startServerButtonClicked(){
+    m->startServer();
+}
+void Widget::setPlayerNumButtonClicked(){
+    m->playerNumChanged();
+}

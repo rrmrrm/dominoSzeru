@@ -15,6 +15,27 @@
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <item>
+    <widget class="QPushButton" name="setPlayerNumButton">
+     <property name="text">
+      <string>jatekosszam beallitasa</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="connectButton">
+     <property name="text">
+      <string>csatlakozas szerverhez</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="startServerButton">
+     <property name="text">
+      <string>szerver inditasa</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gameMiddleLayout">
      <item row="1" column="3">
       <widget class="QLCDNumber" name="turnsLeft"/>
