@@ -27,12 +27,12 @@ class model : public QObject
     QTcpServer *server;
     bool isServer=false;
     bool isClient=false;
-    vector<QTcpSocket> sockets;
+    vector<QTcpSocket*> sockets;
+    int clientnum=0;
 
 
 public:
     model();
-
 public slots:
     void setPlayernum(int);
     void startGame();
@@ -43,17 +43,14 @@ public slots:
     void startServer();
     void connect();
     void newConnnection();
+    void readyRead();
 signals:
     void PutKingConfirm(bool firstDominRow,int place, int number);
     void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);
     void rotateDominoConfirm(int player, DIR newDir);
-
     void showChosenDomino(Domino d);
     void newDominos(vector<Domino> dominos);
-
     void gameOver(  vector<int> winners) ;
-
-
     void updateTurnsleft(int number);
     void updateDeckSize(int number);
     void updateActivePlayer(int number);
