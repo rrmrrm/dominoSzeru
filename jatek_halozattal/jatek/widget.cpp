@@ -142,6 +142,7 @@ void Widget::activePlayerUpdated(int newPlayer){
 
     cout << "aktivalva: " << newPlayer << endl;
     players[newPlayer]->setEnabled(true);
+    players[newPlayer]->dominoButton->update();
     update();
 }
 void Widget::showNewDominos(vector<Domino> v){
@@ -192,7 +193,7 @@ void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
 void Widget::rotateDominoConfirmed(int player, DIR newDir){
     cout << "rotateDominoConfirmed" << endl;
     players[player]->dominoButton->d.Rotate(newDir);
-     players[player]->dominoButton->update();
+    players[player]->dominoButton->update();
 }
 
 ///show domino placed,and

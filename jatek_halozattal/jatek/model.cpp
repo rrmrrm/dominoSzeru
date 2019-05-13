@@ -377,6 +377,7 @@ void model::playerNumChanged()
     else
         playernum=3;
     startGame();
+    sendPlayerNum(playernum);
 }
 
 
