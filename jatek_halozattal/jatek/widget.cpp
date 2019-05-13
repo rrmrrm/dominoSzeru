@@ -53,7 +53,6 @@ Widget::Widget(QWidget *parent) :
     }
 
     for(int i = 0 ; i < playerNum ; ++i ){
-
         ///domino sort abrazolo gombok hozzadasa:
         DominoButton* d = new DominoButton(dominoSideSize,i,this);
 
@@ -116,6 +115,9 @@ void Widget::dominoRow2Clicked(){
     update();
 }
 void Widget::activePlayerUpdated(int newPlayer){
+    //ekkor csak kiralyokat helyezhetik le
+    if(isFirstTurn)
+        return;
     cout << "DEaktivalva: " << activePlayer << endl;
     players[activePlayer]->setEnabled(false);
 
@@ -236,13 +238,13 @@ void Widget::showChosenDomino(Domino d){
 }
 
 void Widget::ConnectButtonClicked(){
-    m->connect();
+    //m->connect();
 }
 void Widget::startServerButtonClicked(){
-    m->startServer();
+   // m->startServer();
 }
 void Widget::setPlayerNumButtonClicked(){
-    m->playerNumChanged();
+   // m->playerNumChanged();
 }
 
 void Widget::ConnectConfirmed(){
