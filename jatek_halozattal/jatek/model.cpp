@@ -410,6 +410,7 @@ void model::connect()
 
 void model::newConnnection()
 {
+    cout << "Van kapcsolat" << endl;
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
@@ -476,6 +477,7 @@ void model::readSocket()
                 AddDominoConfirm(szinek);
             }
         }
+        cout << "done reading " << endl;
     }
 }
 
