@@ -38,8 +38,8 @@ SOURCES += \
     playerwidget.cpp \
     dominobutton.cpp \
     color.cpp \
-    server.cpp \
-    client.cpp
+    client.cpp \
+    server.cpp
 
 HEADERS += \
         widget.h \
@@ -59,8 +59,8 @@ HEADERS += \
     color.h \
     player.h \
     board.h \
-    server.h \
-    client.h
+    client.h \
+    server.h
 
 FORMS += \
     widget.ui \

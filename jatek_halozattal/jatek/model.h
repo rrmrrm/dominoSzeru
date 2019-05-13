@@ -8,8 +8,6 @@
 #include "player.h"
 #include <vector>
 #include <QIcon>
-#include "server.h"
-#include "client.h"
 #include <QTcpSocket>
 #include <QTcpServer>
 
