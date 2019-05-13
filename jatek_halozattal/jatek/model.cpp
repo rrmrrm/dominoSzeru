@@ -1,6 +1,9 @@
 #include "model.h"
 #include <iostream>
 #include <QTcpServer>
+#include <string>
+#include <QVector>
+#include "common.h"
 
 model::model()
 {
@@ -407,17 +410,84 @@ void model::connect()
 void model::newConnnection()
 {
     QTcpSocket *socket =server->nextPendingConnection();
+    sockets.push_back(socket);
+    clientnum++;
+    QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket));
+    QObject::connect(this, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
+    socket->write("0\n");
+    QString asd = "LOL";
 
-    socket->write("hello client");
-    socket->flush();
+    char buf[16]; // need a buffer for that
+    int i = playernum;
+    sprintf(buf,"%d",i);
+    buf[1]='/';
+    buf[2]='n';
+    const char* p = buf;
+    socket->write(p);
+    for(int j = 0; j < playernum; j++)
+    {
+        int i = sorrend[i];
+        sprintf(buf,"%d",i);
+        buf[1]='/';
+        buf[2]='n';
+        const char* p = buf;
+        socket->write(p);
+    }
 }
 
-void model::readyRead()
-{if(isClient)
+void model::readSocket()
+{
+    if(isClient)
     {
         while(socket->canReadLine())
         {
-            QString line = QString::fromUtf8(socket->readLine()).trimmed();
+            QString line = QString::fromUtf8(socket->readLine());
+            if(line=="0")
+            {
+                playernum=QString::fromUtf8(socket->readLine()).split(" ")[0].toInt();
+                deck->dominoes.resize(12*playernum);
+                for(int i = 0; i < playernum; i++)
+                {
+                    sorrend[i]=QString::fromUtf8(socket->readLine()).split(" ")[0].toInt();
+                }
+                for(int i = 0; i < 12* playernum; i++)
+                {
+                    deck->dominoes[i]=Domino( COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt()), COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt()), 0,0,RIGHT );
+                }
+            }
+            if(line=="2")
+            {
+                PutKingConfirm(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+
+            }
+            if(line=="3")
+            {
+                QVector<QVector<COLOR>> szinek;
+                szinek.resize(5);
+                for(int i = 0; i < 5; i++)
+                {
+                    szinek[i].resize(5);
+                    for(int j = 0; j < 5; j++)
+                    {
+                        szinek[i][j]=COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+                    }
+                }
+                AddDominoConfirm(szinek);
+            }
         }
     }
 }
+
+void model::wantToRead(QString arg)
+{
+    if(arg[0]=="0")
+    {
+        rotateDominoAttempt(sorrend[currentnumber], DIR(arg[1].digitValue()));
+        AddDominoAttempt(arg[2].digitValue(),arg[3].digitValue());
+    }
+    if(arg[0]=="1")
+    {
+        PutKingConfirm(arg[1].digitValue(),arg[2].digitValue(),arg[3].digitValue());
+    }
+}
+

@@ -43,7 +43,8 @@ public slots:
     void startServer();
     void connect();
     void newConnnection();
-    void readyRead();
+    void readSocket();
+    void wantToRead(QString);
 signals:
     void PutKingConfirm(bool firstDominRow,int place, int number);
     void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);
@@ -56,6 +57,8 @@ signals:
     void updateActivePlayer(int number);
     void sendPlayerNum(int number);
     void notTheFirstTurn();
+    void readyRead();
+    void wantToSend(QString);
 
 
 
