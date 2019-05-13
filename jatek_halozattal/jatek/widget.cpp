@@ -26,8 +26,11 @@ Widget::Widget(QWidget *parent) :
 
     playerNum =4;
 
-
     m = new model();
+    connect( m, SIGNAL(ConnectConfirm()), this, SLOT(ConnectConfirmed()) );
+    connect( m, SIGNAL(startServerConfirm()), this, SLOT(startServerConfirmed()) );
+    connect( m, SIGNAL(setPlayerNumChangeConfirm()), this, SLOT(startServerConfirmed()) );
+
     initialize(playerNum);
 
 }
