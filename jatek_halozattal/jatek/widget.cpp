@@ -21,10 +21,9 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->dominosRow1Layout->setHorizontalSpacing(0);
-    isFirstTurn = true;
+
     dominoSideSize = 50;
 
-    activePlayer = 0;
     playerNum =4;
 
 
@@ -33,9 +32,11 @@ Widget::Widget(QWidget *parent) :
 
 }
 void Widget::initialize(int playerNum){
+    isFirstTurn = true;
     int playerWidgetHeight = 500;
     int playerTableSize = 280;
 
+    activePlayer = 0;
     int playerWidgetWidth = playerTableSize + 2*dominoSideSize;
     setMinimumWidth(playerNum * (playerWidgetWidth) + 50);
     setMinimumHeight(playerNum * dominoSideSize + playerWidgetHeight+20);
@@ -102,6 +103,7 @@ void Widget::removeSecondDominoRow(){
         delete dominoRow2[i];
 
     }
+    dominoRow2.resize(0);
 }
 
 void Widget::notTheFirstTurn(){
@@ -261,10 +263,10 @@ void Widget::ConnectConfirmed(){
     ui->connectButton->setEnabled(false);
 }
 void Widget::startServerConfirmed(){
-    ui->startServerButton->setEnabled(true);
+    ui->startServerButton->setEnabled(false);
 }
 void Widget::setPlayerNumChangeConfirmed(){
-    ui->setPlayerNumButton->setEnabled(true);
+    ui->setPlayerNumButton->setEnabled(false);
 }
 
 void Widget::updatePlayerNum(int n){
