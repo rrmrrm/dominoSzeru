@@ -31,6 +31,9 @@ public slots:
     void PutKingAttempt(bool firstDominRow,int place);
     void AddDominoAttempt(int x, int y);
     void rotateDominoAttempt(int player, DIR newDir);
+    void playerNumChanged();
+    void startServer(){}
+    void connect(){}
 signals:
     void PutKingConfirm(bool firstDominRow,int place, int number);
     void AddDominoConfirm(QVector<QVector<COLOR>> currentBoard);

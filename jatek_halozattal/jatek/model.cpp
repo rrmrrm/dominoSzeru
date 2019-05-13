@@ -416,4 +416,14 @@ void model::rotateDominoAttempt(int player, DIR newDir){
     }
 }
 
-
+void model::playerNumChanged()
+{
+    if(playernum==3)
+    {
+        playernum=4;
+    }
+    else
+        playernum=3;
+    startGame();
+    cout << "XD " << endl;
+}
