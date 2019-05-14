@@ -429,25 +429,32 @@ void model::newConnection()
 {
     deck->shuffle();
     cout << "Van kapcsolat" << endl;
+    string themessage="";
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
     QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
     QObject::connect(this, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
-    socket->write("0 ");
+    //socket->write("0 ");
     char buf[60]; // needs a buffer
     buf[0]='0';
+    themessage=themessage+"0";
     buf[1]=char(playernum);
+    themessage=themessage+std::to_string(playernum);
     for(int i = 0; i < playernum; i++)
     {
         buf[2+i]=char(sorrend[i]+0);
+        themessage=themessage+std::to_string(sorrend[i]+0);
     }
     for(int j = 0; j < deck->dominoes.size(); j++)
     {
         buf[2+playernum+j]=int(deck->dominoes[j].GetColors().first);
+        themessage=themessage+std::to_string(int(deck->dominoes[j].GetColors().first));
         buf[3+playernum+j]=int(deck->dominoes[j].GetColors().second);
+        themessage=themessage+std::to_string(int(deck->dominoes[j].GetColors().second));
     }
-    socket->write(buf);
+    //socket->write(buf);
+    socket->write((const char *)themessage.data(), themessage.length()*sizeof(QChar));
     std::cout << "MIKIDSAKJ" << endl;
     emit readyRead();
     cout << "buif" << buf << endl;
@@ -455,7 +462,7 @@ void model::newConnection()
 
 void model::readSocket()
 {
-    cout << "we are here" << endl;
+    cout << "here" << endl;
     QString asd = socket->readAll();
     cout << asd.toUtf8().constData() << endl;
     while(socket->canReadLine())
