@@ -80,6 +80,10 @@ public slots:
     void startServerConfirmed();
     void setPlayerNumChangeConfirmed();
     void updatePlayerNum(int);
+
+    void muteOthers(int unMuted);
+    void muteAllPlayers();
+
     //---------------------------------------------------------
 signals:
     void PutKingAttempt();

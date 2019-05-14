@@ -10,6 +10,8 @@ using namespace std;
 
 class Player
 {
+    friend class Tester;
+
     King king;
     Board board;
     string name;

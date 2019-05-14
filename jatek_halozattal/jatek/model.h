@@ -16,6 +16,9 @@ using namespace std;
 class model : public QObject
 {
     Q_OBJECT
+
+    friend class Tester;
+
     vector<Player> players;
     vector<int> sorrend;
     Deck *deck;

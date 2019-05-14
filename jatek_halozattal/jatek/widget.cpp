@@ -31,6 +31,8 @@ Widget::Widget(QWidget *parent) :
     connect( m, SIGNAL(startServerConfirm()), this, SLOT(startServerConfirmed()) );
     connect( m, SIGNAL(setPlayerNumChangeConfirm()), this, SLOT(startServerConfirmed()) );
 
+    connect( m, SIGNAL(muteOthers(int)), this, SLOT(muteOthers(int)) );
+    connect( m, SIGNAL(muteAllPlayers()), this, SLOT(muteAllPlayers()) );
     initialize(playerNum);
 
 }
@@ -83,6 +85,7 @@ void Widget::initialize(int playerNum){
     connect(ui->startServerButton, SIGNAL(clicked()), this, SLOT(startServerButtonClicked()));
     connect(ui->setPlayerNumButton, SIGNAL(clicked()), this, SLOT(setPlayerNumButtonClicked()));
     connect(m, SIGNAL(sendPlayerNum(int)), this, SLOT(updatePlayerNum(int)) );
+
     m->setPlayernum(playerNum);
     m->startGame();
 }
@@ -316,4 +319,20 @@ void Widget::clear(){
 
     dominoRow1.resize(0);
     players.resize(0);
+}
+
+void Widget::muteOthers(int unMuted){
+    for(int i = 0 ; i < playerNum ; ++i ){
+        if(i != unMuted){
+            players[i]->setEnabled(false);
+        }
+        else{
+            ///a parameterkent adott jatekost unMute-oljam?
+        }
+    }
+}
+void Widget::muteAllPlayers(){
+    for(int i = 0 ; i < playerNum ; ++i ){
+        players[i]->setEnabled(false);
+    }
 }
