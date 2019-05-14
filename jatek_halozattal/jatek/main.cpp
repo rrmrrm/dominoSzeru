@@ -4,7 +4,7 @@
 
 #include "widget.h"
 #include <QApplication>
-#include <QtTest>
+//#include <QtTest>
 #ifdef TEST
 
 #include "tester.h"
