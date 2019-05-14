@@ -5,6 +5,15 @@
 #include <QVector>
 #include "common.h"
 
+
+#include <QEvent>
+#include <QString>
+#include <algorithm>
+#include <QPushButton>
+#include <QPainter>
+#include <QVector>
+#include <QMessageBox>
+
 model::model()
 {
 }
@@ -418,45 +427,54 @@ void model::connect()
 
 void model::newConnection()
 {
+    deck->shuffle();
     cout << "Van kapcsolat" << endl;
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
     QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
     QObject::connect(this, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
-    socket->write("0\n");
-    QString asd = "LOL";
-
-    char buf[16]; // need a buffer for that
-    int i = playernum;
-    sprintf(buf,"%d",i);
-    buf[1]='/';
-    buf[2]='n';
-    const char* p = buf;
-    socket->write(p);
-    for(int j = 0; j < playernum; j++)
+    socket->write("0 ");
+    char buf[60]; // needs a buffer
+    buf[0]='0';
+    buf[1]=char(playernum);
+    for(int i = 0; i < playernum; i++)
     {
-        int i = sorrend[i];
-        sprintf(buf,"%d",i);
-        buf[1]='/';
-        buf[2]='n';
-        const char* p = buf;
-        socket->write(p);
+        buf[2+i]=char(sorrend[i]+0);
     }
+    for(int j = 0; j < deck->dominoes.size(); j++)
+    {
+        buf[2+playernum+j]=int(deck->dominoes[j].GetColors().first);
+        buf[3+playernum+j]=int(deck->dominoes[j].GetColors().second);
+    }
+    socket->write(buf);
     std::cout << "MIKIDSAKJ" << endl;
     emit readyRead();
+    cout << "buif" << buf << endl;
 }
 
 void model::readSocket()
 {
+    cout << "we are here" << endl;
+    QString asd = socket->readAll();
+    cout << asd.toUtf8().constData() << endl;
+    while(socket->canReadLine())
+    {
+        cout << "everywhere" << endl;
+        QString asd = socket->readAll();
+        cout << asd.toUtf8().constData() << endl;
+    }
     if(isClient)
     {
         while(socket->canReadLine())
         {
+
             QString line = QString::fromUtf8(socket->readLine());
-            if(line=="0")
+            cout << line.toUtf8().constData() << endl;
+            if(line=="0\n")
             {
                 playernum=QString::fromUtf8(socket->readLine()).split(" ")[0].toInt();
+                cout << "players: " << playernum << endl;
                 deck->dominoes.resize(12*playernum);
                 for(int i = 0; i < playernum; i++)
                 {
@@ -465,7 +483,16 @@ void model::readSocket()
                 for(int i = 0; i < 12* playernum; i++)
                 {
                     deck->dominoes[i]=Domino( COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt()), COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt()), 0,0,RIGHT );
+                    std::cout << deck->dominoes[i].GetColors().first << " " << deck->dominoes[i].GetColors().second << endl;
                 }
+                std::vector<Domino> domis;
+                for(int i = 0; i < playernum; i++)
+                {
+                    domis.push_back(deck->dominoes[i]);
+                    cout << "gotin" << endl;
+                }
+                //emit newDominos(domis);
+                //deck->current=domis;
             }
             if(line=="2")
             {
