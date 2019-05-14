@@ -29,7 +29,7 @@ Widget::Widget(QWidget *parent) :
     m = new model();
     connect( m, SIGNAL(ConnectConfirm()), this, SLOT(ConnectConfirmed()) );
     connect( m, SIGNAL(startServerConfirm()), this, SLOT(startServerConfirmed()) );
-    connect( m, SIGNAL(setPlayerNumChangeConfirm()), this, SLOT(startServerConfirmed()) );
+    connect( m, SIGNAL(setPlayerNumChangeConfirm()), this, SLOT(setPlayerNumChangeConfirmed()) );
 
     connect( m, SIGNAL(muteOthers(int)), this, SLOT(muteOthers(int)) );
     connect( m, SIGNAL(muteAllPlayers()), this, SLOT(muteAllPlayers()) );

@@ -67,7 +67,11 @@ signals:
     void ConnectConfirm();
     void setPlayerNumChangeConfirm();
 
-
+    //ide tettem ket signalt:
+    ///a tobbi jatekos tablajanak letiltasara:
+    void muteOthers(int);
+    ///minden jatekos letiltasara:
+    void muteAllPlayers();
 
 
 };
