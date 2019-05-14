@@ -163,9 +163,27 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
 {
     if(!(deck->taken[place]))
     {
-        currentplayer->placeKing(place);
+        if(isClient && accepts)
+        {
+            emit wantToSend(QString::number(0)+QString::number(firstDominoRow)+QString::number(place)+QString::number(sorrend[currentnumber]));
+            accepts=false;
+        }
+         currentplayer->placeKing(place);
         deck->taken[place]=true;
         PutKingConfirm(firstDominoRow, place, sorrend[currentnumber]);
+        if(server)
+        {
+            QString message;
+            message=QString::number(3);
+            for(int i = 0; i < 5; i++)
+            {
+                for(int j = 0; j < 5; j++)
+                {
+                    message=message+QString::number(currentplayer->getFields()[i][j]);
+                }
+            }
+            emit readyRead();
+        }
         if(currentnumber==(playernum-1))
         {
             if(firstTurn)
@@ -326,46 +344,91 @@ void model::AddDominoAttempt(int x, int y)
             szabalyos=false;
         }
     }
-
+    if(deck->cardsLeftNum()==-playernum)
+    {
+        //szabalyos=true;
+        cout << sorrend[currentnumber] << endl;
+    }
     if(szabalyos)
     {
+        cout << "LEHELYEZVE: " << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second << " ide: <<" <<x << " " << y << endl;;
+        if(accepts)
+        {
+            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==RIGHT)
+            emit wantToSend(QString::number(0)+QString::number(3)+QString::number(x)+QString::number(y));
+            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==LEFT)
+            emit wantToSend(QString::number(0)+QString::number(2)+QString::number(x)+QString::number(y));
+            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==UP)
+            emit wantToSend(QString::number(0)+QString::number(0)+QString::number(x)+QString::number(y));
+            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==DOWN)
+            emit wantToSend(QString::number(0)+QString::number(1)+QString::number(x)+QString::number(y));
+            accepts=false;
+        }
+        cout << "EZAJATEKOS: " << sorrend[currentnumber] << endl;
         currentplayer->placeDomino(deck, x, y);
+        cout << "MIVAN?" <<endl;
         AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
             PutKingConfirm(true,-1, sorrend[currentnumber]);
         }
+
     }
 
 
 
     if(deck->cardsLeftNum()==-1*playernum)
     {
+        for(int i = 0; i < playernum; i++)
+        {
+            for(int j = 0; j <5; j++)
+            {
+                for(int k = 0; k < 5; k++)
+                {
+                    cout << players[i].getFields()[j][k];
+                }
+                cout << endl;
+            }
+            cout << endl;
+        }
+        emit updateActivePlayer(sorrend[currentnumber]);
         if(currentnumber==(playernum-1))
         {
             int maxpont=-1;
             vector<int> nyertesek;
+            nyertesek.clear();
             for(int i = 0; i < playernum; i++)
             {
+                cout << "haladunk" << endl;
+                cout << "maxpont: " << maxpont<< endl;
+                cout << "jatekos: " << players[i].getPoint().first << endl;
+                if(players[i].getPoint().first==maxpont)
+                {
+                    nyertesek.push_back(i);
+                    cout << "hozzáadva: " << i<< endl;
+                }
                 if(players[i].getPoint().first>maxpont)
                 {
                     nyertesek.clear();
                     nyertesek.resize(1);
-                    nyertesek.push_back(i);
+                    nyertesek[0]=i;
+                    maxpont=players[i].getPoint().first;
+                    cout << "maxpont: " << maxpont<< endl;
+                    cout << "hozzáadva: " << i;
                 }
-                if(players[i].getPoint().first==maxpont)
-                {
-                    nyertesek.push_back(i);
-                }
+            }
+            for(int i = 0; i < nyertesek.size(); i++)
+            {
+                std::cout << nyertesek[i] << std::endl;
             }
             emit gameOver(nyertesek);
             startGame();
         }
         else
         {
-
-            emit
-        updateActivePlayer(sorrend[++currentnumber]);
+            currentnumber++;
+            currentplayer=&players[sorrend[currentnumber]];
+            emit updateActivePlayer(sorrend[currentnumber]);
         }
     }
 }
@@ -419,22 +482,21 @@ void model::connect()
     std::cout << "done" << endl;
     if(socket->isReadable())
     {
-        cout << "YOOOO0," << endl
-        ;
+        cout << "YOOOO" << endl;
     }
     ConnectConfirm();
 }
 
 void model::newConnection()
 {
-    deck->shuffle();
+    //deck->shuffle();
     cout << "Van kapcsolat" << endl;
     string themessage="";
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
-    QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
-    QObject::connect(this, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
+    QObject::connect(this, SIGNAL(readyRead()), socket, SLOT(readSocket()));
+    QObject::connect(socket, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
     //socket->write("0 ");
     char buf[60]; // needs a buffer
     buf[0]='0';
@@ -454,87 +516,95 @@ void model::newConnection()
         themessage=themessage+std::to_string(int(deck->dominoes[j].GetColors().second));
     }
     //socket->write(buf);
+    themessage=themessage+"\n";
     socket->write((const char *)themessage.data(), themessage.length()*sizeof(QChar));
     std::cout << "MIKIDSAKJ" << endl;
     emit readyRead();
-    cout << "buif" << buf << endl;
+    cout << "buif" << themessage << endl;
 }
 
 void model::readSocket()
 {
-    cout << "here" << endl;
-    QString asd = socket->readAll();
-    cout << asd.toUtf8().constData() << endl;
-    while(socket->canReadLine())
+    std::cout << "RREEEEEEEEEAAADDDD" << endl;
+    if(!accepts)
     {
-        cout << "everywhere" << endl;
-        QString asd = socket->readAll();
-        cout << asd.toUtf8().constData() << endl;
+        accepts=true;
     }
-    if(isClient)
+    else
     {
-        while(socket->canReadLine())
+        accepts=false;
+        cout << "here" << isClient << endl;
+        if(isClient)
+            cout << "there" << endl;
+        QString asd;
+        //QString line = QString::fromUtf8(socket->readLine());
+
+
+        if(isClient)
         {
-
-            QString line = QString::fromUtf8(socket->readLine());
-            cout << line.toUtf8().constData() << endl;
-            if(line=="0\n")
-            {
-                playernum=QString::fromUtf8(socket->readLine()).split(" ")[0].toInt();
-                cout << "players: " << playernum << endl;
-                deck->dominoes.resize(12*playernum);
-                for(int i = 0; i < playernum; i++)
+            cout << "11111111111" << endl;
+                asd=QString::fromUtf8(socket->readAll());
+                QString line = QString::fromUtf8(socket->readLine());
+                cout << "222222222" << endl;
+                cout << line.toUtf8().constData() << endl;
+                if(asd[0]=='0')
                 {
-                    sorrend[i]=QString::fromUtf8(socket->readLine()).split(" ")[0].toInt();
-                }
-                for(int i = 0; i < 12* playernum; i++)
-                {
-                    deck->dominoes[i]=Domino( COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt()), COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt()), 0,0,RIGHT );
-                    std::cout << deck->dominoes[i].GetColors().first << " " << deck->dominoes[i].GetColors().second << endl;
-                }
-                std::vector<Domino> domis;
-                for(int i = 0; i < playernum; i++)
-                {
-                    domis.push_back(deck->dominoes[i]);
-                    cout << "gotin" << endl;
-                }
-                //emit newDominos(domis);
-                //deck->current=domis;
-            }
-            if(line=="2")
-            {
-                PutKingConfirm(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
-
-            }
-            if(line=="3")
-            {
-                QVector<QVector<COLOR>> szinek;
-                szinek.resize(5);
-                for(int i = 0; i < 5; i++)
-                {
-                    szinek[i].resize(5);
-                    for(int j = 0; j < 5; j++)
+                    playernum=asd[1].digitValue();
+                    cout << "players: " << playernum << endl;
+                    deck->dominoes.resize(12*playernum);
+                    for(int i = 0; i < playernum; i++)
                     {
-                        szinek[i][j]=COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+                        sorrend[i]=asd[2+i].digitValue();
                     }
+                    for(int i = 0; i < 12* playernum; i++)
+                    {
+                        deck->dominoes[i]=Domino( COLOR(asd[2+playernum+i].digitValue()), COLOR(asd[3+playernum+i].digitValue()), 0,0,RIGHT );
+                        std::cout << deck->dominoes[i].GetColors().first << " " << deck->dominoes[i].GetColors().second << endl;
+                    }
+                    std::vector<Domino> domis;
+                    for(int i = 0; i < playernum; i++)
+                    {
+                        domis.push_back(deck->dominoes[i]);
+                        cout << "gotin" << endl;
+                    }
+                    //emit newDominos(domis);
+                    //deck->current=domis;
                 }
-                AddDominoConfirm(szinek);
-            }
+                if(line=="2")
+                {
+                    PutKingConfirm(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+
+                }
+                if(line=="3")
+                {
+                    QVector<QVector<COLOR>> szinek;
+                    szinek.resize(5);
+                    for(int i = 0; i < 5; i++)
+                    {
+                        szinek[i].resize(5);
+                        for(int j = 0; j < 5; j++)
+                        {
+                            szinek[i][j]=COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+                        }
+                    }
+                    AddDominoConfirm(szinek);
+                }
+
+            cout << "done reading " << endl;
         }
-        cout << "done reading " << endl;
+
     }
 }
 
 void model::wantToRead(QString arg)
 {
-    if(arg[0]=="0")
+    if(arg[0]=='0')
     {
         rotateDominoAttempt(sorrend[currentnumber], DIR(arg[1].digitValue()));
         AddDominoAttempt(arg[2].digitValue(),arg[3].digitValue());
     }
-    if(arg[0]=="1")
+    if(arg[0]=='1')
     {
         PutKingConfirm(arg[1].digitValue(),arg[2].digitValue(),arg[3].digitValue());
     }
 }
-
