@@ -32,6 +32,7 @@ class model : public QObject
     bool isClient=false;
     vector<QTcpSocket*> sockets;
     int clientnum=0;
+    bool accepts=true;
 
 
 public:

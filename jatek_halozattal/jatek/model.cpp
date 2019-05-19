@@ -366,7 +366,7 @@ void model::AddDominoAttempt(int x, int y)
         }
         cout << "EZAJATEKOS: " << sorrend[currentnumber] << endl;
         currentplayer->placeDomino(deck, x, y);
-        cout << "MIVAN?" <<endl;
+       // cout << "MIVAN?" <<endl;
         AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
