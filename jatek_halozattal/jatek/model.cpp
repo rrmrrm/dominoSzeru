@@ -171,7 +171,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
          currentplayer->placeKing(place);
         deck->taken[place]=true;
         PutKingConfirm(firstDominoRow, place, sorrend[currentnumber]);
-        if(server)
+        if(isServer)
         {
             string message;
             message=to_string(2)+to_string(currentplayer->getKingPlace());
@@ -182,6 +182,17 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
                 sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
                 sockets[i]->waitForBytesWritten();
             }
+            emit readyRead();
+
+        }
+        if(isClient)
+        {
+            string message;
+            message=to_string(2)+to_string(currentplayer->getKingPlace());
+
+            cout << "CLIENT SENDS KING STEP: " << message << endl;
+                socket->write((const char *)message.data(), message.length()*sizeof(QChar));
+                socket->waitForBytesWritten();
             emit readyRead();
 
         }
@@ -241,6 +252,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
     emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
     if(!firstTurn)
     emit showChosenDomino(deck->Current().at(currentplayer->getKingPlace()));
+    accepts=true;
 }
 
 
@@ -371,15 +383,6 @@ void model::AddDominoAttempt(int x, int y)
 
             string message;
             message = "3"+to_string(x)+ to_string(y);
-            /*message="3";
-            for(int i = 0; i < 5; i++)
-            {
-                for(int j = 0; j < 5; j++)
-                {
-                    message=message+std::to_string(currentplayer->getFields()[i][j]);
-                }
-            }
-*/
             cout << "SERVER SENDS BOARD: " << message << endl;
             for(int i = 0; i < sockets.size(); i++)
             {
@@ -388,6 +391,16 @@ void model::AddDominoAttempt(int x, int y)
             }
             emit readyRead();
 
+        }
+        if(isClient)
+        {
+
+            string message;
+            message = "3"+to_string(x)+ to_string(y);
+            cout << "CLIENT SENDS BOARD: " << message << endl;
+                socket->write((const char *)message.data(), message.length()*sizeof(QChar));
+                socket->waitForBytesWritten();
+            emit readyRead();
 
         }
 
@@ -458,6 +471,7 @@ void model::AddDominoAttempt(int x, int y)
             emit updateActivePlayer(sorrend[currentnumber]);
         }
     }
+    accepts=true;
 }
 
 void model::rotateDominoAttempt(int player, DIR newDir){
@@ -505,7 +519,6 @@ void model::connect()
     isClient=true;
     socket = new QTcpSocket(this);
     socket->connectToHost("localhost", 1234);
-    socket->write("helloServer");
     std::cout << "done" << endl;
     if(socket->isReadable())
     {
@@ -608,15 +621,27 @@ void model::readSocket()
         //QString line = QString::fromUtf8(socket->readLine());
 
 
-        if(isClient)
+        //if(isClient)//az egyik biztos jó
+        if(isClient || isServer)
         {
             cout << "11111111111" << endl;
+            if(isClient)
                 asd=QString::fromUtf8(socket->readAll());
+           if(isServer)
+           {
+               for(int i = 0; i < clientnum; i++)
+               {
+                   if(sockets[i]->isReadable())
+                   {
+                       asd=QString::fromUtf8(sockets[i]->readAll());
+                   }
+               }
+           }
                 cout << "kapott üzenet: " << asd.toLocal8Bit().constData() << endl;
-                QString line = QString::fromUtf8(socket->readLine());
-                cout << "kapott üzene2t: " << line.toLocal8Bit().constData() << endl;
-                cout << "222222222" << endl;
-                cout << line.toUtf8().constData() << endl;
+                //QString line = QString::fromUtf8(socket->readLine());
+                //cout << "kapott üzene2t: " << line.toLocal8Bit().constData() << endl;
+                //cout << "222222222" << endl;
+                //cout << line.toUtf8().constData() << endl;
                 if(asd[0]=='0')
                 {
                     playernum=asd[1].digitValue();
