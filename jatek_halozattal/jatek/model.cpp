@@ -163,11 +163,6 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
 {
     if(!(deck->taken[place]))
     {
-        if((isServer || isClient) && accepts)
-        {
-            emit wantToSend(QString::number(0)+QString::number(firstDominoRow)+QString::number(place)+QString::number(sorrend[currentnumber]));
-            accepts=false;
-        }
         currentplayer->placeKing(place);
         deck->taken[place]=true;
         PutKingConfirm(firstDominoRow, place, sorrend[currentnumber]);
@@ -185,8 +180,9 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
             emit readyRead();
 
         }
-        if(isClient)
+        if(isClient && accepts)
         {
+            accepts=false;
             string message;
             message=to_string(2)+to_string(currentplayer->getKingPlace());
 
@@ -252,7 +248,6 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
     emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
     if(!firstTurn)
     emit showChosenDomino(deck->Current().at(currentplayer->getKingPlace()));
-    accepts=true;
 }
 
 
@@ -365,18 +360,7 @@ void model::AddDominoAttempt(int x, int y)
     if(szabalyos)
     {
        // cout << "LEHELYEZVE: " << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second << " ide: <<" <<x << " " << y << endl;;
-        if(accepts)
-        {
-            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==RIGHT)
-            emit wantToSend(QString::number(0)+QString::number(3)+QString::number(x)+QString::number(y));
-            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==LEFT)
-            emit wantToSend(QString::number(0)+QString::number(2)+QString::number(x)+QString::number(y));
-            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==UP)
-            emit wantToSend(QString::number(0)+QString::number(0)+QString::number(x)+QString::number(y));
-            if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==DOWN)
-            emit wantToSend(QString::number(0)+QString::number(1)+QString::number(x)+QString::number(y));
-            accepts=false;
-        }
+
 
         if(isServer)
         {
@@ -392,9 +376,9 @@ void model::AddDominoAttempt(int x, int y)
             emit readyRead();
 
         }
-        if(isClient)
+        if(isClient && accepts)
         {
-
+            accepts=false;
             string message;
             message = "3"+to_string(x)+ to_string(y);
             cout << "CLIENT SENDS BOARD: " << message << endl;
@@ -471,7 +455,6 @@ void model::AddDominoAttempt(int x, int y)
             emit updateActivePlayer(sorrend[currentnumber]);
         }
     }
-    accepts=true;
 }
 
 void model::rotateDominoAttempt(int player, DIR newDir){
@@ -614,7 +597,6 @@ void model::readSocket()
     }
     else
     {
-        accepts=false;
         cout << "here" << isClient << endl;
         if(isClient)
             cout << "there" << endl;
@@ -680,7 +662,6 @@ void model::readSocket()
         }
 
     }
-    accepts=true; //EZ nem tudom, hogy jó-e itt...
 }
 
 void model::wantToRead(QString arg)
