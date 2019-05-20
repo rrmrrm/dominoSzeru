@@ -24,7 +24,7 @@ Widget::Widget(QWidget *parent) :
 
     dominoSideSize = 50;
 
-    playerNum =4;
+    playerNum = 4;
 
     m = new model();
     connect( m, SIGNAL(ConnectConfirm()), this, SLOT(ConnectConfirmed()) );
@@ -38,8 +38,8 @@ Widget::Widget(QWidget *parent) :
 }
 void Widget::initialize(int playerNum){
     isFirstTurn = true;
-    int playerWidgetHeight = 500;
-    int playerTableSize = 280;
+    int playerWidgetHeight = 400;
+    int playerTableSize = 160;
 
     activePlayer = 0;
     int playerWidgetWidth = playerTableSize + 2*dominoSideSize;
@@ -89,7 +89,6 @@ void Widget::initialize(int playerNum){
     connect(m, SIGNAL(indicatePlayer(int)), this, SLOT(indicatePlayer(int)) );
     connect(m, SIGNAL(yourTurn()), this, SLOT(yourTurn()));
 
-    indicatePlayer(0);
     m->setPlayernum(playerNum);
     m->startGame();
 }
