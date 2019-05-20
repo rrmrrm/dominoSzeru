@@ -323,16 +323,32 @@ void Widget::clear(){
 }
 
 void Widget::muteOthers(int unMuted){
+    cout << "Widget::muteOthers( " << unMuted << ")" << endl;
+    for(int i = 0 ; i < dominoRow1.size() ; ++i){
+        dominoRow1[i]->setEnabled(true);
+    }
+    for(int i = 0 ; i < dominoRow2.size() ; ++i){
+        dominoRow2[i]->setEnabled(true);
+    }
+
     for(int i = 0 ; i < playerNum ; ++i ){
         if(i != unMuted){
             players[i]->setEnabled(false);
         }
         else{
-            ///a parameterkent adott jatekost unMute-oljam?
+            players[i]->setEnabled(true);
         }
     }
 }
 void Widget::muteAllPlayers(){
+    cout << "Widget::muteAllPlayers" << endl;
+    for(int i = 0 ; i < dominoRow1.size() ; ++i){
+        dominoRow1[i]->setEnabled(false);
+    }
+    for(int i = 0 ; i < dominoRow2.size() ; ++i){
+        dominoRow2[i]->setEnabled(false);
+    }
+
     for(int i = 0 ; i < playerNum ; ++i ){
         players[i]->setEnabled(false);
     }
