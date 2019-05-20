@@ -63,6 +63,7 @@ void model::startGame()
     emit newDominos(deck->getNewOnes());
     emit updateDeckSize(max(0,deck->cardsLeftNum()));
     emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
+    emit indicatePlayer(300);
 }
 bool lerakahto(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* deck)
 {
@@ -577,6 +578,7 @@ void model::playerNumChanged()
 void model::startServer()
 {
     emit muteAllPlayers();
+    emit indicatePlayer(0);
     isServer=true;
     server =  new QTcpServer(this);
     QObject::connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
