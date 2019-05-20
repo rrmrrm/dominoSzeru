@@ -500,6 +500,7 @@ void model::playerNumChanged()
 
 void model::startServer()
 {
+    emit muteAllPlayers();
     isServer=true;
     server =  new QTcpServer(this);
     QObject::connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
