@@ -97,9 +97,13 @@ Widget::~Widget(){
 }
 
 void Widget::addSecondDominoRow(){
+
+    for(int i = 0 ; i < dominoRow1.size() ; ++i){
+        dominoRow1[i]->setEnabled(false);
+    }
+
     for(int i = 0 ; i < playerNum ; ++i ){
         DominoButton* d = new DominoButton(dominoSideSize,i/*,this*/);
-
         dominoRow2.push_back(d);
         ui->dominosRow2Layout->addWidget(d,i,0);
         connect(d, SIGNAL(clicked()), this, SLOT(dominoRow2Clicked()) );
@@ -331,7 +335,10 @@ void Widget::clear(){
 void Widget::muteOthers(int unMuted){
     cout << "Widget::muteOthers( " << unMuted << ")" << endl;
     for(int i = 0 ; i < dominoRow1.size() ; ++i){
-        dominoRow1[i]->setEnabled(true);
+        if(isFirstTurn)
+            dominoRow1[i]->setEnabled(true);
+        else
+            dominoRow1[i]->setEnabled(false);
     }
     for(int i = 0 ; i < dominoRow2.size() ; ++i){
         dominoRow2[i]->setEnabled(true);
