@@ -153,13 +153,6 @@ void Widget::showNewDominos(vector<Domino> v){
 
     cout << "isfirstturn: " << isFirstTurn << endl;
 
-    cout << "showNewDominos: dominoRow1.size(): " << dominoRow1.size() << endl;
-    cout << "showNewDominos: dominoRow2.size(): " << dominoRow2.size() << endl;
-    cout << "showNewDominos: v.size(): " << v.size() << endl;
-    if(v.size() != dominoRow1.size()){
-        dominoRow1.resize( v.size() );
-        dominoRow2.resize( v.size() );
-    }
     if(isFirstTurn){
         for(int i = 0 ; i < dominoRow1.size(); ++ i){
             dominoRow1[i]->setDomino(v[i]);
