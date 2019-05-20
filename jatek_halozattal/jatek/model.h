@@ -74,6 +74,7 @@ signals:
     void ConnectConfirm();
     void setPlayerNumChangeConfirm();
     void yourTurn();
+    void indicatePlayer(int);
 
     //ide tettem ket signalt:
     ///a tobbi jatekos tablajanak letiltasara:
