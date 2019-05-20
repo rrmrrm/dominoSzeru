@@ -152,6 +152,7 @@ void Widget::showNewDominos(vector<Domino> v){
     cout << "Widget::showNewDominos(vector<Domino> v)" << endl;
 
     cout << "isfirstturn: " << isFirstTurn << endl;
+
     if(isFirstTurn){
         for(int i = 0 ; i < dominoRow1.size(); ++ i){
             dominoRow1[i]->setDomino(v[i]);
@@ -302,13 +303,13 @@ void Widget::clear(){
     disconnect(m, SIGNAL(newDominos(vector<Domino>) ), this, SLOT(showNewDominos(vector<Domino>)) );
     disconnect(m, SIGNAL(notTheFirstTurn()), this, SLOT(notTheFirstTurn()) );
 
-    for(int i = 0 ; i < playerNum ; ++i ){
+    for(int i = 0 ; i < dominoRow1.size() ; ++i ){
         disconnect(dominoRow1[i], SIGNAL(clicked()), this, SLOT(dominoRow1Clicked()) );
         ui->dominosRow1Layout->removeWidget(dominoRow1[i]);
         delete dominoRow1[i];
     }
 
-    for(int i = 0; i<playerNum ; ++i){
+    for(int i = 0; i<players.size() ; ++i){
         disconnect( players[i]->dominoButton, SIGNAL(clicked()), this, SLOT(playerDominoClicked()) );
         players[i]->ui->horizontalLayout->removeWidget(players[i]->dominoButton);
         delete players[i]->dominoButton;
