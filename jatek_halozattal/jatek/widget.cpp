@@ -95,7 +95,7 @@ Widget::~Widget(){
 
 void Widget::addSecondDominoRow(){
     for(int i = 0 ; i < playerNum ; ++i ){
-        DominoButton* d = new DominoButton(dominoSideSize,i,this);
+        DominoButton* d = new DominoButton(dominoSideSize,i/*,this*/);
 
         dominoRow2.push_back(d);
         ui->dominosRow2Layout->addWidget(d,i,0);
