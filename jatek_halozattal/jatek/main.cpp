@@ -1,4 +1,4 @@
-//#define TEST
+#define TEST
 #include "common.h"
 #include "domino.h"
 

@@ -58,7 +58,7 @@ private slots:
         m->startGame();
 
     }
-    void putKingAndTurnOrderTest(){
+    void putKing_TurnOrder_AddDomino_RotateDomino_Test(){
         //az 0. jatekos a 3.dominot valasztja ki
         const int p0 = m->sorrend[0];
         const int p1= m->sorrend[1];
@@ -68,7 +68,7 @@ private slots:
         QCOMPARE(m->currentnumber,0);
 
         m->PutKingAttempt(true,3);
-        //a 3. dominot valasztotta ki
+        //a 0. jatekos a 3. dominot valasztotta ki
         QCOMPARE(m->players[p0].king.getPlace(), 3);
         QCOMPARE(m->currentnumber,1);
 
@@ -98,14 +98,64 @@ private slots:
         const int q2 = m->sorrend[2];
         const int q3 = m->sorrend[3];
 
-        //a 2es indexu jatekos jon
+        //a 2es jatekos jon
         QCOMPARE(q0, p2);
+        //felulirom a leteendo dominot, hogy determinisztikus legyen a teszteles:
+        m->deck->Current().at(m->currentplayer->king.getPlace()) = Domino(WHEATFIELD,WHEATFIELD,0,0,RIGHT);
+
+        //elforgatjuk lefele iranyba a dominot, es ellenorizzuk az eredmenyt:
+        m->rotateDominoAttempt(q0, DOWN);
+        QCOMPARE(m->deck->Current().at(m->currentplayer->king.getPlace()).GetDirection(), DOWN);
+
+        //domino letevese
         m->AddDominoAttempt(3,2);
+
         //sikeresen hozzadta a tablajahoz a dominot:
-        Q_ASSERT(m->players[q0].board.getFields()[3][2] != EMPTY);
-        Q_ASSERT(m->players[q0].board.getFields()[3][3] != EMPTY);
+        QCOMPARE(m->players[q0].board.getFields()[3][2], WHEATFIELD);
+        QCOMPARE(m->players[q0].board.getFields()[4][2], WHEATFIELD);
+        //attesszuk a kiralyt
+        m->PutKingAttempt(false, m->currentplayer->king.getPlace());
+
+        //a tobbiek dominojat es kirajat is letesszuk
+
+        //az 1es jatekos jon, mert o kivalasztotta elobb az 1. dominot
+        QCOMPARE(q1, p1);
+        m->AddDominoAttempt(3,2);
+        m->PutKingAttempt(false, m->currentplayer->king.getPlace());
+
+        //a 3as jatekos jon, mert o kivalasztotta elobb a 2. dominot
+        QCOMPARE(q2, p3);
+        m->AddDominoAttempt(3,2);
+        m->PutKingAttempt(false, m->currentplayer->king.getPlace());
+
+        //az 0as jatekos jon, mert o valasztotta ki elobb a 3. dominot
+        QCOMPARE(q3, p0);
+        m->AddDominoAttempt(3,2);
+        m->PutKingAttempt(false, m->currentplayer->king.getPlace());
 
 
+        //most ujra vizsgaljuk  2es jatekos domino lehelyezeset
+
+        //felulirom a leteendo dominot, hogy determinisztikus legyen a teszteles:
+        m->deck->Current().at(m->currentplayer->king.getPlace()) = Domino(FOREST,WHEATFIELD,0,0,RIGHT);
+
+        // a dominot az elozo domino melle probaljuk tenni
+        m->AddDominoAttempt(3,3);
+
+        //nem illeszkedett a domino a tablahoz:
+        QCOMPARE(m->players[q0].board.getFields()[3][3], EMPTY);
+        QCOMPARE(m->players[q0].board.getFields()[3][4], EMPTY);
+
+        //, ezert elforgatjuk a dominot es ugy tesszuk a masik melle:
+        m->rotateDominoAttempt(q0, LEFT);
+        m->AddDominoAttempt(3,4);
+
+        //most mar sikerult lerakni a dominot:
+        QCOMPARE(m->players[q0].board.getFields()[3][3], WHEATFIELD);
+        QCOMPARE(m->players[q0].board.getFields()[3][4], FOREST);
+
+        //attesszuk a kiralyt es vege a tesztnek.
+        m->PutKingAttempt(false, m->currentplayer->king.getPlace());
     }
     void cleanupTestCase() {
         delete m;
