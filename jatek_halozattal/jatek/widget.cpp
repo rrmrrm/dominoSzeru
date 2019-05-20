@@ -273,7 +273,7 @@ void Widget::startServerConfirmed(){
     ui->startServerButton->setEnabled(false);
 }
 void Widget::setPlayerNumChangeConfirmed(){
-    ui->setPlayerNumButton->setEnabled(false);
+    //ui->setPlayerNumButton->setEnabled(false);
 }
 
 void Widget::updatePlayerNum(int n){
