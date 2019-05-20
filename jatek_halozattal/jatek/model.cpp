@@ -593,10 +593,11 @@ void model::readSocket()
     if(!accepts)
     {
         cout << "nem feldolgozó módban érkkezett üzenet!" << endl;
-        accepts=true;
     }
-    else
+    if(accepts || isServer)
     {
+        if(isClient)
+            accepts=false;
         cout << "here" << isClient << endl;
         if(isClient)
             cout << "there" << endl;
@@ -662,6 +663,7 @@ void model::readSocket()
         }
 
     }
+    accepts=true;
 }
 
 void model::wantToRead(QString arg)
