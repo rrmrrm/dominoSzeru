@@ -86,6 +86,10 @@ void Widget::initialize(int playerNum){
     connect(ui->setPlayerNumButton, SIGNAL(clicked()), this, SLOT(setPlayerNumButtonClicked()));
     connect(m, SIGNAL(sendPlayerNum(int)), this, SLOT(updatePlayerNum(int)) );
 
+    connect(m, SIGNAL(indicatePlayer(int)), this, SLOT(indicatePlayer(int)) );
+    connect(m, SIGNAL(yourTurn()), this, SLOT(yourTurn()));
+
+    indicatePlayer(0);
     m->setPlayernum(playerNum);
     m->startGame();
 }
@@ -269,8 +273,11 @@ void Widget::setPlayerNumButtonClicked(){
 
 void Widget::ConnectConfirmed(){
     ui->connectButton->setEnabled(false);
+    ui->startServerButton->setEnabled(false);
+    ui->setPlayerNumButton->setEnabled(false);
 }
 void Widget::startServerConfirmed(){
+    ui->startServerButton->setEnabled(false);
     ui->startServerButton->setEnabled(false);
 }
 void Widget::setPlayerNumChangeConfirmed(){
@@ -352,4 +359,22 @@ void Widget::muteAllPlayers(){
     for(int i = 0 ; i < playerNum ; ++i ){
         players[i]->setEnabled(false);
     }
+}
+
+///a megadott jatekosWidgetet kiszinezi, hogy a jatekos tudja, hogy melyik az o tablaja
+void Widget::indicatePlayer(int player){
+    for(int i = 0 ; i < playerNum ; ++i){
+        if(i == player)
+            players[i]->table->underline(true);
+        else
+            players[i]->table->underline(false);
+    }
+}
+
+///a jatekablak korvonalat fogja kiszinezni ilyen szinure, hogy a jatekos tudja, hogy mi a szine
+void Widget::yourTurn(){
+    qmb.information(
+        this,
+        tr("Te jössz!"),
+        "") ;
 }

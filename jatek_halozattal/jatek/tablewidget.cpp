@@ -15,7 +15,8 @@ TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR 
     QWidget(parent),
     _isActive(isActive),
     dominoHighlight(nullptr),
-    dominos(  static_cast<PlayerWidget*>(parent)->dominos )
+    dominos(  static_cast<PlayerWidget*>(parent)->dominos ),
+    underlined(false)
 {
     QGridLayout *layout = new QGridLayout;
 
@@ -37,6 +38,14 @@ TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR 
 }
 
 TableWidget::~TableWidget(){
+
+}
+
+void TableWidget::underline(bool b){
+    int thickness = 20;
+    underlined = b;
+    if(b)
+        this->setFixedHeight(height()+thickness);
 
 }
 
@@ -84,6 +93,7 @@ void TableWidget::paintEvent(QPaintEvent* e){
         y0 += h;
     }
 
+
     //tabla kerete:
     if(_isActive){
         p.setPen(qColor);
@@ -97,6 +107,19 @@ void TableWidget::paintEvent(QPaintEvent* e){
     }
     p.setPen(qColor);
     p.drawRect(0,0, w-1, h-1);
+
+    //ha underline igaz, akkor alahuzassal megjeloljuk hogy a tabla melyik jatekoshoz tartozik
+    if(underlined){
+        int thickness = 20;
+        QRect r(0,height()-thickness, width(), height());
+        p.fillRect(r, QBrush(qColor));
+
+
+        p.setPen(QColor(0,0,0));
+        p.setFont({"Arial", thickness});
+        QRect r2(0,height()-thickness-5, width(), height()-5);
+        p.drawText(r2, Qt::AlignJustify, "Ez a te táblád");
+    }
 }
 void TableWidget::mouseMoveEvent(QMouseEvent *event){
     // cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
@@ -115,7 +138,7 @@ void TableWidget::mouseMoveEvent(QMouseEvent *event){
 
 }
 void TableWidget::mousePressEvent(QMouseEvent *event){
-    ///todo: tableSize-t mashol defifnialni
+    ///todo: tableSize-t mashol definialni
     int tableSize= 5;
     cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
 
