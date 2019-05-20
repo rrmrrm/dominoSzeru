@@ -484,8 +484,29 @@ void model::connect()
     {
         cout << "YOOOO" << endl;
     }
+    QObject::connect(socket, SIGNAL(connected()), this, SLOT(connected()));
+    QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
+
+
     ConnectConfirm();
+
 }
+
+void model::connected()
+{
+
+}
+
+void model::disconnected()
+{
+
+}
+void model::bytesWritten( qint64)
+{
+
+}
+
 
 void model::newConnection()
 {

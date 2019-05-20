@@ -10,6 +10,7 @@
 #include <QIcon>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QAbstractSocket>
 
 using namespace std;
 
@@ -49,6 +50,11 @@ public slots:
     void readSocket();
     void wantToRead(QString);
     void newConnection();
+
+    void connected();
+    void disconnected();
+    void bytesWritten(qint64 bytes);
+
 signals:
     //void newConnnection();
     void PutKingConfirm(bool firstDominRow,int place, int number);
