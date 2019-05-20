@@ -163,12 +163,12 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
 {
     if(!(deck->taken[place]))
     {
-        if(isClient && accepts)
+        if((isServer || isClient) && accepts)
         {
             emit wantToSend(QString::number(0)+QString::number(firstDominoRow)+QString::number(place)+QString::number(sorrend[currentnumber]));
             accepts=false;
         }
-         currentplayer->placeKing(place);
+        currentplayer->placeKing(place);
         deck->taken[place]=true;
         PutKingConfirm(firstDominoRow, place, sorrend[currentnumber]);
         if(isServer)
@@ -245,7 +245,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
              }
 
         currentplayer=&players[sorrend[currentnumber]];
-        std::cout << "JELENLEGI JATEKOS: " << sorrend[currentnumber] << std::endl;
+       // std::cout << "JELENLEGI JATEKOS: " << sorrend[currentnumber] << std::endl;
     }
     emit updateActivePlayer(sorrend[currentnumber]);
     emit updateDeckSize(max(0,deck->cardsLeftNum()));
@@ -280,7 +280,7 @@ void model::AddDominoAttempt(int x, int y)
         y2++;
     }
 
-    std::cout << x << " " << y << " " << x2 << " " << y2 << std::endl;
+   // std::cout << x << " " << y << " " << x2 << " " << y2 << std::endl;
     if(x>=0 && x <=4 && y>=0 && y <=4 && x2>=0 && x2 <=4 && y2>=0 && y2 <=4)
     {
 
@@ -360,11 +360,11 @@ void model::AddDominoAttempt(int x, int y)
     if(deck->cardsLeftNum()==-playernum)
     {
         //szabalyos=true;
-        cout << sorrend[currentnumber] << endl;
+       // cout << sorrend[currentnumber] << endl;
     }
     if(szabalyos)
     {
-        cout << "LEHELYEZVE: " << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second << " ide: <<" <<x << " " << y << endl;;
+       // cout << "LEHELYEZVE: " << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().first << deck->getCurrent().at(currentplayer->getKingPlace()).GetColors().second << " ide: <<" <<x << " " << y << endl;;
         if(accepts)
         {
             if(deck->getCurrent().at(currentplayer->getKingPlace()).GetDirection()==RIGHT)
@@ -404,7 +404,7 @@ void model::AddDominoAttempt(int x, int y)
 
         }
 
-        cout << "EZAJATEKOS: " << sorrend[currentnumber] << endl;
+      //  cout << "EZAJATEKOS: " << sorrend[currentnumber] << endl;
         currentplayer->placeDomino(deck, x, y);
        // cout << "MIVAN?" <<endl;
         AddDominoConfirm(currentplayer->getFields());
@@ -639,10 +639,6 @@ void model::readSocket()
                }
            }
                 cout << "kapott üzenet: " << asd.toLocal8Bit().constData() << endl;
-                //QString line = QString::fromUtf8(socket->readLine());
-                //cout << "kapott üzene2t: " << line.toLocal8Bit().constData() << endl;
-                //cout << "222222222" << endl;
-                //cout << line.toUtf8().constData() << endl;
                 if(asd[0]=='0')
                 {
                     playernum=asd[1].digitValue();
@@ -666,7 +662,7 @@ void model::readSocket()
                         cout << "gotin" << endl;
                     }
                     emit newDominos(domis);
-                    deck->current=domis;
+                    deck->newOnes=domis;
                 }
                 if(asd[0]=='2')
                 {
@@ -678,18 +674,6 @@ void model::readSocket()
                 {
                     cout << "palya valtozik" << endl;
                    AddDominoAttempt(asd[1].digitValue(), asd[2].digitValue());
-
-                    /*QVector<QVector<COLOR>> szinek;
-                    szinek.resize(5);
-                    for(int i = 0; i < 5; i++)
-                    {
-                        szinek[i].resize(5);
-                        for(int j = 0; j < 5; j++)
-                        {
-                            szinek[i][j]=COLOR(asd[i*5+j+1].digitValue());
-                        }
-                    }
-                    AddDominoConfirm(szinek);*/
                 }
 
             cout << "done reading " << endl;

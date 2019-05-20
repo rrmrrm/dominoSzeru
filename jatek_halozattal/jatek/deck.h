@@ -9,11 +9,11 @@ using namespace std;
 
 class Deck
 {
-    vector<Domino> newOnes;
     vector<int> order;
     int cardsDrawn;
     int deckSize;
 public:
+    vector<Domino> newOnes;
     vector<Domino> dominoes;
     vector<Domino> current;
     vector<bool> taken;
