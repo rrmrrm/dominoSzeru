@@ -94,7 +94,7 @@ Deck::Deck(int playerNumber)
         dominoes[47]=Domino(PASTURE, PASTURE, 2, 0);
     }
     shuffle();
-    draw();
+    //draw();
 }
 
 void Deck::shuffle()
@@ -102,6 +102,13 @@ void Deck::shuffle()
     cardsDrawn=0;
     std::srand ( unsigned ( std::time(nullptr) ) );
     std::random_shuffle ( dominoes.begin(), dominoes.end() );
+    std::cout << "a kevert pakli:";
+    for(int i = 0; i < dominoes.size(); i++)
+    {
+        std::cout << dominoes[i].GetColors().first << dominoes[i].GetColors().second;
+
+    }
+    std::cout << std::endl;
 }
 
 int Deck::cardsLeftNum()

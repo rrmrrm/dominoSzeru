@@ -26,7 +26,7 @@ class model : public QObject
     int playernum=3;
     Player *currentplayer;
     int currentnumber;
-    bool firstTurn;
+    bool firstTurn=true;
     QTcpSocket *socket;
     QTcpServer *server;
     bool isServer=false;

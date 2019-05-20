@@ -519,7 +519,7 @@ void model::newConnection()
     QObject::connect(this, SIGNAL(readyRead()), socket, SLOT(readSocket()));
     QObject::connect(socket, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
     //socket->write("0 ");
-    char buf[60]; // needs a buffer
+    char buf[256]; // needs a buffer
     buf[0]='0';
     themessage=themessage+"0";
     buf[1]=char(playernum);
@@ -531,15 +531,20 @@ void model::newConnection()
     }
     for(int j = 0; j < deck->dominoes.size(); j++)
     {
-        buf[2+playernum+j]=int(deck->dominoes[j].GetColors().first);
+        buf[2+playernum+2*j]=int(deck->dominoes[j].GetColors().first);
         themessage=themessage+std::to_string(int(deck->dominoes[j].GetColors().first));
-        buf[3+playernum+j]=int(deck->dominoes[j].GetColors().second);
+        buf[3+playernum+2*j]=int(deck->dominoes[j].GetColors().second);
         themessage=themessage+std::to_string(int(deck->dominoes[j].GetColors().second));
     }
     //socket->write(buf);
     themessage=themessage+"\n";
     socket->write((const char *)themessage.data(), themessage.length()*sizeof(QChar));
-    std::cout << "MIKIDSAKJ" << endl;
+    std::cout << "A pakli: ";
+    for(int i = 0; i < deck->dominoes.size(); i++)
+    {
+        cout << deck->dominoes.at(i).GetColors().first << " " << deck->dominoes.at(i).GetColors().second << " ";
+    }
+    cout << endl;
     emit readyRead();
     cout << "buif" << themessage << endl;
 }
@@ -579,7 +584,7 @@ void model::readSocket()
                     }
                     for(int i = 0; i < 12* playernum; i++)
                     {
-                        deck->dominoes[i]=Domino( COLOR(asd[2+playernum+i].digitValue()), COLOR(asd[3+playernum+i].digitValue()), 0,0,RIGHT );
+                        deck->dominoes[i]=Domino( COLOR(asd[2+playernum+2*i].digitValue()), COLOR(asd[3+playernum+2*i].digitValue()), 0,0,RIGHT );
                         std::cout << deck->dominoes[i].GetColors().first << " " << deck->dominoes[i].GetColors().second << endl;
                     }
                     std::vector<Domino> domis;
@@ -588,8 +593,8 @@ void model::readSocket()
                         domis.push_back(deck->dominoes[i]);
                         cout << "gotin" << endl;
                     }
-                    //emit newDominos(domis);
-                    //deck->current=domis;
+                    emit newDominos(domis);
+                    deck->current=domis;
                 }
                 if(line=="2")
                 {
