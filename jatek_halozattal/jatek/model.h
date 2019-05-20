@@ -73,6 +73,7 @@ signals:
     void startServerConfirm();
     void ConnectConfirm();
     void setPlayerNumChangeConfirm();
+    void yourTurn();
 
     //ide tettem ket signalt:
     ///a tobbi jatekos tablajanak letiltasara:
