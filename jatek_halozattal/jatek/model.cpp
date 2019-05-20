@@ -370,7 +370,8 @@ void model::AddDominoAttempt(int x, int y)
         {
 
             string message;
-            message="3";
+            message = "3"+to_string(x)+ to_string(y);
+            /*message="3";
             for(int i = 0; i < 5; i++)
             {
                 for(int j = 0; j < 5; j++)
@@ -378,7 +379,7 @@ void model::AddDominoAttempt(int x, int y)
                     message=message+std::to_string(currentplayer->getFields()[i][j]);
                 }
             }
-
+*/
             cout << "SERVER SENDS BOARD: " << message << endl;
             for(int i = 0; i < sockets.size(); i++)
             {
@@ -650,7 +651,9 @@ void model::readSocket()
                 if(asd[0]=="3")
                 {
                     cout << "palya valtozik" << endl;
-                    QVector<QVector<COLOR>> szinek;
+                   AddDominoAttempt(asd[1].digitValue(), asd[2].digitValue());
+
+                    /*QVector<QVector<COLOR>> szinek;
                     szinek.resize(5);
                     for(int i = 0; i < 5; i++)
                     {
@@ -660,7 +663,7 @@ void model::readSocket()
                             szinek[i][j]=COLOR(asd[i*5+j+1].digitValue());
                         }
                     }
-                    AddDominoConfirm(szinek);
+                    AddDominoConfirm(szinek);*/
                 }
 
             cout << "done reading " << endl;
