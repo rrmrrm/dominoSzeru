@@ -165,6 +165,7 @@ return szabalyos;
 }
 void model::PutKingAttempt(bool firstDominoRow, int place)
 {
+    cout << "kiraléyt helyezek " << place << endl;
     if(!(deck->taken[place]))
     {
         currentplayer->placeKing(place);
@@ -192,7 +193,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
 
             cout << "CLIENT SENDS KING STEP: " << message << endl;
                 cout << "elkoldott data::::::::::::::::::: " << socket->write((const char *)message.data(), message.length()*sizeof(QChar)) << endl;
-                cout << "bytesize " <<   message.length()*sizeof(QChar) << endl;
+               // cout << "bytesize " <<   message.length()*sizeof(QChar) << endl;
                 socket->waitForBytesWritten();
             emit readyRead();
 
@@ -248,18 +249,22 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
         currentplayer=&players[sorrend[currentnumber]];
        // std::cout << "JELENLEGI JATEKOS: " << sorrend[currentnumber] << std::endl;
     }
-cout << "sikerült lerakni a királyt" << endl;
+//cout << "sikerült lerakni a királyt" << endl;
     if(isServer)
-    { cout << "elsoo jatekos::: " << sorrend[0] << endl;
+    {//cout << "elsoo jatekos::: " << sorrend[0] << endl;
         if(isServer)
         {
-            cout << "kuldjuk" << endl;
+           // cout << "kuldjuk" << endl;
+
+            cout << "Szerver frissíti az aktív játékost!" << endl;
             string message;
             if(sorrend[currentnumber]==0)
             {
                 emit muteOthers(0);
+                emit yourTurn();
                 for(int i= 0; i < sockets.size(); i++)
                 {
+                    cout << i;
                     message=to_string(5);
                     sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
                     sockets[i]->waitForBytesWritten();
@@ -268,19 +273,24 @@ cout << "sikerült lerakni a királyt" << endl;
             }
             else
             {
+                QThread::msleep(100);
                 message=to_string(4)+to_string(sorrend[currentnumber]);
+                cout << sorrend[currentnumber] << " jon " << message << " ";
                 sockets[sorrend[currentnumber]-1]->write((const char *)message.data(), message.length()*sizeof(QChar));
                 sockets[sorrend[currentnumber]-1]->waitForBytesWritten();
                 for(int i = 0; i < clientnum; i++)
                 {
                     if(i!=sorrend[currentnumber]-1)
                     {
+                        cout << i;
                         message=to_string(5);
                         sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
                         sockets[i]->waitForBytesWritten();
                     }
                 }
+                cout << " jon " << message << " ";
             }
+            std::cout << endl;
             emit readyRead();
         }
     }
@@ -411,7 +421,7 @@ void model::AddDominoAttempt(int x, int y)
 
             string message;
             message = "3"+to_string(x)+ to_string(y);
-            cout << "SERVER SENDS BOARD: " << message << endl;
+          //  cout << "SERVER SENDS BOARD: " << message << endl;
             for(int i = 0; i < sockets.size(); i++)
             {
                 sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
@@ -425,7 +435,7 @@ void model::AddDominoAttempt(int x, int y)
             accepts=false;
             string message;
             message = "3"+to_string(x)+ to_string(y);
-            cout << "CLIENT SENDS BOARD: " << message << endl;
+          //  cout << "CLIENT SENDS BOARD: " << message << endl;
                 socket->write((const char *)message.data(), message.length()*sizeof(QChar));
                 socket->waitForBytesWritten();
             emit readyRead();
@@ -460,41 +470,6 @@ void model::AddDominoAttempt(int x, int y)
             cout << endl;
         }
 
-        if(isServer)
-        { cout << "elsoo jatekos::: " << sorrend[0] << endl;
-            if(isServer)
-            {
-                cout << "kuldjuk" << endl;
-                string message;
-                if(sorrend[currentnumber]==0)
-                {
-                    emit muteOthers(0);
-                    for(int i= 0; i < sockets.size(); i++)
-                    {
-                        message=to_string(5);
-                        sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
-                        sockets[i]->waitForBytesWritten();
-
-                    }
-                }
-                else
-                {
-                    message=to_string(4)+to_string(sorrend[currentnumber]);
-                    sockets[sorrend[currentnumber]-1]->write((const char *)message.data(), message.length()*sizeof(QChar));
-                    sockets[sorrend[currentnumber]-1]->waitForBytesWritten();
-                    for(int i = 0; i < clientnum; i++)
-                    {
-                        if(i!=sorrend[currentnumber]-1)
-                        {
-                            message=to_string(5);
-                            sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
-                            sockets[i]->waitForBytesWritten();
-                        }
-                    }
-                }
-                emit readyRead();
-            }
-        }
         emit updateActivePlayer(sorrend[currentnumber]);
         if(currentnumber==(playernum-1))
         {
@@ -503,13 +478,13 @@ void model::AddDominoAttempt(int x, int y)
             nyertesek.clear();
             for(int i = 0; i < playernum; i++)
             {
-                cout << "haladunk" << endl;
-                cout << "maxpont: " << maxpont<< endl;
-                cout << "jatekos: " << players[i].getPoint().first << endl;
+              //  cout << "haladunk" << endl;
+              //  cout << "maxpont: " << maxpont<< endl;
+               // cout << "jatekos: " << players[i].getPoint().first << endl;
                 if(players[i].getPoint().first==maxpont)
                 {
                     nyertesek.push_back(i);
-                    cout << "hozzáadva: " << i<< endl;
+                  //  cout << "hozzáadva: " << i<< endl;
                 }
                 if(players[i].getPoint().first>maxpont)
                 {
@@ -517,13 +492,13 @@ void model::AddDominoAttempt(int x, int y)
                     nyertesek.resize(1);
                     nyertesek[0]=i;
                     maxpont=players[i].getPoint().first;
-                    cout << "maxpont: " << maxpont<< endl;
-                    cout << "hozzáadva: " << i;
+                 //   cout << "maxpont: " << maxpont<< endl;
+                 //   cout << "hozzáadva: " << i;
                 }
             }
             for(int i = 0; i < nyertesek.size(); i++)
             {
-                std::cout << nyertesek[i] << std::endl;
+               // std::cout << nyertesek[i] << std::endl;
             }
             emit gameOver(nyertesek);
             startGame();
@@ -535,14 +510,15 @@ void model::AddDominoAttempt(int x, int y)
 
             if(isServer)
             {
-                cout << "elsoo jatekos::: " << sorrend[0] << endl;
+              //  cout << "elsoo jatekos::: " << sorrend[0] << endl;
                 if(isServer)
                 {
-                    cout << "kuldjuk" << endl;
+                 //   cout << "kuldjuk" << endl;
                     string message;
                     if(sorrend[currentnumber]==0)
                     {
                         emit muteOthers(0);
+                        emit yourTurn();
                         for(int i= 0; i < sockets.size(); i++)
                         {
                             message=to_string(5);
@@ -621,11 +597,11 @@ void model::connect()
     isClient=true;
     socket = new QTcpSocket(this);
     socket->connectToHost("localhost", 1234);
-    std::cout << "done" << endl;
-    if(socket->isReadable())
-    {
-        cout << "YOOOO" << endl;
-    }
+   // std::cout << "done" << endl;
+   // if(socket->isReadable())
+   // {
+       // cout << "YOOOO" << endl;
+   // }
     QObject::connect(socket, SIGNAL(connected()), this, SLOT(connected()));
     QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
@@ -707,6 +683,7 @@ void model::newConnection()
             if(sorrend[0]==0)
             {
                 emit muteOthers(0);
+                emit yourTurn();
                 for(int i= 0; i < sockets.size(); i++)
                 {
                     message=to_string(5);
@@ -732,10 +709,6 @@ void model::newConnection()
                 }
             }
             emit readyRead();
-            message=to_string(4)+to_string(3);
-            sockets[2]->write((const char *)message.data(), message.length()*sizeof(QChar));
-            sockets[2]->waitForBytesWritten();
-            emit readyRead();
         }
     }
 }
@@ -750,7 +723,7 @@ void model::readSocket()
     {
         cout << "Szerver kapott üzenetet!" << endl;
     }
-    std::cout << "RREEEEEEEEEAAADDDD" << endl;
+   // std::cout << "RREEEEEEEEEAAADDDD" << endl;
     if(!accepts)
     {
         cout << "nem feldolgozó módban érkkezett üzenet!" << endl;
@@ -759,9 +732,9 @@ void model::readSocket()
     {
         if(isClient)
             accepts=false;
-        cout << "here" << isClient << endl;
-        if(isClient)
-            cout << "there" << endl;
+      //  cout << "here" << isClient << endl;
+     //  if(isClient)
+          //  cout << "there" << endl;
         QString asd;
         //QString line = QString::fromUtf8(socket->readLine());
 
@@ -769,7 +742,7 @@ void model::readSocket()
         //if(isClient)//az egyik biztos jó
         if(isClient || isServer)
         {
-            cout << "11111111111" << endl;
+          //  cout << "11111111111" << endl;
             if(isClient)
                 asd=QString::fromUtf8(socket->readAll());
            if(isServer)
@@ -790,7 +763,7 @@ void model::readSocket()
                 if(asd[0]=='0')
                 {
                     playernum=asd[1].digitValue();
-                    cout << "players: " << playernum << endl;
+                  //  cout << "players: " << playernum << endl;
                     deck->dominoes.resize(12*playernum);
                     for(int i = 0; i < playernum; i++)
                     {
@@ -807,7 +780,7 @@ void model::readSocket()
                     for(int i = 0; i < playernum; i++)
                     {
                         domis.push_back(deck->dominoes[i]);
-                        cout << "gotin" << endl;
+                     //   cout << "gotin" << endl;
                     }
                     emit newDominos(domis);
                     deck->newOnes=domis;
@@ -838,6 +811,26 @@ void model::readSocket()
             cout << "done reading " << endl;
         }
 
+    }
+
+
+
+
+
+    if(isClient)
+    if(socket->isReadable())
+    {
+        QString asd=QString::fromUtf8(socket->readAll());
+        if(asd[0]=='4')
+        {
+            emit muteOthers(asd[1].digitValue());
+            cout << "ENNNN JOOOVOOOKKKKKKKKKKKKKKKKKKKKKKKKKKK" << endl;
+            emit yourTurn();
+        }
+        if(asd[0]=='5')
+        {
+            emit muteAllPlayers();
+        }
     }
     accepts=true;
 }
