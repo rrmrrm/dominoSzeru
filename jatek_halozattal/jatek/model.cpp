@@ -556,10 +556,6 @@ void model::newConnection()
     //deck->shuffle();
     cout << "Van kapcsolat" << endl;
     string themessage="";
-    themessage="9"+to_string(playernum);
-    socket->write((const char *)themessage.data(), themessage.length()*sizeof(QChar));
-    socket->waitForBytesWritten();
-    emit readyRead();
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
@@ -571,7 +567,6 @@ void model::newConnection()
     //socket->write("0 ");
     char buf[256]; // needs a buffer
     buf[0]='0';
-    themessage="";
     themessage=themessage+"0";
     buf[1]=char(playernum);
     themessage=themessage+std::to_string(playernum);
@@ -599,25 +594,8 @@ void model::newConnection()
     socket->flush();
     emit readyRead();
     cout << "buif" << themessage << endl;
-    themessage="7";
-    socket->write((const char *)themessage.data(), themessage.length()*sizeof(QChar));
-    socket->waitForBytesWritten();
-    emit readyRead();
-    if(clientnum==playernum-1)
-    {
-        if(sorrend[0]==0)
-        {
-            emit muteOthers(0);
-        }
-        else
-        {
-            themessage="8"+to_string(sorrend[0]);
-            sockets[sorrend[0]-1]->write((const char *)themessage.data(), themessage.length()*sizeof(QChar));
-            sockets[sorrend[0]-1]->waitForBytesWritten();
-            emit readyRead();
-        }
-    }
 }
+
 void model::readSocket()
 {
     if(isClient)
@@ -690,13 +668,13 @@ void model::readSocket()
                     emit newDominos(domis);
                     deck->current=domis;
                 }
-                if(asd[0]=="2")
+                if(asd[0]=='2')
                 {
                     cout << "Kiraly helyezodik!" << endl;
                     PutKingAttempt(firstTurn, asd[1].digitValue());
 
                 }
-                if(asd[0]=="3")
+                if(asd[0]=='3')
                 {
                     cout << "palya valtozik" << endl;
                    AddDominoAttempt(asd[1].digitValue(), asd[2].digitValue());
@@ -712,26 +690,6 @@ void model::readSocket()
                         }
                     }
                     AddDominoConfirm(szinek);*/
-                }
-                if(asd[0]=="9")
-                {
-                    if(asd[1].digitValue()!=playernum)
-                    {
-                        emit playerNumError();
-                        emit disconnect();
-                    }
-                }
-                if(asd[0]=="8")
-                {
-                    if(asd[1]=="7")
-                    {
-                        emit muteAllPlayers();
-                    }
-                    else
-                    {
-                        emit muteOthers(asd[1].digitValue());
-                        //itt kell kiírni, hogy ő jön
-                    }
                 }
 
             cout << "done reading " << endl;
