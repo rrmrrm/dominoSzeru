@@ -6,7 +6,6 @@
 #include <QString>
 #include <QApplication>
 #include <QtTest>
-#include <unistd.h>
 #include "color.h"
 #include "model.h"
 #include "widget.h"
@@ -69,7 +68,6 @@ private slots:
         QCOMPARE(m->currentnumber,0);
 
         m->PutKingAttempt(true,3);
-        usleep(1000*100);
         //a 3. dominot valasztotta ki
         QCOMPARE(m->players[p0].king.getPlace(), 3);
         QCOMPARE(m->currentnumber,1);

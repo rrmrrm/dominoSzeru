@@ -667,13 +667,13 @@ void model::readSocket()
                     emit newDominos(domis);
                     deck->current=domis;
                 }
-                if(asd[0]=="2")
+                if(asd[0]=='2')
                 {
                     cout << "Kiraly helyezodik!" << endl;
                     PutKingAttempt(firstTurn, asd[1].digitValue());
 
                 }
-                if(asd[0]=="3")
+                if(asd[0]=='3')
                 {
                     cout << "palya valtozik" << endl;
                    AddDominoAttempt(asd[1].digitValue(), asd[2].digitValue());
