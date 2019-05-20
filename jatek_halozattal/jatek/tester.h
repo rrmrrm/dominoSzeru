@@ -1,6 +1,6 @@
 #ifndef TESTER_H
 #define TESTER_H
-
+/**/
 #include <QObject>
 #include <QWidget>
 #include <QString>
@@ -113,5 +113,5 @@ private slots:
         delete m;
     }
 };
-
+/**/
 #endif // TESTER_H

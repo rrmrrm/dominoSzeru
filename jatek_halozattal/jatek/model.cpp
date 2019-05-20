@@ -171,18 +171,30 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
          currentplayer->placeKing(place);
         deck->taken[place]=true;
         PutKingConfirm(firstDominoRow, place, sorrend[currentnumber]);
-        if(server)
+        if(isServer)
         {
-            QString message;
-            message=QString::number(3);
-            for(int i = 0; i < 5; i++)
+            string message;
+            message=to_string(2)+to_string(currentplayer->getKingPlace());
+
+            cout << "SERVER SENDS KING STEP: " << message << endl;
+            for(int i = 0; i < sockets.size(); i++)
             {
-                for(int j = 0; j < 5; j++)
-                {
-                    message=message+QString::number(currentplayer->getFields()[i][j]);
-                }
+                sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
+                sockets[i]->waitForBytesWritten();
             }
             emit readyRead();
+
+        }
+        if(isClient)
+        {
+            string message;
+            message=to_string(2)+to_string(currentplayer->getKingPlace());
+
+            cout << "CLIENT SENDS KING STEP: " << message << endl;
+                socket->write((const char *)message.data(), message.length()*sizeof(QChar));
+                socket->waitForBytesWritten();
+            emit readyRead();
+
         }
         if(currentnumber==(playernum-1))
         {
@@ -240,6 +252,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
     emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
     if(!firstTurn)
     emit showChosenDomino(deck->Current().at(currentplayer->getKingPlace()));
+    accepts=true;
 }
 
 
@@ -364,6 +377,33 @@ void model::AddDominoAttempt(int x, int y)
             emit wantToSend(QString::number(0)+QString::number(1)+QString::number(x)+QString::number(y));
             accepts=false;
         }
+
+        if(isServer)
+        {
+
+            string message;
+            message = "3"+to_string(x)+ to_string(y);
+            cout << "SERVER SENDS BOARD: " << message << endl;
+            for(int i = 0; i < sockets.size(); i++)
+            {
+                sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
+                sockets[i]->waitForBytesWritten();
+            }
+            emit readyRead();
+
+        }
+        if(isClient)
+        {
+
+            string message;
+            message = "3"+to_string(x)+ to_string(y);
+            cout << "CLIENT SENDS BOARD: " << message << endl;
+                socket->write((const char *)message.data(), message.length()*sizeof(QChar));
+                socket->waitForBytesWritten();
+            emit readyRead();
+
+        }
+
         cout << "EZAJATEKOS: " << sorrend[currentnumber] << endl;
         currentplayer->placeDomino(deck, x, y);
        // cout << "MIVAN?" <<endl;
@@ -431,6 +471,7 @@ void model::AddDominoAttempt(int x, int y)
             emit updateActivePlayer(sorrend[currentnumber]);
         }
     }
+    accepts=true;
 }
 
 void model::rotateDominoAttempt(int player, DIR newDir){
@@ -478,7 +519,6 @@ void model::connect()
     isClient=true;
     socket = new QTcpSocket(this);
     socket->connectToHost("localhost", 1234);
-    socket->write("helloServer");
     std::cout << "done" << endl;
     if(socket->isReadable())
     {
@@ -487,6 +527,7 @@ void model::connect()
     QObject::connect(socket, SIGNAL(connected()), this, SLOT(connected()));
     QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(readSocket()));
+    //QObject::connect(this, SIGNAL(wantToSend(QString)), socket, SLOT(wantToRead(QString)));
 
 
     ConnectConfirm();
@@ -500,11 +541,12 @@ void model::connected()
 
 void model::disconnected()
 {
+    cout << "ERROR DISCONNECTED!" << endl;
 
 }
-void model::bytesWritten( qint64)
+void model::bytesWritten( qint64 arg)
 {
-
+    //cout << "Üzenet érkezett" << arg << " méretű" << endl;
 }
 
 
@@ -516,8 +558,11 @@ void model::newConnection()
     QTcpSocket *socket =server->nextPendingConnection();
     sockets.push_back(socket);
     clientnum++;
-    QObject::connect(this, SIGNAL(readyRead()), socket, SLOT(readSocket()));
-    QObject::connect(socket, SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
+    QObject::connect(sockets[clientnum-1], SIGNAL(readyRead()), this, SLOT(readSocket()));
+    QObject::connect(sockets[clientnum-1], SIGNAL(connect()), this, SLOT(connect()));
+    QObject::connect(sockets[clientnum-1], SIGNAL(disconnect()), this, SLOT(disconnect()));
+    QObject::connect(sockets[clientnum-1], SIGNAL(bytesWritten( qint64)), this, SLOT(bytesWritten( qint64)));
+   // QObject::connect(sockets[clientnum-1], SIGNAL(wantToSend(QString)), this, SLOT(wantToRead(QString)));
     //socket->write("0 ");
     char buf[256]; // needs a buffer
     buf[0]='0';
@@ -545,15 +590,25 @@ void model::newConnection()
         cout << deck->dominoes.at(i).GetColors().first << " " << deck->dominoes.at(i).GetColors().second << " ";
     }
     cout << endl;
+    socket->flush();
     emit readyRead();
     cout << "buif" << themessage << endl;
 }
 
 void model::readSocket()
 {
+    if(isClient)
+    {
+        cout << "Kliens kapott üzenetet!" << endl;
+    }
+    if(isServer)
+    {
+        cout << "Szerver kapott üzenetet!" << endl;
+    }
     std::cout << "RREEEEEEEEEAAADDDD" << endl;
     if(!accepts)
     {
+        cout << "nem feldolgozó módban érkkezett üzenet!" << endl;
         accepts=true;
     }
     else
@@ -566,13 +621,27 @@ void model::readSocket()
         //QString line = QString::fromUtf8(socket->readLine());
 
 
-        if(isClient)
+        //if(isClient)//az egyik biztos jó
+        if(isClient || isServer)
         {
             cout << "11111111111" << endl;
+            if(isClient)
                 asd=QString::fromUtf8(socket->readAll());
-                QString line = QString::fromUtf8(socket->readLine());
-                cout << "222222222" << endl;
-                cout << line.toUtf8().constData() << endl;
+           if(isServer)
+           {
+               for(int i = 0; i < clientnum; i++)
+               {
+                   if(sockets[i]->isReadable())
+                   {
+                       asd=QString::fromUtf8(sockets[i]->readAll());
+                   }
+               }
+           }
+                cout << "kapott üzenet: " << asd.toLocal8Bit().constData() << endl;
+                //QString line = QString::fromUtf8(socket->readLine());
+                //cout << "kapott üzene2t: " << line.toLocal8Bit().constData() << endl;
+                //cout << "222222222" << endl;
+                //cout << line.toUtf8().constData() << endl;
                 if(asd[0]=='0')
                 {
                     playernum=asd[1].digitValue();
@@ -582,6 +651,8 @@ void model::readSocket()
                     {
                         sorrend[i]=asd[2+i].digitValue();
                     }
+                    currentplayer=&players[sorrend[0]];
+                    currentnumber=0;
                     for(int i = 0; i < 12* playernum; i++)
                     {
                         deck->dominoes[i]=Domino( COLOR(asd[2+playernum+2*i].digitValue()), COLOR(asd[3+playernum+2*i].digitValue()), 0,0,RIGHT );
@@ -596,30 +667,35 @@ void model::readSocket()
                     emit newDominos(domis);
                     deck->current=domis;
                 }
-                if(line=="2")
+                if(asd[0]=="2")
                 {
-                    PutKingConfirm(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt(),QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+                    cout << "Kiraly helyezodik!" << endl;
+                    PutKingAttempt(firstTurn, asd[1].digitValue());
 
                 }
-                if(line=="3")
+                if(asd[0]=="3")
                 {
-                    QVector<QVector<COLOR>> szinek;
+                    cout << "palya valtozik" << endl;
+                   AddDominoAttempt(asd[1].digitValue(), asd[2].digitValue());
+
+                    /*QVector<QVector<COLOR>> szinek;
                     szinek.resize(5);
                     for(int i = 0; i < 5; i++)
                     {
                         szinek[i].resize(5);
                         for(int j = 0; j < 5; j++)
                         {
-                            szinek[i][j]=COLOR(QString::fromUtf8(socket->readLine()).split(" ")[0].toInt());
+                            szinek[i][j]=COLOR(asd[i*5+j+1].digitValue());
                         }
                     }
-                    AddDominoConfirm(szinek);
+                    AddDominoConfirm(szinek);*/
                 }
 
             cout << "done reading " << endl;
         }
 
     }
+    accepts=true; //EZ nem tudom, hogy jó-e itt...
 }
 
 void model::wantToRead(QString arg)

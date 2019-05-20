@@ -181,7 +181,7 @@ void Widget::showNewDominos(vector<Domino> v){
 
 void Widget::putKingConfirmed(bool firstDominoRow, int pos, int player){
 
-    cout << "putKingConfirmed(int pos, int player)" << endl;
+    cout << "putKingConfirmed(" << pos << ", "<<  player<< ")" << endl;
     if(pos!=-1)
     {
         if(firstDominoRow)
