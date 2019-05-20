@@ -84,6 +84,9 @@ public slots:
     void muteOthers(int unMuted);
     void muteAllPlayers();
 
+    ///a megadott jatekosWidgetet kiszinezi, hogy a jatekos tudja, hogy melyik az o tablaja
+    void indicatePlayer(int player);
+    void yourTurn();
     //---------------------------------------------------------
 signals:
     void PutKingAttempt();

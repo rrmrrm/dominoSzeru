@@ -25,8 +25,11 @@ public:
     ///referencia a nezet-beli domino tombre
     Domino* dominoHighlight;
     const vector< vector<COLOR> >& dominos;
+    bool underlined;
 
     explicit TableWidget(bool& isActive, QWidget *parent = nullptr, int size = 400, PLAYERCOLOR color=RED);
+
+    void underline(bool);
     ~TableWidget();
 
 
