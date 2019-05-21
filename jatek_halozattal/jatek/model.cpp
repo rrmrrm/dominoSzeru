@@ -274,6 +274,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
             }
             else
             {
+                emit muteAllPlayers();
                 QThread::msleep(100);
                 message=to_string(4)+to_string(sorrend[currentnumber]);
                 cout << sorrend[currentnumber] << " jon " << message << " ";
@@ -530,6 +531,7 @@ void model::AddDominoAttempt(int x, int y)
                     }
                     else
                     {
+                        emit muteAllPlayers();
                         message=to_string(4)+to_string(sorrend[currentnumber]);
                         sockets[sorrend[currentnumber]-1]->write((const char *)message.data(), message.length()*sizeof(QChar));
                         sockets[sorrend[currentnumber]-1]->waitForBytesWritten();
@@ -722,6 +724,7 @@ void model::newConnection()
             }
             else
             {
+                emit muteAllPlayers();
                 message=to_string(4)+to_string(sorrend[0]);
                 sockets[sorrend[0]-1]->write((const char *)message.data(), message.length()*sizeof(QChar));
                 sockets[sorrend[0]-1]->waitForBytesWritten();
