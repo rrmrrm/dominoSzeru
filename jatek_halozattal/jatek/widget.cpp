@@ -281,7 +281,8 @@ void Widget::ConnectConfirmed(){
 }
 void Widget::startServerConfirmed(){
     ui->startServerButton->setEnabled(false);
-    ui->startServerButton->setEnabled(false);
+    ui->setPlayerNumButton->setEnabled(false);
+    ui->connectButton->setEnabled(false);
 }
 void Widget::setPlayerNumChangeConfirmed(){
     //ui->setPlayerNumButton->setEnabled(false);
