@@ -88,7 +88,7 @@ void Widget::initialize(int playerNum){
 
     connect(m, SIGNAL(indicatePlayer(int)), this, SLOT(indicatePlayer(int)) );
     connect(m, SIGNAL(yourTurn()), this, SLOT(yourTurn()));
-
+    connect(m, SIGNAL(error()), this, SLOT(error()));
     m->setPlayernum(playerNum);
     m->startGame();
 }
@@ -398,4 +398,17 @@ void Widget::yourTurn(){
 
     ui->yourTurnLabel->setFont({"Arial", 20});
     ui->yourTurnLabel->setText("Te Jössz!");
+}
+
+void Widget::error(){
+    ui->connectButton->setEnabled(true);
+    ui->startServerButton->setEnabled(true);
+    ui->setPlayerNumButton->setEnabled(true);
+
+    qmb.information(
+        this,
+    "rossz módban próbált csatlakozni! (váltson játékosszámot)",
+    "");
+
+
 }
