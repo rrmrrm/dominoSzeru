@@ -87,6 +87,7 @@ public slots:
     ///a megadott jatekosWidgetet kiszinezi, hogy a jatekos tudja, hogy melyik az o tablaja
     void indicatePlayer(int player);
     void yourTurn();
+    void error();
     //---------------------------------------------------------
 signals:
     void PutKingAttempt();
