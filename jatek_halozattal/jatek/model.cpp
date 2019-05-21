@@ -552,6 +552,32 @@ void model::AddDominoAttempt(int x, int y)
 }
 
 void model::rotateDominoAttempt(int player, DIR newDir){
+    if(isClient && accepts)
+    {
+        accepts=false;
+        string message;
+        message = "6"+to_string(sorrend[currentnumber])+to_string(newDir);
+        cout << "CLIENT SENDS SPIN: " << message << endl;
+            socket->write((const char *)message.data(), message.length()*sizeof(QChar));
+            socket->waitForBytesWritten();
+        emit readyRead();
+    }
+    if(isServer)
+    {
+        string message;
+        message = "6"+to_string(sorrend[currentnumber])+to_string(newDir);
+        cout << "SERVER SENDS SPIN: " << message << endl;
+        for(int i = 0; i < clientnum; i++)
+        {
+
+            sockets[i]->write((const char *)message.data(), message.length()*sizeof(QChar));
+            sockets[i]->waitForBytesWritten();
+
+        }
+        emit readyRead();
+    }
+
+
     if( player == sorrend[currentnumber]){
         ///elforgatom a jatekos dominojat newDire fele
         deck->Current().at(currentplayer->getKingPlace()).Rotate(newDir);
@@ -569,9 +595,9 @@ void model::playerNumChanged()
     }
     else
         playernum=3;
-    startGame();
     sendPlayerNum(playernum);
     setPlayerNumChangeConfirm();
+    startGame();
 }
 
 
@@ -808,6 +834,10 @@ void model::readSocket()
                 if(asd[0]=='5')
                 {
                     emit muteAllPlayers();
+                }
+                if(asd[0]=='6')
+                {
+                    rotateDominoAttempt(asd[1].digitValue(), DIR(asd[2].digitValue()));
                 }
 
             cout << "done reading " << endl;
