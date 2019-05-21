@@ -38,7 +38,7 @@ void DominoButton::paintEvent(QPaintEvent* e){
     };
 
     QRect r(0,0, width(), height());
-    p.fillRect(r, QBrush(QColor(0,255,255)));
+    p.fillRect(r, QBrush(QColor(255,255,255)));
 
     ///a domino képeit megjelenitjuk az iranya(GetDirection()) szerint
     switch(d.GetDirection()){
