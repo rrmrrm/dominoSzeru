@@ -22,7 +22,7 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     ui->dominosRow1Layout->setHorizontalSpacing(0);
 
-    dominoSideSize = 50;
+    dominoSideSize = 30;
 
     playerNum = 4;
 
@@ -38,7 +38,7 @@ Widget::Widget(QWidget *parent) :
 }
 void Widget::initialize(int playerNum){
     isFirstTurn = true;
-    int playerWidgetHeight = 400;
+    int playerWidgetHeight = 300;
     int playerTableSize = 160;
 
     activePlayer = 0;
@@ -334,9 +334,20 @@ void Widget::clear(){
 
 void Widget::muteOthers(int unMuted){
     cout << "Widget::muteOthers( " << unMuted << ")" << endl;
+    /*
+    for(int i = 0 ; i < players.size() ; ++i){
+        if(isFirstTurn){
+            players[i]->dominoButton->setEnabled(false);
+        }
+        else if( i == unMuted){
+            players[i]->dominoButton->setEnabled(false);
+        }
+    }
+*/
     for(int i = 0 ; i < dominoRow1.size() ; ++i){
-        if(isFirstTurn)
+        if(isFirstTurn){
             dominoRow1[i]->setEnabled(true);
+        }
         else
             dominoRow1[i]->setEnabled(false);
     }
@@ -345,7 +356,7 @@ void Widget::muteOthers(int unMuted){
     }
 
     for(int i = 0 ; i < playerNum ; ++i ){
-        if(i != unMuted){
+        if(isFirstTurn || i != unMuted){
             players[i]->setEnabled(false);
         }
         else{
