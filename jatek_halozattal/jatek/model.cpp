@@ -188,6 +188,7 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
         }
         if(isClient && accepts)
         {
+            emit muteAllPlayers();
             accepts=false;
             string message;
             message=to_string(2)+to_string(currentplayer->getKingPlace());
