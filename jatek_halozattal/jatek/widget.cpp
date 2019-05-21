@@ -366,6 +366,9 @@ void Widget::muteOthers(int unMuted){
 }
 void Widget::muteAllPlayers(){
     cout << "Widget::muteAllPlayers" << endl;
+    ui->yourTurnLabel->setFont({"Arial", 10});
+    ui->yourTurnLabel->setText("");
+
     for(int i = 0 ; i < dominoRow1.size() ; ++i){
         dominoRow1[i]->setEnabled(false);
     }
@@ -390,8 +393,9 @@ void Widget::indicatePlayer(int player){
 
 ///a jatekablak korvonalat fogja kiszinezni ilyen szinure, hogy a jatekos tudja, hogy mi a szine
 void Widget::yourTurn(){
-    qmb.information(
-        this,
-        tr("Te jössz!"),
-        "") ;
+    cout << "Widget::yourTurn" << endl;
+    ui->yourTurnLabel->setAlignment(Qt::AlignCenter);
+
+    ui->yourTurnLabel->setFont({"Arial", 20});
+    ui->yourTurnLabel->setText("Te Jössz!");
 }

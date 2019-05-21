@@ -37,31 +37,38 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gameMiddleLayout">
-     <item row="1" column="3">
-      <widget class="QLCDNumber" name="turnsLeft"/>
-     </item>
      <item row="1" column="0" rowspan="2">
       <layout class="QGridLayout" name="dominosRow1Layout"/>
      </item>
-     <item row="2" column="2">
+     <item row="2" column="3">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>pakli mérete:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="3">
-      <widget class="QLCDNumber" name="deckSize"/>
-     </item>
-     <item row="1" column="2">
+     <item row="1" column="3">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>hátra lévő körök:</string>
        </property>
       </widget>
      </item>
+     <item row="2" column="4">
+      <widget class="QLCDNumber" name="deckSize"/>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLCDNumber" name="turnsLeft"/>
+     </item>
      <item row="1" column="1" rowspan="2">
       <layout class="QGridLayout" name="dominosRow2Layout"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="yourTurnLabel">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
