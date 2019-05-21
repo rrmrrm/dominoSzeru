@@ -794,7 +794,12 @@ void model::readSocket()
                 cout << "kapott üzenet: " << asd.toLocal8Bit().constData() << endl;
                 if(asd[0]=='0')
                 {
-                    playernum=asd[1].digitValue();
+                    playernum=asd[1].digitValue();                    
+
+                    sendPlayerNum(playernum);
+                    setPlayerNumChangeConfirm();
+                    startGame();
+
                   //  cout << "players: " << playernum << endl;
                     deck->dominoes.resize(12*playernum);
                     for(int i = 0; i < playernum; i++)
