@@ -1,3 +1,5 @@
+#az alábbi csak a játékmechanika egy részét írja le:
+
 #3-4 személy játszhatja a játékot
 a kiválasztott dominó a tábla mellett jelenik meg, kattintással forgatható, 
 a játékos táblájára kattintással pedig lehelyezhető.
