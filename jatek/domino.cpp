@@ -3,6 +3,7 @@
 
 #include "domino.h"
 #include "common.h"
+
 Domino::Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2, DIR dir)
 {
     color1=color_1;
@@ -10,8 +11,8 @@ Domino::Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2, DIR dir)
     crown1=crown_1;
     crown2=crown_2;
     direction=dir;
-    this->pos1=0;
-    this->pos2=0;
+    this->sor=0;
+    this->oszlop=0;
     this->owner=-1;
 }
 Domino::Domino()
@@ -25,21 +26,21 @@ Domino::Domino()
 
 void Domino::move(DIR newDIR)
 {
-    if(newDIR==UP && pos1<8)
+    if(newDIR==UP && sor<8)
     {
-        pos1++;
+        sor++;
     }
-    if(newDIR==DOWN && pos1>0)
+    if(newDIR==DOWN && sor>0)
     {
-        pos1--;
+        sor--;
     }
-    if(newDIR==LEFT && pos2>0)
+    if(newDIR==LEFT && oszlop>0)
     {
-        pos2--;
+        oszlop--;
     }
-    if(newDIR==RIGHT && pos2<8)
+    if(newDIR==RIGHT && oszlop<8)
     {
-        pos2++;
+        oszlop++;
     }
 }
 
