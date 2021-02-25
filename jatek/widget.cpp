@@ -22,7 +22,7 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     ui->dominosRow1Layout->setHorizontalSpacing(0);
 
-    dominoSideSize = 30;
+    dominoSideSize = 60;
 
     playerNum = 4;
 
@@ -36,10 +36,14 @@ Widget::Widget(QWidget *parent) :
     initialize(playerNum);
 
 }
+void Widget::dominoHighlightMoved(int playerInd, int sor,int oszlop){
+	//this function is not used yet;
+}
+
 void Widget::initialize(int playerNum){
     isFirstTurn = true;
-    int playerWidgetHeight = 300;
-    int playerTableSize = 160;
+	int playerTableSize = 5*dominoSideSize;
+	int playerWidgetHeight = playerTableSize + 150;
 
     activePlayer = 0;
     int playerWidgetWidth = playerTableSize + 2*dominoSideSize;
@@ -47,9 +51,10 @@ void Widget::initialize(int playerNum){
     setMinimumHeight(playerNum * dominoSideSize + playerWidgetHeight+20);
 
     for(int i = 0; i<playerNum ; ++i){
-        players.push_back(new PlayerWidget(PLAYERCOLOR(i),playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
+        players.push_back(new PlayerWidget(i,playerTableSize,playerWidgetWidth, playerWidgetWidth,this));
         ui->playerLayout->addWidget( players[i],1 );
-        connect( players[i]->table, SIGNAL(tableClicked(int,int)), m, SLOT(AddDominoAttempt(int,int)) );
+		connect( players[i]->table, SIGNAL(tableClicked(int,int)), m, SLOT(AddDominoAttempt(int,int)) );
+		connect( players[i]->table, SIGNAL(dominoHighlightMoved(int,int,int)), this, SLOT(dominoHighlightMoved(int,int,int)) );
 
         ///hozzáadom a jatekosok kivalasztott dominojat abrazolo DominoButton-t
         ///the second parameter of the constructor represent the owning player.
@@ -235,7 +240,7 @@ void Widget::show_winner( vector<int> winners){
         this,
         tr("játék vége, nyertesek:"),
         winnersStr) ;
-
+	qmb.show();
     ui->connectButton->setEnabled(true);
     ui->startServerButton->setEnabled(true);
     ui->setPlayerNumButton->setEnabled(true);
@@ -248,7 +253,7 @@ void Widget::playerDominoClicked(){
     DominoButton* source = static_cast<DominoButton*>(sender());
     DIR currentDir = source->d.GetDirection();
 
-    ///newDir lesz a currentDir 1el jobbra forgatottja
+    ///newDir lesz a currentDir 1el oramutato jaras iranyaba forgatottja
     DIR newDir = UP;
     switch (currentDir) {
     case LEFT: {newDir=UP;break;}

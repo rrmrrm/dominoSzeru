@@ -18,21 +18,25 @@ using namespace std;
 
 class TableWidget : public QWidget, ColorConverter {
     Q_OBJECT
-
+	int ownershipIndicatorHeight;
+	int tableSize;
+	const int playerIndex;
     bool& _isActive;
     QColor qColor;
+
 public:
     ///referencia a nezet-beli domino tombre
     Domino* dominoHighlight;
     const vector< vector<COLOR> >& dominos;
     bool underlined;
 
-    explicit TableWidget(bool& isActive, QWidget *parent = nullptr, int size = 400, PLAYERCOLOR color=RED);
+    explicit TableWidget(int _playerIndex, bool& isActive, QWidget *parent = nullptr, int _tableSize = 400);
 
-    void underline(bool);
     ~TableWidget();
-
-
+	void underline(bool);
+	QRect getRect(Domino* d);
+private slots:
+	void innerDominoHighlightMoved(int playerIndUnusedHere, int sor, int oszlop);
 public slots:
     void paintEvent(QPaintEvent* e);
     void mouseMoveEvent(QMouseEvent *event);
@@ -40,8 +44,7 @@ public slots:
 
 signals:
     void tableClicked(int,int);
-
-
+	void dominoHighlightMoved(int playerInd, int row, int col);
 };
 
 #endif // TABLEWIDGET_H

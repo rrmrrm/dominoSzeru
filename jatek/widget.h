@@ -47,7 +47,8 @@ public:
 
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
-
+private slots:
+	void dominoHighlightMoved(int playerInd, int sor,int oszlop);
 public slots:
     void initialize(int playerNum);
     void notTheFirstTurn();

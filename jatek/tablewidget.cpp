@@ -11,27 +11,34 @@
 
 using namespace std;
 
-TableWidget::TableWidget(bool& isActive, QWidget *parent, int size, PLAYERCOLOR color) :
+TableWidget::TableWidget(int _playerIndex, bool& isActive, QWidget *parent, int _tableSize) :
     QWidget(parent),
+	ownershipIndicatorHeight(40),
+	tableSize(_tableSize),
+	playerIndex(_playerIndex),
     _isActive(isActive),
     dominoHighlight(nullptr),
-    dominos(  static_cast<PlayerWidget*>(parent)->dominos ),
+    dominos(static_cast<PlayerWidget*>(parent)->dominos),
     underlined(false)
 {
     QGridLayout *layout = new QGridLayout;
-
+	connect(this, 
+			SIGNAL(dominoHighlightMoved(int,int,int)), 
+			this,
+			SLOT(innerDominoHighlightMoved(int,int,int))
+	);
     //szin beallitasa:
-    switch(color){
-    case RED:{qColor = QColor(255,0,0);break;};
-    case GREEN:{qColor = QColor(0,255,0);break;};
-    case BLUE:{qColor = QColor(0,0,255);break;};
-    case YELLOW:{qColor = QColor(200,200,0);break;};
-    default: {};
+    switch( PLAYERCOLOR(playerIndex)){
+    case RED:{qColor = QColor(255,0,0);break;}
+    case GREEN:{qColor = QColor(0,255,0);break;}
+    case BLUE:{qColor = QColor(0,0,255);break;}
+    case YELLOW:{qColor = QColor(200,200,0);break;}
+    default: {}
     }
-
+	int botPadding = 20;
     setLayout(layout);
-    setFixedWidth(size);
-    setFixedHeight(size);
+    setFixedWidth(tableSize);
+	setFixedHeight(tableSize + ownershipIndicatorHeight);
 
     setMouseTracking(true);
 
@@ -42,20 +49,38 @@ TableWidget::~TableWidget(){
 }
 
 void TableWidget::underline(bool b){
-    int thickness = 20;
     underlined = b;
-    if(b)
-        this->setFixedHeight(height()+thickness);
-
+}
+void TableWidget::innerDominoHighlightMoved(int playerInd, int sor,int oszlop){
+	
 }
 
-///public slots:
+QRect TableWidget::getRect(Domino* d){
+	int n = 5;
+	int wMult = tableSize / n;
+	int hMult = tableSize / n;
+	std::pair<Ind2D,Ind2D> sides = d->getSidesCoords();
+	int top = sides.first.row < sides.second.row ? sides.first.row : sides.second.row;
+	top *= hMult;
+	int left = sides.first.col < sides.second.col ? sides.first.col : sides.second.col;
+	left *= wMult;
+	
+	int h = hMult;
+	int w = wMult;
+	if(d->GetDirection() == UP || d->GetDirection() == DOWN ){
+		h *= 2;
+	}
+	else{
+		w *= 2;
+	}
+	return QRect(left, top, w, h);
+}
 void TableWidget::paintEvent(QPaintEvent* e){
     QPainter p(this);
     int n = 5;
 
-    int w = width() / n;
-    int h = height() / n;
+    int dw = tableSize / n;
+    int dh = tableSize / n;
 
 
 
@@ -67,7 +92,7 @@ void TableWidget::paintEvent(QPaintEvent* e){
         x0 = 0;
         for(auto it = row->begin(); it != row->end() ; ++it){
 
-            QRect r(x0,y0, w, h);
+            QRect r(x0,y0, dw, dh);
 
             //mezo letakaritasa:
             p.fillRect(r, QBrush(QColor(255,255,255)));
@@ -88,53 +113,55 @@ void TableWidget::paintEvent(QPaintEvent* e){
             //p.setFont({"Arial", textHeight});
             //p.drawText(rCorrected, Qt::AlignJustify, *it + "");
 
-            x0 += w;
+            x0 += dw;
         }
-        y0 += h;
+        y0 += dh;
     }
 
 
-    //tabla kerete:
+    //tabla keretét vastagítjuk ha az aktív játékosé:
     if(_isActive){
-        p.setPen(qColor);
-        p.drawRect(0,0, width()-1, height()-1);
-        p.drawRect(1,1, width()-3, height()-3);
-        p.drawRect(2,2, width()-4, height()-4);
-        p.drawRect(2,2, width()-5, height()-5);
-        p.drawRect(2,2, width()-6, height()-6);
-        p.drawRect(3,3, width()-7, height()-7);
-        p.drawRect(3,3, width()-8, height()-8);
+		int activePlayerHighlightThickness = 12;
+		p.setPen( QPen( QBrush( qColor ), activePlayerHighlightThickness ) );
+        p.drawRect(0,0, tableSize, tableSize);
     }
-    p.setPen(qColor);
-    p.drawRect(0,0, w-1, h-1);
-
+    //p.setPen(qColor);
+    //p.drawRect(0,0, dw-1, dh-1);
     //ha underline igaz, akkor alahuzassal megjeloljuk hogy a tabla melyik jatekoshoz tartozik
-    if(underlined){
-        int thickness = 20;
-        QRect r(0,height()-thickness, width(), height());
+    if(1 || underlined){
+		int x0 = 0;
+		int thickness = 20;
+		int y0 = tableSize;
+        QRect r(x0, y0, width() - x0, height() - y0);
         p.fillRect(r, QBrush(qColor));
 
 
-        p.setPen(QColor(0,0,0));
+        p.setPen(QColor(0,0,0,175));
         p.setFont({"Arial", thickness});
-        QRect r2(0,height()-thickness-5, width(), height()-5);
-        p.drawText(r2, Qt::AlignJustify, "Ez a te táblád");
+		p.drawText(r, Qt::AlignTop, "Ez a te táblád", &r);
+        //QRect r2(0,height()-thickness-5, width(), height());
     }
+	
+	int thickness = 5;
+	if(dominoHighlight != nullptr){
+		//leteendo domino helyenek korvaonalanak megjelolese a tablan:
+		p.setPen( QPen( QBrush( QColor( Qt::red ) ), thickness ) );
+		p.drawRect(getRect(dominoHighlight));
+	}
 }
 void TableWidget::mouseMoveEvent(QMouseEvent *event){
     // cout << "mouse_x: " << event->x() << ", y: " << event->y() << endl;
-    int tableSize= 5;
-    int row = event->y() / (height()/tableSize);
-    int col =  event->x() / (width()/tableSize);
+    int tableSpan= 5;
+    int row = event->y() / (double)(tableSize/(double)tableSpan);
+    int col = event->x() / (double)(tableSize/(double)tableSpan);
 
 
     if(row<0 || col < 0 || row >= tableSize || col >= tableSize)
         return ;
 
-    if(dominoHighlight == nullptr)
-        return;
-
-    dominoHighlight->SetPosition(row, col);
+	if(_isActive){
+		emit dominoHighlightMoved(playerIndex, row, col);
+	}
 
 }
 void TableWidget::mousePressEvent(QMouseEvent *event){
