@@ -1,12 +1,23 @@
 #ifndef DOMINO_H
 #define DOMINO_H
 
-#include <string>
 #include "common.h"
-
+#include <QPoint>
+#include <QRect>
+#include <string>
 using namespace std;
 using namespace common;
 ///a dominot a bal mezoje korul lehet majd forgatni
+class Ind2D{
+	Ind2D(){};
+public:
+	int row;
+	int col;
+	Ind2D(int _row, int _col):
+		row(_row),
+		col(_col)
+	{}
+};
 
 class Domino{
     COLOR color1;
