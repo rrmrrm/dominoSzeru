@@ -25,22 +25,29 @@ class Domino{
     int crown1;
     int crown2;
     DIR direction;
-    int pos1;
-    int pos2;
-
-    int owner;
+    int sor;
+    int oszlop;
+	int owner;
 public:
+	std::pair<Ind2D, Ind2D> getSidesCoords(){
+		switch(direction){
+		case UP:	return std::pair<Ind2D, Ind2D>({sor,oszlop},{sor-1,oszlop});
+		case DOWN:	return std::pair<Ind2D, Ind2D>({sor,oszlop},{sor+1,oszlop});
+		case LEFT:	return std::pair<Ind2D, Ind2D>({sor,oszlop},{sor,oszlop-1});
+		case RIGHT:	return std::pair<Ind2D, Ind2D>({sor,oszlop},{sor,oszlop+1});
+		}
+	}
     Domino(COLOR color_1, COLOR color_2, int crown_1, int crown_2, DIR dir=RIGHT);
     Domino();
     void Rotate( DIR newDir) {direction=newDir;}
     void move(DIR newDIR);
     pair<COLOR, COLOR> GetColors() const {return std::pair<COLOR,COLOR>(color1,color2); }
-    pair<int, int> GetPosition() const {return std::pair<int,int>(pos1,pos2); }
+    pair<int, int> GetPosition() const {return std::pair<int,int>(sor,oszlop); }
     DIR GetDirection() const {return direction;}
     void setOwner(int newOwner){ owner=newOwner;}
-    void SetPosition(int pos1, int pos2){
-        this->pos1 = pos1;
-        this->pos2 = pos2;
+    void SetPosition(int sor, int oszlop){
+        this->sor = sor;
+        this->oszlop = oszlop;
     }
     int getOwner(){return owner;}
 };
