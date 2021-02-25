@@ -7,7 +7,7 @@
 
 using namespace std;
 
-PlayerWidget::PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *parent) :
+PlayerWidget::PlayerWidget(int playerIndex, int ts, int w, int h, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PlayerWidget),
     table(nullptr)
@@ -27,7 +27,7 @@ PlayerWidget::PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *par
 
     dominos[tSize/2][tSize/2] = CASTLE;
 
-    table = new TableWidget(isActive, this, ts, color);
+    table = new TableWidget(playerIndex, isActive, this, ts);
     ui->setupUi(this);
     ui->horizontalLayout->addWidget(table,1);
     setFixedWidth(w);

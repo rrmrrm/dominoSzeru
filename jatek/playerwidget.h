@@ -20,16 +20,13 @@ public:
     Ui::PlayerWidget *ui;
     TableWidget* table;
     DominoButton* dominoButton;
-    PLAYERCOLOR color;
 
 
     bool isActive;
     vector< vector<COLOR> > dominos;
 
-    explicit PlayerWidget(PLAYERCOLOR color, int ts, int w, int h, QWidget *parent = nullptr);
+    explicit PlayerWidget(int playerIndex, int ts, int w, int h, QWidget *parent = nullptr);
     ~PlayerWidget();
-
-
 };
 
 #endif // PLAYERWIDGET_H
