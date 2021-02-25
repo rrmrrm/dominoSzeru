@@ -41,6 +41,18 @@ public:
 public slots:
     void setPlayernum(int);
     void startGame();
+	///
+	/// \brief model::lerakhato \n
+	/// \param domi : nem hasznaljuk ezt az adattagot
+	/// \param dominoDir
+	/// \param player
+	/// \param sor , 
+	/// \param oszlop : az aktuális dominó(ami egy std::pair) első oldalának(.first) a koordinátái a játékostáblán,
+	/// Indexelés a következő: player->getFields[sor][oszlop]
+	/// \param deck
+	/// \return 
+	///
+	bool lerakhato(Domino domi, DIR dominoDir, Player* player, int sor, int oszlop, Deck* deck);
     void PutKingAttempt(bool firstDominRow,int place);
     void AddDominoAttempt(int x, int y);
     void rotateDominoAttempt(int player, DIR newDir);
