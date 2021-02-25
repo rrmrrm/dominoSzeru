@@ -38,7 +38,7 @@ void model::startGame()
     for(int i = 0; i < playernum;i++)
     {
         emit updateActivePlayer(i);
-        AddDominoConfirm(players[i].getFields());
+        emit AddDominoConfirm(players[i].getFields());
         sorrend[i]=i;
     }
     std::srand ( unsigned ( std::time(nullptr) ) );
@@ -65,34 +65,36 @@ void model::startGame()
     emit updateTurnsleft(1+deck->cardsLeftNum()/playernum);
     emit indicatePlayer(300);
 }
-bool lerakahto(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* deck)
+bool model::lerakhato(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* deck)
 {
-        bool szabalyos;
-        int x2=x;
-        int y2=y;
-        if(dominoDir==UP)
-        {
-            x2--;
-        }
-        if(dominoDir==DOWN)
-        {
-            x2++;
-        }
-        if(dominoDir==LEFT)
-        {
-            y2--;
-        }
-        if(dominoDir==RIGHT)
-        {
-            y2++;
-        }
+	bool szabalyos = false;
+	int x2=x;
+	int y2=y;
+	if(dominoDir==UP)
+	{
+		x2--;
+	}
+	if(dominoDir==DOWN)
+	{
+		x2++;
+	}
+	if(dominoDir==LEFT)
+	{
+		y2--;
+	}
+	if(dominoDir==RIGHT)
+	{
+		y2++;
+	}
 
-        if(x>=0 && x <=4 && y>=0 && y <=4 && x2>=0 && x2 <=4 && y2>=0 && y2 <=4)
-        {
+	if(x>=0 && x <=4 && y>=0 && y <=4 && x2>=0 && x2 <=4 && y2>=0 && y2 <=4){
         bool bal=false;
         bool jobb=false;
         bool fent=false;
         bool lent=false;
+		
+		auto currentDomino = deck->getCurrent().at(player->getKingPlace());
+		auto currentDominoColors = currentDomino.GetColors();
         if(x==0)
         {
             fent=true;
@@ -109,19 +111,19 @@ bool lerakahto(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* d
         {
             jobb=true;
         }
-        if(!bal && (player->getFields()[x][y-1]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x][y-1]==CASTLE))
+        if(!bal && (player->getFields()[x][y-1]==currentDominoColors.first || player->getFields()[x][y-1]==CASTLE))
         {
             szabalyos=true;
         }
-        if(!jobb && (player->getFields()[x][y+1]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x][y+1]==CASTLE))
+        if(!jobb && (player->getFields()[x][y+1]==currentDominoColors.first || player->getFields()[x][y+1]==CASTLE))
         {
             szabalyos=true;
         }
-        if(!fent && (player->getFields()[x-1][y]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x-1][y]==CASTLE))
+        if(!fent && (player->getFields()[x-1][y]==currentDominoColors.first || player->getFields()[x-1][y]==CASTLE))
         {
             szabalyos=true;
         }
-        if(!lent && (player->getFields()[x+1][y]==deck->getCurrent().at(player->getKingPlace()).GetColors().first || player->getFields()[x+1][y]==CASTLE))
+        if(!lent && (player->getFields()[x+1][y]==currentDominoColors.first || player->getFields()[x+1][y]==CASTLE))
         {
             szabalyos=true;
         }
@@ -230,16 +232,16 @@ void model::PutKingAttempt(bool firstDominoRow, int place)
                  {
                      for(int j = 0; j < 5; j++)
                      {
-                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),UP, currentplayer, i, j, deck));
-                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),DOWN, currentplayer, i, j, deck));
-                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),LEFT, currentplayer, i, j, deck));
-                         lephet=(lephet ||lerakahto(deck->getCurrent().at(sorrend[currentnumber]),RIGHT, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakhato(deck->getCurrent().at(sorrend[currentnumber]),UP, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakhato(deck->getCurrent().at(sorrend[currentnumber]),DOWN, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakhato(deck->getCurrent().at(sorrend[currentnumber]),LEFT, currentplayer, i, j, deck));
+                         lephet=(lephet ||lerakhato(deck->getCurrent().at(sorrend[currentnumber]),RIGHT, currentplayer, i, j, deck));
 
                      }
                  }
                  if(!lephet)
                  {
-                     AddDominoConfirm(currentplayer->getFields());
+                     emit AddDominoConfirm(currentplayer->getFields());
                      if(deck->cardsLeftNum()==0)
                      {
                          PutKingConfirm(true,-1, sorrend[currentnumber]);
@@ -449,7 +451,7 @@ void model::AddDominoAttempt(int x, int y)
       //  cout << "EZAJATEKOS: " << sorrend[currentnumber] << endl;
         currentplayer->placeDomino(deck, x, y);
        // cout << "MIVAN?" <<endl;
-        AddDominoConfirm(currentplayer->getFields());
+        emit AddDominoConfirm(currentplayer->getFields());
         if(deck->cardsLeftNum()==0)
         {
             PutKingConfirm(true,-1, sorrend[currentnumber]);
@@ -614,13 +616,13 @@ void model::startServer()
     QObject::connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
     if(!server->listen(QHostAddress::Any, 1234))
     {
-        std::cout << "rossz" << std::endl;
+        std::cout << "rossz" << std::endl;//todo hibajelzes
     }
     else
     {
         std::cout << "jo" << std::endl;
     }
-    startServerConfirm();
+    emit startServerConfirm();
 }
 
 void model::connect()
