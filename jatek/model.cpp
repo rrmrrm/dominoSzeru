@@ -141,32 +141,33 @@ bool lerakahto(Domino domi, DIR dominoDir, Player* player, int x, int y, Deck* d
         {
             jobb=true;
         }
-        if(!bal && (player->getFields()[x2][y2-1]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2][y2-1]==CASTLE))
+        if(!bal && (player->getFields()[x2][y2-1]==currentDominoColors.second || player->getFields()[x2][y2-1]==CASTLE))
         {
             szabalyos=true;
         }
-        if(!jobb && (player->getFields()[x2][y2+1]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2][y2+1]==CASTLE))
+        if(!jobb && (player->getFields()[x2][y2+1]==currentDominoColors.second || player->getFields()[x2][y2+1]==CASTLE))
         {
             szabalyos=true;
         }
-        if(!fent && (player->getFields()[x2-1][y2]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2-1][y2]==CASTLE))
+        if(!fent && (player->getFields()[x2-1][y2]==currentDominoColors.second || player->getFields()[x2-1][y2]==CASTLE))
         {
             szabalyos=true;
         }
-        if(!lent && (player->getFields()[x2+1][y2]==deck->getCurrent().at(player->getKingPlace()).GetColors().second || player->getFields()[x2+1][y2]==CASTLE))
+        if(!lent && (player->getFields()[x2+1][y2]==currentDominoColors.second || player->getFields()[x2+1][y2]==CASTLE))
         {
             szabalyos=true;
         }
-        if(player->getFields()[x2][y2]!=EMPTY || player->getFields()[x2][y2]!=EMPTY)
+		//csak üres területre lehet dominót helyezni:
+        if(player->getFields()[x][y]!=EMPTY || player->getFields()[x2][y2]!=EMPTY)
         {
             szabalyos=false;
         }
-}
-return szabalyos;
+	}
+	return szabalyos;
 }
 void model::PutKingAttempt(bool firstDominoRow, int place)
 {
-    cout << "kiraléyt helyezek " << place << endl;
+    cout << "kiralyt helyezek " << place << endl;
     if(!(deck->taken[place]))
     {
         currentplayer->placeKing(place);
@@ -404,7 +405,7 @@ void model::AddDominoAttempt(int x, int y)
         {
             szabalyos=true;
         }
-        if(currentplayer->getFields()[x2][y2]!=EMPTY || currentplayer->getFields()[x2][y2]!=EMPTY)
+        if(currentplayer->getFields()[x][y]!=EMPTY || currentplayer->getFields()[x2][y2]!=EMPTY)
         {
             szabalyos=false;
         }
