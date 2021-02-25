@@ -9,6 +9,7 @@
 using namespace std;
 class Board
 {
+	///Fields Indexelése: player->getFields[sor][oszlop]
     QVector<QVector<COLOR>> Fields;
     int owner;
 public:
