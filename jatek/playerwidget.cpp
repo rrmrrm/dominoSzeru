@@ -28,6 +28,8 @@ PlayerWidget::PlayerWidget(int playerIndex, int ts, int w, int h, QWidget *paren
     dominos[tSize/2][tSize/2] = CASTLE;
 
     table = new TableWidget(playerIndex, isActive, this, ts);
+	connect(table, SIGNAL(dominoHighlightMoved(int,int,int)), this, SLOT(dominoHighlightMoved(int,int,int)));
+	
     ui->setupUi(this);
     ui->horizontalLayout->addWidget(table,1);
     setFixedWidth(w);
@@ -38,6 +40,11 @@ PlayerWidget::PlayerWidget(int playerIndex, int ts, int w, int h, QWidget *paren
 
 PlayerWidget::~PlayerWidget()
 {
-
     delete ui;
+}
+
+void PlayerWidget::dominoHighlightMoved(int playerIndNotUsedHere, int sor,int oszlop){
+	dominoButton->d.SetPosition(sor, oszlop);
+	table->dominoHighlight = &dominoButton->d;
+	table->repaint();
 }

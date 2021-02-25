@@ -27,6 +27,8 @@ public:
 
     explicit PlayerWidget(int playerIndex, int ts, int w, int h, QWidget *parent = nullptr);
     ~PlayerWidget();
+public slots:
+	void dominoHighlightMoved(int playerIndNotUsedHere, int sor,int oszlop);
 };
 
 #endif // PLAYERWIDGET_H
